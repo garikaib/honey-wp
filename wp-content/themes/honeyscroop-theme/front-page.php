@@ -8,14 +8,21 @@
 get_header();
 ?>
 
-<!-- Single Full-Width Hero Image (Clickable) -->
-<a href="/shop" class="block w-full">
-    <img 
-        src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/VJ70752.jpg' ) ); ?>" 
-        alt="Honeyscoop Promotion" 
-        class="w-full h-auto object-cover"
-    />
-</a>
+<main id="primary" class="site-main">
+
+    <!-- 1. Hero Section (Single Clickable Image) -->
+    <?php get_template_part( 'patterns/honey-hero' ); ?>
+
+    <!-- 2. Brand Introduction (All Things Honey) -->
+    <?php get_template_part( 'patterns/all-things-honey' ); ?>
+
+    <!-- 3. Product Categories Grid -->
+    <?php get_template_part( 'patterns/product-categories' ); ?>
+
+    <!-- 4. Partner Belt -->
+    <?php get_template_part( 'patterns/partner-belt' ); ?>
+
+</main>
 
 <?php
 get_footer();
