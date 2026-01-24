@@ -14,14 +14,16 @@
 <!-- Announcement Bar / Ticker -->
     <div class="announcement-bar bg-[#FFD700] text-honey-900 text-center py-2.5 text-[11px] font-semibold tracking-wider uppercase">
         <div class="flex items-center justify-center gap-1">
-            <span>Providing AI Agents for</span>
-            <span class="text-rotate inline-flex align-bottom h-[1.3em] overflow-hidden">
-                <span class="text-rotate-inner block text-left">
-                    <span class="block px-2 bg-teal-400 text-teal-800 rounded mx-1">Designers</span>
-                    <span class="block px-2 bg-red-400 text-red-800 rounded mx-1">Developers</span>
-                    <span class="block px-2 bg-blue-400 text-blue-800 rounded mx-1">Managers</span>
-                </span>
-            </span>
+            <span>Perfect for</span>
+            <div class="text-rotate inline-flex align-bottom h-5 overflow-hidden relative top-[-1px]">
+                <ul class="text-rotate-inner block text-left m-0 p-0 list-none">
+                    <li class="flex items-center h-5"><span class="block px-2 bg-yellow-100/80 text-yellow-900 rounded mx-1">Honey Lovers</span></li>
+                    <li class="flex items-center h-5"><span class="block px-2 bg-amber-100/80 text-amber-900 rounded mx-1">Healthy Living</span></li>
+                    <li class="flex items-center h-5"><span class="block px-2 bg-orange-100/80 text-orange-900 rounded mx-1">Sweet Moments</span></li>
+                    <!-- Duplicate first item for seamless loop -->
+                    <li class="flex items-center h-5"><span class="block px-2 bg-yellow-100/80 text-yellow-900 rounded mx-1">Honey Lovers</span></li>
+                </ul>
+            </div>
         </div>
     </div>
 

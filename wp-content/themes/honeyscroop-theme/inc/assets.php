@@ -62,6 +62,18 @@ function honeyscroop_enqueue_assets(): void {
 			false // Load in head for faster hydration
 		);
 	}
+
+    // Product Grid React App.
+    $grid_js_path = HONEYSCROOP_DIR . '/dist/product-grid.js';
+    if ( file_exists( $grid_js_path ) ) {
+        wp_enqueue_script(
+            'honeyscroop-product-grid',
+            HONEYSCROOP_URI . '/dist/product-grid.js',
+            array(),
+            filemtime( $grid_js_path ),
+            true
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'honeyscroop_enqueue_assets' );
 
@@ -92,6 +104,7 @@ function honeyscroop_add_module_type_to_scripts( string $tag, string $handle ): 
 	$module_handles = array(
 		'honeyscroop-honey-finder',
 		'honeyscroop-header-nav',
+        'honeyscroop-product-grid',
 	);
 
 	if ( in_array( $handle, $module_handles, true ) ) {
