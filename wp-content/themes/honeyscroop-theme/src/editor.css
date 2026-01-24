@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Editor-specific styles */
+.editor-styles-wrapper {
+    @apply font-body text-honey-900 bg-cream;
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<ruleset name="Honeyscroop">
+    <description>WordPress Coding Standards for Honeyscroop Theme</description>
+
+    <!-- Scan theme files -->
+    <file>./wp-content/themes/honeyscroop-theme</file>
+
+    <!-- Exclude paths -->
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/dist/*</exclude-pattern>
+    <exclude-pattern>*.min.js</exclude-pattern>
+    <exclude-pattern>*.min.css</exclude-pattern>
+
+    <!-- Arguments -->
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg value="sp"/>
+
+    <!-- WordPress Coding Standards -->
+    <rule ref="WordPress">
+        <!-- Allow short array syntax -->
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+    </rule>
+
+    <!-- WordPress Extra Standards -->
+    <rule ref="WordPress-Extra"/>
+
+    <!-- Security: Late Escaping -->
+    <rule ref="WordPress.Security.EscapeOutput"/>
+    <rule ref="WordPress.Security.NonceVerification"/>
+    <rule ref="WordPress.Security.ValidatedSanitizedInput"/>
+
+    <!-- Text domain for i18n -->
+    <config name="text_domain" value="honeyscroop"/>
+
+    <!-- Minimum PHP version -->
+    <config name="testVersion" value="8.3-"/>
+</ruleset>

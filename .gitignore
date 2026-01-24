@@ -1,0 +1,64 @@
+# WordPress Core
+wp-admin/
+wp-includes/
+index.php
+license.txt
+readme.html
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
+wp-config-sample.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-login.php
+wp-mail.php
+wp-settings.php
+wp-signup.php
+wp-trackback.php
+xmlrpc.php
+
+# WordPress Configuration
+wp-config.php
+wp-config-ddev.php
+
+# Content & Uploads
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/cache/
+wp-content/languages/
+
+# Themes & Plugins (Ignore standard ones, keep ours)
+wp-content/themes/twentytwenty*
+wp-content/plugins/akismet/
+wp-content/plugins/hello.php
+
+# DDEV
+.ddev/
+
+# Node.js
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+
+# Development
+.env
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Theme Specific Build Artifacts
+wp-content/themes/honeyscroop-theme/node_modules/
+wp-content/themes/honeyscroop-theme/dist/
