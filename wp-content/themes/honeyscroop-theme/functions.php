@@ -41,8 +41,9 @@ function honeyscroop_setup(): void {
 add_action( 'after_setup_theme', 'honeyscroop_setup' );
 
 // Load modular includes.
-require_once HONEYSCROOP_DIR . '/inc/assets.php';
-require_once HONEYSCROOP_DIR . '/inc/cpt-honey-variety.php';
+require_once get_template_directory() . '/inc/assets.php';
+require_once get_template_directory() . '/inc/cpt-honey-variety.php';
+require_once get_template_directory() . '/inc/cpt-partner.php';
 
 /**
  * Customizer Settings

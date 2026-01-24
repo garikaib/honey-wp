@@ -11,6 +11,7 @@ export default defineConfig({
                 'honey-finder': path.resolve(__dirname, 'src/honey-finder/index.jsx'),
                 'header-nav': path.resolve(__dirname, 'src/header-nav/index.jsx'),
                 'product-grid': path.resolve(__dirname, 'src/product-grid/index.jsx'),
+                'partner-ticker': path.resolve(__dirname, 'src/partner-ticker/index.jsx'),
                 'style': path.resolve(__dirname, 'src/style.css'),
                 'editor': path.resolve(__dirname, 'src/editor.css')
             },

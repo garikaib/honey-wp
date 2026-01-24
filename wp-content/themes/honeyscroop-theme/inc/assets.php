@@ -74,6 +74,18 @@ function honeyscroop_enqueue_assets(): void {
             true
         );
     }
+
+    // Partner Ticker React App.
+    $partner_js_path = HONEYSCROOP_DIR . '/dist/partner-ticker.js';
+    if ( file_exists( $partner_js_path ) ) {
+        wp_enqueue_script(
+            'honeyscroop-partner-ticker',
+            HONEYSCROOP_URI . '/dist/partner-ticker.js',
+            array(),
+            filemtime( $partner_js_path ),
+            true
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'honeyscroop_enqueue_assets' );
 
@@ -105,6 +117,7 @@ function honeyscroop_add_module_type_to_scripts( string $tag, string $handle ): 
 		'honeyscroop-honey-finder',
 		'honeyscroop-header-nav',
         'honeyscroop-product-grid',
+        'honeyscroop-partner-ticker',
 	);
 
 	if ( in_array( $handle, $module_handles, true ) ) {
