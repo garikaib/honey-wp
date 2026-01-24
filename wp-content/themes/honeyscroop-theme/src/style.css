@@ -4,7 +4,7 @@
 
 /* Custom Base Styles matching theme.json */
 body {
-    @apply bg-cream text-honey-900 font-body;
+  @apply bg-cream text-honey-900 font-body;
 }
 
 h1,
@@ -13,10 +13,51 @@ h3,
 h4,
 h5,
 h6 {
-    @apply font-heading font-semibold;
+  @apply font-heading font-semibold;
+}
+
+@layer components {
+
+  /* Custom component overrides if needed */
+  /* Rotating Text Component */
+  .text-rotate {
+    display: inline-flex;
+    overflow: hidden;
+    height: 1.5em;
+    /* Adjust based on font size */
+    line-height: 1.5em;
+    vertical-align: bottom;
+  }
+
+  .text-rotate-inner {
+    display: block;
+    animation: text-rotate-scroll 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes text-rotate-scroll {
+
+    0%,
+    16% {
+      transform: translateY(0);
+    }
+
+    33%,
+    49% {
+      transform: translateY(-33.33%);
+    }
+
+    66%,
+    83% {
+      transform: translateY(-66.66%);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
 }
 
 /* Block Editor Compatibility */
 .wp-block-button__link {
-    @apply no-underline;
+  @apply no-underline;
 }

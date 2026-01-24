@@ -5,16 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?> style="font-family: 'Outfit', sans-serif;">
 <?php wp_body_open(); ?>
 
 <!-- Announcement Bar / Ticker -->
-<div class="announcement-bar bg-[#FFD700] text-honey-900 text-center py-2.5 text-[11px] font-semibold tracking-wider uppercase">
-    <p class="m-0"><?php echo esc_html( get_theme_mod( 'announcement_text', '🧧🏮 CNY Hampers Available Now 🏮🧧' ) ); ?></p>
-</div>
+    <div class="announcement-bar bg-[#FFD700] text-honey-900 text-center py-2.5 text-[11px] font-semibold tracking-wider uppercase">
+        <div class="flex items-center justify-center gap-1">
+            <span>Providing AI Agents for</span>
+            <span class="text-rotate inline-flex align-bottom h-[1.3em] overflow-hidden">
+                <span class="text-rotate-inner block text-left">
+                    <span class="block px-2 bg-teal-400 text-teal-800 rounded mx-1">Designers</span>
+                    <span class="block px-2 bg-red-400 text-red-800 rounded mx-1">Developers</span>
+                    <span class="block px-2 bg-blue-400 text-blue-800 rounded mx-1">Managers</span>
+                </span>
+            </span>
+        </div>
+    </div>
 
 <!-- Main Header -->
 <header id="masthead" class="site-header bg-white border-b border-gray-100 z-40 relative">

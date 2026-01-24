@@ -8,9 +8,9 @@
 ?>
 <!-- Partner Belt Section -->
 <div class="partner-belt py-16 bg-cream border-t border-honey-100 overflow-hidden">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
-        <h3 class="text-2xl font-serif text-honey-800 mb-2">Our Trusted Partners</h3>
-        <p class="text-gray-500 text-sm">Working together to bring you nature's finest.</p>
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
+        <h3 class="text-2xl md:text-3xl font-heading text-gray-900 mb-3 font-normal">Our Trusted Partners</h3>
+        <p class="text-gray-500 text-base font-light">Working together to bring you nature's finest.</p>
     </div>
 
     <!-- Scrolling Container -->

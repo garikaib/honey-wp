@@ -3,16 +3,24 @@
  * Title: All Things Honey Text
  * Slug: honeyscroop/all-things-honey
  * Categories: featured, text
- * Description: Centered text section with brand introduction.
+ * Description: Centered text section with brand introduction and gradient bar.
  */
 ?>
-<section class="py-16 md:py-20 bg-white">
-    <div class="max-w-[700px] mx-auto px-6 text-center">
-        <h2 class="text-2xl md:text-3xl text-gray-900 mb-6">
-            All Things <span class="text-amber-500">Honey</span>
+<!-- Gradient Decorative Bar - Thicker with honeycomb-like texture -->
+<div class="w-full h-20 md:h-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500"></div>
+    <!-- Subtle honeycomb pattern overlay -->
+    <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"28\" height=\"49\" viewBox=\"0 0 28 49\"><g fill-rule=\"evenodd\"><g fill=\"%23000\" fill-opacity=\"0.3\"><path d=\"M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z\"/></g></g></svg>');"></div>
+</div>
+
+<!-- Brand Introduction Text -->
+<section class="py-12 md:py-16 bg-white">
+    <div class="max-w-[680px] mx-auto px-6 text-center">
+        <h2 class="text-2xl md:text-3xl text-gray-900 mb-6 font-normal" style="font-family: 'Cormorant Garamond', Georgia, serif;">
+            All Things <span style="color: #FFC107;">Honey</span>
         </h2>
-        <p class="text-sm md:text-base text-gray-500 leading-relaxed">
-            Honeyscoop brings you pure honey & artisanal scoops. Our journey started with a search for natural goodness — and led to trusted farmers, wild bees, and honey full of life. Every drop is unprocessed, full of nutrients, and made to support your health, naturally.
+        <p class="text-base md:text-lg text-gray-500 leading-relaxed font-light" style="line-height: 1.8;">
+            Honeyscoop brings you pure honey harvested directly from the landscapes of Zimbabwe. Our journey started with a search for natural healing — and led to trusted farmers, wild bees, and honey full of life. Every drop is unprocessed, full of nutrients, and made to support your health, naturally.
         </p>
     </div>
 </section>

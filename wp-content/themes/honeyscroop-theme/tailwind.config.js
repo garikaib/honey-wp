@@ -25,10 +25,16 @@ module.exports = {
                 forest: '#14532D',
             },
             fontFamily: {
+                sans: ['"Outfit"', 'sans-serif'],
                 heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-                body: ['"Inter"', 'sans-serif'],
+                body: ['"Outfit"', 'sans-serif'],
             },
         },
     },
-    plugins: [],
+    plugins: [
+        require('daisyui'),
+    ],
+    daisyui: {
+        themes: ["bumblebee", "light"],
+    },
 }
