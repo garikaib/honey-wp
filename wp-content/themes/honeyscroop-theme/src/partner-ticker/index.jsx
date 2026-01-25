@@ -33,12 +33,18 @@ const PartnerTicker = () => {
     if (loading) return null;
 
     // Fallback demo partners if none are uploaded yet
-    const displayPartners = partners.length > 0 ? partners : [
+    let displayPartners = partners.length > 0 ? partners : [
         { id: 'd1', title: 'Demo 1', isDemo: true },
         { id: 'd2', title: 'Demo 2', isDemo: true },
         { id: 'd3', title: 'Demo 3', isDemo: true },
         { id: 'd4', title: 'Demo 4', isDemo: true },
     ];
+
+    // Ensure we have enough items for a smooth loop on wide screens (min 12 items)
+    // This prevents the "sudden increase/gap" issue if the list is too short
+    while (displayPartners.length < 12) {
+        displayPartners = [...displayPartners, ...displayPartners.map(p => ({ ...p, id: p.id + '-dup-' + Math.random() }))];
+    }
 
     return (
         <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
