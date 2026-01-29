@@ -1,81 +1,23 @@
-@tailwind base;
-@tailwind components;
+@import './theme.css';
+
+/* Utility only Tailwind for React components */
 @tailwind utilities;
 
-/* Custom Base Styles matching theme.json */
-body {
-  @apply bg-cream text-honey-900 font-body;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  @apply font-heading font-semibold;
-}
-
-@layer components {
-
-  /* Custom component overrides if needed */
-  /* Rotating Text Component */
-  .text-rotate {
-    display: inline-flex;
+/* Target specific components if needed */
+@layer utilities {
+  .card {
+    border: 1px solid var(--color-gray-100);
+    border-radius: 8px;
     overflow: hidden;
-    /* Height matches h-5 (1.25rem / 20px) */
-    height: 1.25rem;
-    line-height: 1.25rem;
-    vertical-align: text-bottom;
-    mask-image: linear-gradient(transparent 0%, black 10%, black 90%, transparent 100%);
+    transition: all 0.3s ease;
   }
 
-  .text-rotate-inner {
-    display: block;
-    /* 4s total = 1s per item. Linear because keyframes handle the 'hold' */
-    animation: text-rotate-scroll 4s linear infinite;
-  }
-
-  /* Reset children styles to inherit fixed height from Tailwind classes */
-  .text-rotate-inner>li {
-    display: flex;
-    align-items: center;
-    height: 1.25rem;
-  }
-
-  @keyframes text-rotate-scroll {
-
-    /* Item 1: Hold 0-20%, Move 20-25% */
-    0%,
-    20% {
-      transform: translateY(0);
-    }
-
-    /* Item 2: Hold 25-45%, Move 45-50% */
-    25%,
-    45% {
-      transform: translateY(-25%);
-    }
-
-    /* Item 3: Hold 50-70%, Move 70-75% */
-    50%,
-    70% {
-      transform: translateY(-50%);
-    }
-
-    /* Item 4 (Clone): Hold 75-95%, Snap 100% */
-    75%,
-    95% {
-      transform: translateY(-75%);
-    }
-
-    100% {
-      transform: translateY(0);
-    }
+  .hover-underline:hover {
+    text-decoration: underline;
   }
 }
 
 /* Block Editor Compatibility */
 .wp-block-button__link {
-  @apply no-underline;
+  text-decoration: none !important;
 }

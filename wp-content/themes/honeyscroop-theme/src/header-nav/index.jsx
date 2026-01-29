@@ -70,9 +70,10 @@ const NavItem = ({ item }) => {
             <a
                 href={item.href}
                 className={`group flex items-center py-4 text-gray-800 hover:text-gray-900 transition-colors duration-200 ${isOpen ? 'text-gray-900' : ''}`}
+                style={{ fontWeight: 700, letterSpacing: '0.2em' }}
             >
-                <span className="relative">
-                    {item.label}
+                <span className="flex items-center relative">
+                    <span>{item.label}</span>
                     {/* Underline animation */}
                     <span className={`absolute left-0 -bottom-1 h-[1.5px] bg-gray-400 transition-all duration-300 ease-out ${isOpen ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </span>

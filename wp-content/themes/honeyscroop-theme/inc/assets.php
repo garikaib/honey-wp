@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Enqueue frontend styles and scripts.
  */
 function honeyscroop_enqueue_assets(): void {
-	// Tailwind compiled CSS.
+	// Compiled theme CSS (vanilla + Tailwind utilities).
 	$css_path = HONEYSCROOP_DIR . '/dist/style.css';
 	if ( file_exists( $css_path ) ) {
 		wp_enqueue_style(
-			'honeyscroop-style',
+			'honeyscroop-dist-style',
 			HONEYSCROOP_URI . '/dist/style.css',
 			array(),
 			filemtime( $css_path )

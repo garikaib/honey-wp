@@ -3,15 +3,39 @@ Theme Name: Honeyscroop Theme
 Theme URI: https://dev.honeyscroop.co.zw
 Author: Honeyscroop
 Author URI: https://honeyscroop.co.zw
-Description: A premium, organic-inspired theme for Honeyscroop honey shop. Built with Tailwind CSS, React, and native WordPress features.
+Description: A premium, organic-inspired child theme of Twenty Twenty-Six for Honeyscroop honey shop. Built with Tailwind CSS, React, and native WordPress features.
 Version: 1.0.0
-Requires at least: 6.4
+Requires at least: 6.7
 Tested up to: 6.7
 Requires PHP: 8.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: honeyscroop
+Template: twentytwentysix
 Tags: e-commerce, food-and-drink, custom-colors, block-patterns, full-site-editing
 
 Honeyscroop Theme - Pure organic honey, premium experience.
 */
+
+/* Reset list markers for theme menus and other standard lists */
+ul,
+ol {
+    list-style-type: none !important;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style-type: none !important;
+}
+
+/* Specific footer menu fixes */
+.footer-menu {
+    list-style: none !important;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-menu li {
+    list-style: none !important;
+}
