@@ -2,42 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Search, User, ShoppingBag, ChevronDown, Globe, Menu, X } from 'lucide-react';
 
-const menuItems = [
-    { label: 'Home', href: '/' },
-    {
-        label: 'Shop',
-        href: '#',
-        type: 'mega',
-        children: [
-            {
-                category: 'Honey',
-                href: '#',
-                items: [
-                    { label: 'Squeezy Series', href: '#' },
-                    { label: 'Daily Series', href: '#' },
-                    { label: 'Infused Series', href: '#' },
-                    { label: 'Premium Series', href: '#' },
-                    { label: 'Honeycomb', href: '#' },
-                    { label: 'Mini Honey Series', href: '#' },
-                    { label: 'Bundles', href: '#' },
-                ]
-            },
-            { category: 'Fresh Honey Juice', href: '#', items: [] },
-            { category: 'Gifting', href: '#', items: [] },
-            { category: 'Cake', href: '#', items: [] },
-            { category: 'Merchandise', href: '#', items: [] },
-            { category: 'Subscription', href: '#', items: [] },
-        ]
-    },
-    { label: 'Honey', href: '#' },
-    { label: 'CNY Hamper', href: '#' },
-    { label: 'Guide', href: '#' },
-    { label: 'Events', href: '#' },
-    { label: 'Stores', href: '#' },
-    { label: 'Licensing', href: '#' },
-    { label: 'Story', href: '#' },
-    { label: 'Membership', href: '#' },
-];
+const menuItems = window.honeyscroopHeaderData?.primaryMenu || [];
 
 const NavItem = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);

@@ -61,6 +61,15 @@ function honeyscroop_enqueue_assets(): void {
 			filemtime( $nav_js_path ),
 			false // Load in head for faster hydration
 		);
+
+		// Localize header nav with dynamic menu data.
+		wp_localize_script(
+			'honeyscroop-header-nav',
+			'honeyscroopHeaderData',
+			array(
+				'primaryMenu' => honeyscroop_get_menu_items( 'primary' ),
+			)
+		);
 	}
 
     // Product Grid React App.

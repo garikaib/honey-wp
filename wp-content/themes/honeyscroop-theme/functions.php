@@ -120,6 +120,13 @@ function honeyscroop_seed_menus() {
 				'Store Location'   => '/store-locator',
 			),
 		),
+		'Primary' => array(
+			'location' => 'primary',
+			'items'    => array(
+				'Home' => '/',
+				'Shop' => '/shop',
+			),
+		),
 	);
 
     $locations = get_theme_mod( 'nav_menu_locations' );
@@ -164,6 +171,51 @@ function honeyscroop_seed_menus() {
     }
 }
 add_action( 'init', 'honeyscroop_seed_menus' );
+
+/**
+ * Helper to get menu items for a location.
+ *
+ * @param string $location Menu location slug.
+ * @return array Formatted menu items.
+ */
+function honeyscroop_get_menu_items( string $location ): array {
+	$locations = get_nav_menu_locations();
+	if ( ! isset( $locations[ $location ] ) ) {
+		return array();
+	}
+
+	$menu = wp_get_nav_menu_object( $locations[ $location ] );
+	if ( ! $menu ) {
+		return array();
+	}
+
+	$menu_items = wp_get_nav_menu_items( $menu->term_id );
+	if ( ! $menu_items ) {
+		return array();
+	}
+
+	$formatted = array();
+	foreach ( $menu_items as $item ) {
+		if ( 0 === (int) $item->menu_item_parent ) {
+			$formatted[ $item->ID ] = array(
+				'label'    => $item->title,
+				'href'     => $item->url,
+				'children' => array(),
+			);
+		}
+	}
+
+	foreach ( $menu_items as $item ) {
+		if ( 0 !== (int) $item->menu_item_parent && isset( $formatted[ $item->menu_item_parent ] ) ) {
+			$formatted[ $item->menu_item_parent ]['children'][] = array(
+				'label' => $item->title,
+				'href'  => $item->url,
+			);
+		}
+	}
+
+	return array_values( $formatted );
+}
 
 // Load modular includes.
 require_once get_stylesheet_directory() . '/inc/assets.php';
