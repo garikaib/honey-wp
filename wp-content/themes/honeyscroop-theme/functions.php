@@ -55,7 +55,7 @@ function honeyscroop_setup(): void {
 	// Register nav menus.
 	register_nav_menus(
 		array(
-			'primary'          => esc_html__( 'Primary Menu', 'honeyscroop' ),
+			'primary'          => esc_html__( 'Top Menu', 'honeyscroop' ),
 			'footer_navigate'  => esc_html__( 'Footer: Navigate', 'honeyscroop' ),
 			'footer_products'  => esc_html__( 'Footer: Products', 'honeyscroop' ),
 			'footer_company'   => esc_html__( 'Footer: Company', 'honeyscroop' ),
@@ -81,96 +81,7 @@ function honeyscroop_menu_link_atts( $atts, $item, $args ) {
 }
 add_filter( 'nav_menu_link_attributes', 'honeyscroop_menu_link_atts', 10, 3 );
 
-/**
- * Seed footer menus if they don't exist.
- */
-function honeyscroop_seed_menus() {
-	// Check if we've already seeded to avoid running this on every load unnecessarily, 
-    // though wp_get_nav_menu_object is fast enough for checking existence.
-    // We'll trust the check for existence.
-	
-	$menus = array(
-		'Navigate' => array(
-			'location' => 'footer_navigate',
-			'items'    => array(
-				'Home'    => '/',
-				'Shop'    => '/shop',
-				'About'   => '/about',
-				'Contact' => '/contact',
-				'FAQs'    => '/faqs',
-			),
-		),
-		'Our Products' => array(
-			'location' => 'footer_products',
-			'items'    => array(
-				'Raw Honey'     => '/shop/raw-honey',
-				'Peanut Butter' => '/shop/peanut-butter',
-				'Honeyscoops'   => '/shop/honeyscoops',
-				'Wholesale'     => '/shop/wholesale',
-				'Gifts'         => '/shop/gifts',
-			),
-		),
-		'Company' => array(
-			'location' => 'footer_company',
-			'items'    => array(
-				'Founder Story'    => '/our-story',
-				'Vision & Mission' => '/mission',
-				'Meet The Clients' => '/partners',
-				'Sustainability'   => '/sustainability',
-				'Store Location'   => '/store-locator',
-			),
-		),
-		'Primary' => array(
-			'location' => 'primary',
-			'items'    => array(
-				'Home' => '/',
-				'Shop' => '/shop',
-			),
-		),
-	);
 
-    $locations = get_theme_mod( 'nav_menu_locations' );
-    $updated   = false;
-
-	foreach ( $menus as $name => $config ) {
-		$menu_name = 'Footer - ' . $name;
-		$menu_exists = wp_get_nav_menu_object( $menu_name );
-
-		if ( ! $menu_exists ) {
-			$menu_id = wp_create_nav_menu( $menu_name );
-
-			if ( ! is_wp_error( $menu_id ) ) {
-				foreach ( $config['items'] as $title => $url ) {
-					wp_update_nav_menu_item(
-						$menu_id,
-						0,
-						array(
-							'menu-item-title'  => $title,
-							'menu-item-url'    => $url,
-							'menu-item-status' => 'publish',
-							'menu-item-type'   => 'custom',
-						)
-					);
-				}
-
-                // Assign to location
-                $locations[ $config['location'] ] = $menu_id;
-                $updated = true;
-			}
-		} else {
-            // Ensure connection if menu exists but location not set (e.g. after theme switch)
-             if ( ! isset( $locations[ $config['location'] ] ) || $locations[ $config['location'] ] !== $menu_exists->term_id ) {
-                $locations[ $config['location'] ] = $menu_exists->term_id;
-                $updated = true;
-            }
-        }
-	}
-
-    if ( $updated ) {
-        set_theme_mod( 'nav_menu_locations', $locations );
-    }
-}
-add_action( 'init', 'honeyscroop_seed_menus' );
 
 /**
  * Helper to get menu items for a location.

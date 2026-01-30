@@ -69,26 +69,8 @@
             </div>
         </div>
 
-        <!-- Desktop Navigation (React-powered with animations) -->
-        <div id="header-nav-root" class="hidden-mobile"></div>
-
-        <!-- Mobile Header -->
-        <div class="mobile-header">
-             <!-- Hamburger -->
-             <button class="icon-btn" aria-label="Menu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-             </button>
-
-             <!-- Logo (Smaller) -->
-             <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="block">
-                <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honeyscoop-logo.png' ) ); ?>" alt="<?php bloginfo( 'name' ); ?>" class="logo-img-small">
-             </a>
-
-             <!-- Cart -->
-             <a href="#" class="icon-btn relative" aria-label="Cart">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-             </a>
-        </div>
+        <!-- Main Navigation (React-powered) -->
+        <div id="header-nav-root"></div>
     </div>
 </header>
 <main id="primary" class="site-main">
