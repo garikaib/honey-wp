@@ -16,11 +16,11 @@
 <!-- Brand Introduction Text -->
 <section class="brand-intro">
     <div class="brand-intro-content">
-        <h2 class="text-3xl text-gray-900 mb-lg font-normal">
-            All Things <span style="color: #FFC107;">Honey</span>
+        <h2 class="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-6">
+            Savor the Golden Richness of <span class="text-honey-600">Pure Honey</span>
         </h2>
-        <p class="text-lg text-gray-500 leading-relaxed font-light">
-            Honeyscoop brings you pure honey harvested directly from the landscapes of Zimbabwe. Our journey started with a search for natural healing — and led to trusted farmers, wild bees, and honey full of life. Every drop is unprocessed, full of nutrients, and made to support your health, naturally.
+        <p class="text-base text-gray-800 leading-relaxed font-light max-w-3xl mx-auto">
+            Honeyscoop brings you nature's finest treasures, harvested directly from the vibrant landscapes of Zimbabwe. Born from a passion for healing and purity, every drop of our unprocessed honey is full of life and nutrients — a sweet promise of nature's bounty dedicated to your health and bliss.
         </p>
     </div>
 </section>

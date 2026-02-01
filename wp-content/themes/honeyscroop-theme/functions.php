@@ -132,6 +132,7 @@ function honeyscroop_get_menu_items( string $location ): array {
 require_once get_stylesheet_directory() . '/inc/assets.php';
 require_once get_stylesheet_directory() . '/inc/cpt-honey-variety.php';
 require_once get_stylesheet_directory() . '/inc/cpt-partner.php';
+require_once get_stylesheet_directory() . '/inc/cpt-event.php';
 require_once get_stylesheet_directory() . '/inc/customizer-social.php';
 
 /**

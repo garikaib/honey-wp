@@ -35,7 +35,7 @@ const NavItem = ({ item }) => {
         >
             <a
                 href={item.href}
-                className={`group flex items-center py-4 text-gray-800 hover:text-gray-900 transition-colors duration-200 ${isOpen ? 'text-gray-900' : ''}`}
+                className={`group flex items-center py-2 text-gray-800 hover:text-gray-900 transition-colors duration-200 ${isOpen ? 'text-gray-900' : ''}`}
                 style={{ fontWeight: 700, letterSpacing: '0.2em' }}
             >
                 <span className="flex items-center relative">
@@ -206,7 +206,7 @@ const HeaderNav = () => {
             </nav>
 
             {/* Mobile Header Row (Visible only on mobile) */}
-            <div className="flex md:hidden items-center justify-between py-4">
+            <div className="flex md:hidden items-center justify-between py-2">
                 <button
                     onClick={() => setMobileMenuOpen(true)}
                     className="text-gray-500 hover:text-gray-900"

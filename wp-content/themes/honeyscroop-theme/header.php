@@ -31,27 +31,27 @@
 <header id="masthead" class="site-header">
     <div class="container">
         
-        <!-- Header Row: Currency (Left) | Logo (Center) | Icons (Right) -->
+        <!-- Header Row: Logo (Left) | Tools (Right) -->
         <div class="header-row hidden-mobile">
             
-            <!-- Left: Currency Selector -->
+            <!-- Left: Logo -->
             <div class="header-left">
-                <button class="header-boxed-btn">
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="block">
+                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_cropped_transparent.webp' ) ); ?>" alt="<?php bloginfo( 'name' ); ?>" class="logo-img">
+                </a>
+            </div>
+
+            <!-- Right: Generic Column -->
+            <div class="header-right-column">
+                <!-- Top Row: Tools -->
+                <div class="header-top-row header-tools">
+                 <!-- Currency Selector -->
+                <button class="header-boxed-btn mr-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="mr-2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
                     <span>UNITED STATES (USD$)</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ml-1 opacity-50"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
-            </div>
 
-            <!-- Center: Logo -->
-            <div class="header-center">
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="block">
-                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honeyscoop-logo.png' ) ); ?>" alt="<?php bloginfo( 'name' ); ?>" class="logo-img">
-                </a>
-            </div>
-
-            <!-- Right: Search, Account, Cart -->
-            <div class="header-right header-icons">
                  <!-- Search -->
                  <button class="icon-btn-boxed" aria-label="Search">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -66,11 +66,13 @@
                  <a href="#" class="icon-btn relative" aria-label="Cart">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                  </a>
+                </div>
+                <!-- Bottom Row: Navigation -->
+                <div class="header-bottom-row">
+                    <div id="header-nav-root"></div>
+                </div>
             </div>
         </div>
-
-        <!-- Main Navigation (React-powered) -->
-        <div id="header-nav-root"></div>
     </div>
 </header>
 <main id="primary" class="site-main">
