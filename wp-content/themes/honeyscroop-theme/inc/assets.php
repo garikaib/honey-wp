@@ -168,21 +168,7 @@ function honeyscroop_enqueue_assets(): void {
 }
 add_action( 'wp_enqueue_scripts', 'honeyscroop_enqueue_assets' );
 
-/**
- * Enqueue editor styles.
- */
-function honeyscroop_enqueue_editor_assets(): void {
-	$css_path = HONEYSCROOP_DIR . '/dist/editor.css';
-	if ( file_exists( $css_path ) ) {
-		wp_enqueue_style(
-			'honeyscroop-editor-style',
-			HONEYSCROOP_URI . '/dist/editor.css',
-			array(),
-			filemtime( $css_path )
-		);
-	}
-}
-add_action( 'enqueue_block_editor_assets', 'honeyscroop_enqueue_editor_assets' );
+// Editor styles enqueued via add_editor_style in functions.php
 
 /**
  * Add type="module" to enqueued React scripts.

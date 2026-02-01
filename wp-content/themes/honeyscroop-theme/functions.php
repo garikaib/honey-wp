@@ -24,17 +24,17 @@ define( 'HONEYSCROOP_URI', get_stylesheet_directory_uri() );
 function honeyscroop_enqueue_styles(): void {
 	// Enqueue parent theme stylesheet.
 	wp_enqueue_style(
-		'twentytwentysix-style',
+		'twentytwentyfive-style',
 		get_parent_theme_file_uri( 'style.css' ),
 		array(),
-		wp_get_theme( 'twentytwentysix' )->get( 'Version' )
+		wp_get_theme( 'twentytwentyfive' )->get( 'Version' )
 	);
 
 	// Enqueue child theme stylesheet.
 	wp_enqueue_style(
 		'honeyscroop-style',
 		get_stylesheet_uri(),
-		array( 'twentytwentysix-style' ),
+		array( 'twentytwentyfive-style' ),
 		HONEYSCROOP_VERSION
 	);
 }
@@ -50,6 +50,7 @@ function honeyscroop_setup(): void {
 	add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'editor-styles' );
+	add_editor_style( 'dist/editor.css' );
 	add_theme_support( 'wp-block-styles' );
 
 	// Register nav menus.
@@ -134,6 +135,7 @@ require_once get_stylesheet_directory() . '/inc/cpt-honey-variety.php';
 require_once get_stylesheet_directory() . '/inc/cpt-partner.php';
 require_once get_stylesheet_directory() . '/inc/cpt-event.php';
 require_once get_stylesheet_directory() . '/inc/customizer-social.php';
+require_once get_stylesheet_directory() . '/inc/meta-boxes.php';
 
 /**
  * Customizer Settings

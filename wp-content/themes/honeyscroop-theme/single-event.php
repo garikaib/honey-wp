@@ -23,60 +23,82 @@ while ( have_posts() ) :
 
     <main id="primary" class="site-main bg-honey-50/20 min-h-screen pb-20">
 
-        <!-- Hero Section -->
-        <div class="relative h-[50vh] min-h-[400px] flex items-end pb-16 overflow-hidden">
-            <!-- Background Image -->
-            <div class="absolute inset-0 z-0 bg-honey-900">
+        <!-- Hero Section (No Full Overlay - Text Underlays Only) -->
+        <div class="relative h-[65vh] min-h-[550px] flex items-end overflow-hidden group">
+            <!-- Background Image (Full, Untinted) -->
+            <div class="absolute inset-0 z-0">
                 <?php if ( has_post_thumbnail() ) : ?>
-                    <?php the_post_thumbnail( 'full', array( 'class' => 'w-full h-full object-cover opacity-60 mix-blend-overlay' ) ); ?>
+                    <?php the_post_thumbnail( 'full', array( 'class' => 'w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105' ) ); ?>
                 <?php else : ?>
-                    <div class="w-full h-full opacity-10 pattern-honeycomb"></div>
+                    <div class="w-full h-full bg-gradient-to-br from-honey-100 to-honey-200"></div>
                 <?php endif; ?>
             </div>
-            
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
 
-            <div class="container container-wide relative z-20 text-white">
-                <a href="<?php echo esc_url( home_url( '/events' ) ); ?>" class="inline-flex items-center gap-2 text-honey-200 hover:text-white transition-colors mb-6 text-sm font-bold uppercase tracking-widest">
+            <!-- Content Container -->
+            <div class="container container-wide relative z-20 pb-12">
+                
+                <!-- Back Button (Pill Underlay) -->
+                <a href="<?php echo esc_url( home_url( '/events' ) ); ?>" class="inline-flex items-center gap-2 text-white hover:text-honey-300 transition-all mb-6 text-xs font-bold uppercase tracking-widest bg-black/50 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 hover:border-honey-400 hover:bg-black/60 shadow-lg">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     Back to Events
                 </a>
                 
-                <h1 class="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6">
-                    <?php the_title(); ?>
-                </h1>
+                <!-- Title (Card Underlay) -->
+                <div class="inline-block bg-black/50 backdrop-blur-md px-8 py-6 rounded-2xl border border-white/20 mb-6 shadow-2xl">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight text-white max-w-3xl">
+                        <?php the_title(); ?>
+                    </h1>
+                </div>
 
-                <!-- Quick Meta Bar -->
-                <div class="flex flex-wrap gap-6 md:gap-12 text-lg font-medium border-t border-white/20 pt-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-honey-500/20 flex items-center justify-center backdrop-blur-sm">
-                            <svg class="w-5 h-5 text-honey-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <!-- Meta Pills Row -->
+                <div class="flex flex-wrap gap-3">
+                    
+                    <!-- Date Pill -->
+                    <div class="inline-flex items-center gap-3 bg-black/50 backdrop-blur-md px-5 py-3 rounded-full border border-white/20 shadow-lg">
+                        <div class="w-9 h-9 rounded-full bg-honey-500 text-white flex items-center justify-center shadow-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
                         <div>
-                            <span class="block text-xs uppercase text-white/50 tracking-wider">Date</span>
-                            <?php echo esc_html( $formatted_date ); ?>
+                            <span class="block text-[9px] uppercase text-honey-300 tracking-widest font-bold">Date</span>
+                            <span class="text-sm font-semibold text-white"><?php echo esc_html( $formatted_date ); ?></span>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-honey-500/20 flex items-center justify-center backdrop-blur-sm">
-                            <svg class="w-5 h-5 text-honey-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <!-- Location Pill -->
+                    <div class="inline-flex items-center gap-3 bg-black/50 backdrop-blur-md px-5 py-3 rounded-full border border-white/20 shadow-lg">
+                        <div class="w-9 h-9 rounded-full bg-honey-500 text-white flex items-center justify-center shadow-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         </div>
                         <div>
-                            <span class="block text-xs uppercase text-white/50 tracking-wider">Location</span>
-                            <?php echo esc_html( $location ); ?>
+                            <span class="block text-[9px] uppercase text-honey-300 tracking-widest font-bold">Location</span>
+                            <span class="text-sm font-semibold text-white"><?php echo esc_html( $location ); ?></span>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-honey-500/20 flex items-center justify-center backdrop-blur-sm">
-                            <svg class="w-5 h-5 text-honey-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    <!-- Price Pill -->
+                    <div class="inline-flex items-center gap-3 bg-honey-500 px-5 py-3 rounded-full shadow-lg shadow-honey-600/30 border border-honey-400">
+                        <div class="w-9 h-9 rounded-full bg-white text-honey-600 flex items-center justify-center shadow-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <div>
-                            <span class="block text-xs uppercase text-white/50 tracking-wider">Price</span>
-                            <?php echo esc_html( $price ); ?>
+                            <span class="block text-[9px] uppercase text-honey-900/70 tracking-widest font-bold">Price</span>
+                            <span class="text-sm font-bold text-white"><?php echo esc_html( $price ); ?></span>
                         </div>
                     </div>
+
+                    <!-- Time Pill -->
+                    <?php if ( $formatted_time ) : ?>
+                    <div class="inline-flex items-center gap-3 bg-black/50 backdrop-blur-md px-5 py-3 rounded-full border border-white/20 shadow-lg">
+                        <div class="w-9 h-9 rounded-full bg-honey-500 text-white flex items-center justify-center shadow-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div>
+                            <span class="block text-[9px] uppercase text-honey-300 tracking-widest font-bold">Time</span>
+                            <span class="text-sm font-semibold text-white"><?php echo esc_html( $formatted_time ); ?></span>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
                 </div>
             </div>
         </div>
@@ -99,39 +121,46 @@ while ( have_posts() ) :
                 <div class="lg:col-span-4 space-y-8">
                     
                     <!-- Details Card -->
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-honey-500">
-                        <h3 class="text-xl font-serif font-bold text-gray-900 mb-6">Event Details</h3>
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-honey-100 sticky top-24">
+                        <h3 class="text-xl font-serif font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span class="w-1 h-6 bg-honey-500 rounded-full"></span>
+                            Event Details
+                        </h3>
                         
                         <div class="space-y-6">
                             <?php if ( $start_date ) : ?>
-                            <div class="flex items-start gap-4">
-                                <div class="w-8 h-8 rounded-lg bg-honey-50 text-honey-600 flex items-center justify-center flex-shrink-0 mt-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-honey-50/50 hover:bg-honey-50 transition-colors">
+                                <div class="w-10 h-10 rounded-lg bg-white text-honey-600 flex items-center justify-center flex-shrink-0 shadow-sm border border-honey-100">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-gray-900 text-sm mb-1">Date & Time</h4>
-                                    <p class="text-gray-600 text-sm"><?php echo esc_html( $formatted_date ); ?></p>
-                                    <p class="text-gray-500 text-xs mt-1">Starts at <?php echo esc_html( $formatted_time ); ?></p>
+                                    <h4 class="font-bold text-gray-900 text-sm mb-1 uppercase tracking-wider">Date & Time</h4>
+                                    <p class="text-gray-600 text-sm font-medium"><?php echo esc_html( $formatted_date ); ?></p>
+                                    <p class="text-honey-600 text-xs mt-1 font-bold">Starts at <?php echo esc_html( $formatted_time ); ?></p>
                                 </div>
                             </div>
                             <?php endif; ?>
 
                             <?php if ( $location ) : ?>
-                            <div class="flex items-start gap-4">
-                                <div class="w-8 h-8 rounded-lg bg-honey-50 text-honey-600 flex items-center justify-center flex-shrink-0 mt-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-honey-50/50 hover:bg-honey-50 transition-colors">
+                                <div class="w-10 h-10 rounded-lg bg-white text-honey-600 flex items-center justify-center flex-shrink-0 shadow-sm border border-honey-100">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-gray-900 text-sm mb-1">Location</h4>
-                                    <p class="text-gray-600 text-sm"><?php echo esc_html( $location ); ?></p>
+                                    <h4 class="font-bold text-gray-900 text-sm mb-1 uppercase tracking-wider">Location</h4>
+                                    <p class="text-gray-600 text-sm font-medium"><?php echo esc_html( $location ); ?></p>
                                 </div>
                             </div>
                             <?php endif; ?>
                         </div>
 
-                        <div class="mt-8 pt-8 border-t border-gray-100">
-                             <a href="#" class="block w-full text-center bg-honey-600 text-white font-bold py-4 rounded-xl hover:bg-honey-700 transition-colors shadow-lg shadow-honey-500/30">
-                                Register Now — <?php echo esc_html( $price ); ?>
+                        <div class="mt-8 pt-8 border-t border-honey-100">
+                             <a href="#" class="group block w-full text-center bg-gradient-to-r from-honey-500 to-honey-600 text-white font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-honey-500/30 transition-all transform hover:-translate-y-1">
+                                <span class="flex items-center justify-center gap-2">
+                                    Register Now 
+                                    <span class="bg-white/20 px-2 py-0.5 rounded text-xs"><?php echo esc_html( $price ); ?></span>
+                                    <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                                </span>
                             </a>
                         </div>
                     </div>

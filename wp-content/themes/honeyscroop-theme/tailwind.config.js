@@ -6,6 +6,22 @@ module.exports = {
         "./patterns/**/*.php",
         "./src/**/*.{js,jsx,ts,tsx}"
     ],
+    safelist: [
+        'bg-black/50',
+        'bg-black/30',
+        'backdrop-blur-md',
+        'backdrop-blur-sm',
+        'rounded-3xl',
+        'rounded-2xl',
+        'rounded-full',
+        'border-white/20',
+        'border-white/10',
+        'shadow-2xl',
+        'shadow-lg',
+        'text-honey-300',
+        'text-honey-500',
+        'bg-honey-500'
+    ],
     theme: {
         extend: {
             colors: {
