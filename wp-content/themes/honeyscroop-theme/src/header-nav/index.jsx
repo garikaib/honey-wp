@@ -237,9 +237,9 @@ const HeaderNav = () => {
 
                 <a href="/" className="block">
                     <img
-                        src="/wp-content/uploads/2026/01/honeyscoop-logo.png"
+                        src="/wp-content/uploads/2026/01/honescoop_logo.webp"
                         alt="Honeyscoop"
-                        className="h-8 w-auto"
+                        className="h-8 w-auto dark:brightness-0 dark:invert transition-[filter] duration-300"
                     />
                 </a>
 
