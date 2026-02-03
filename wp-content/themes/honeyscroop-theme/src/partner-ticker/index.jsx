@@ -13,11 +13,19 @@ const PartnerTicker = () => {
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
 
-                const formattedPartners = data.map(item => ({
-                    id: item.id,
-                    title: item.title.rendered,
-                    logoUrl: item._embedded?.['wp:featuredmedia']?.[0]?.source_url || null
-                })).filter(p => p.logoUrl); // Only show partners with logos
+                const formattedPartners = data.map(item => {
+                    const media = item._embedded?.['wp:featuredmedia']?.[0];
+                    // Try to use 'medium' size, fallback to 'thumbnail', then full source_url
+                    const logoUrl = media?.media_details?.sizes?.medium?.source_url ||
+                        media?.media_details?.sizes?.thumbnail?.source_url ||
+                        media?.source_url;
+
+                    return {
+                        id: item.id,
+                        title: item.title.rendered,
+                        logoUrl: logoUrl || null
+                    };
+                }).filter(p => p.logoUrl);
 
                 setPartners(formattedPartners);
             } catch (error) {

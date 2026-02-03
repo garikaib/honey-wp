@@ -14,9 +14,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Add preconnect hints for Google Fonts.
+ */
+function honeyscroop_resource_hints( $urls, $relation_type ) {
+	if ( 'preconnect' === $relation_type ) {
+		$urls[] = array(
+			'href' => 'https://fonts.googleapis.com',
+		);
+		$urls[] = array(
+			'href' => 'https://fonts.gstatic.com',
+			'crossorigin',
+		);
+	}
+	return $urls;
+}
+add_filter( 'wp_resource_hints', 'honeyscroop_resource_hints', 10, 2 );
+
+/**
  * Enqueue frontend styles and scripts.
  */
 function honeyscroop_enqueue_assets(): void {
+	// Global Fonts
+	wp_enqueue_style(
+		'honeyscroop-fonts',
+		'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap',
+		array(),
+		null
+	);
+
 	// Compiled theme CSS (vanilla + Tailwind utilities).
 	$css_path = HONEYSCROOP_DIR . '/dist/style.css';
 	if ( file_exists( $css_path ) ) {
@@ -67,9 +92,9 @@ function honeyscroop_enqueue_assets(): void {
 		wp_enqueue_script(
 			'honeyscroop-header-nav',
 			HONEYSCROOP_URI . '/dist/header-nav.js',
-			array(),
+			array('honeyscroop-global'),
 			filemtime( $nav_js_path ),
-			false // Load in head for faster hydration
+			true // Load in footer to ensure DOM elements exist
 		);
 
 		// Localize header nav with dynamic menu data.
@@ -158,12 +183,71 @@ function honeyscroop_enqueue_assets(): void {
         // For now, assume production if no explicit dev logic is robustly passed here variables from outside scope
         // Re-declaring variables or using simpler logic:
         $is_development = defined( 'WP_ENV' ) && 'development' === WP_ENV; 
-        
+
         $events_js = $is_development
             ? 'http://localhost:5173/src/events-calendar/index.jsx'
             : get_template_directory_uri() . '/dist/events-calendar.js';
 
         wp_enqueue_script( 'honeyscroop-events-calendar', $events_js, array(), '1.0.0', true );
+    }
+
+    // Shop Archive & Taxonomy
+    if ( is_page_template( 'page-shop.php' ) || is_tax( 'product_category' ) ) {
+        $shop_js = defined( 'WP_ENV' ) && 'development' === WP_ENV
+            ? 'http://localhost:5173/src/shop/archive.jsx'
+            : HONEYSCROOP_URI . '/dist/shop-archive.js';
+
+        wp_enqueue_script( 'honeyscroop-shop-archive', $shop_js, array(), HONEYSCROOP_VERSION, true );
+        
+        wp_localize_script( 'honeyscroop-shop-archive', 'shopData', array(
+            'restUrl'     => esc_url_raw( rest_url( 'wp/v2/product' ) ),
+            'categories'  => get_terms( array( 'taxonomy' => 'product_category', 'hide_empty' => false ) ),
+            'nonce'       => wp_create_nonce( 'wp_rest' ),
+            'currentTerm' => is_tax( 'product_category' ) ? get_queried_object_id() : null,
+        ) );
+    }
+
+    // Single Product
+    if ( is_singular( 'product' ) ) {
+        $single_js = defined( 'WP_ENV' ) && 'development' === WP_ENV
+            ? 'http://localhost:5173/src/shop/single.jsx'
+            : HONEYSCROOP_URI . '/dist/shop-single.js';
+
+        wp_enqueue_script( 'honeyscroop-shop-single', $single_js, array(), HONEYSCROOP_VERSION, true );
+
+        wp_localize_script( 'honeyscroop-shop-single', 'productData', array(
+            'productId' => get_the_ID(),
+            'restUrl'   => esc_url_raw( rest_url( 'wp/v2/product/' . get_the_ID() ) ),
+            'orderUrl'  => esc_url_raw( rest_url( 'honeyscroop/v1/submit-order' ) ),
+            'nonce'     => wp_create_nonce( 'wp_rest' ),
+        ) );
+    }
+
+    // Cart Page
+    if ( is_page_template( 'page-cart.php' ) ) {
+        $cart_js = defined( 'WP_ENV' ) && 'development' === WP_ENV
+            ? 'http://localhost:5173/src/shop/cart.jsx'
+            : HONEYSCROOP_URI . '/dist/shop-cart.js';
+
+        wp_enqueue_script( 'honeyscroop-shop-cart', $cart_js, array(), HONEYSCROOP_VERSION, true );
+
+        wp_localize_script( 'honeyscroop-shop-cart', 'cartData', array(
+            'orderUrl' => esc_url_raw( rest_url( 'honeyscroop/v1/submit-order' ) ),
+            'nonce'    => wp_create_nonce( 'wp_rest' ),
+        ) );
+    }
+
+    // FAQs Page
+    if ( is_page_template( 'page-faqs.php' ) ) {
+        $faq_js = defined( 'WP_ENV' ) && 'development' === WP_ENV
+            ? 'http://localhost:5173/src/faqs/index.jsx'
+            : HONEYSCROOP_URI . '/dist/faqs.js';
+
+        wp_enqueue_script( 'honeyscroop-faqs', $faq_js, array(), HONEYSCROOP_VERSION, true );
+        
+        wp_localize_script( 'honeyscroop-faqs', 'faqData', array(
+            'restUrl' => esc_url_raw( rest_url( 'wp/v2/faq' ) ),
+        ) );
     }
 }
 add_action( 'wp_enqueue_scripts', 'honeyscroop_enqueue_assets' );
@@ -177,6 +261,36 @@ add_action( 'wp_enqueue_scripts', 'honeyscroop_enqueue_assets' );
  * @param string $handle The script handle.
  * @return string The modified <script> tag.
  */
+
+/**
+ * Localize global data for all scripts (Currency, Settings)
+ */
+function honeyscroop_localize_global_data() {
+    $currency_settings = get_option('honeyscroop_option_currency', []);
+    
+    // Default fallback if empty
+    if (empty($currency_settings)) {
+        $currency_settings = [
+            'activeCurrencies' => ['USD'],
+            'rates' => ['USD' => 1]
+        ];
+    }
+
+    $data = array(
+        'currencySettings' => $currency_settings,
+        'settings'         => get_option( 'honeyscroop_option_settings', array() ),
+        'siteUrl'          => home_url(),
+        'restUrl'          => rest_url(),
+        'nonce'            => wp_create_nonce( 'wp_rest' ),
+    );
+
+    wp_register_script('honeyscroop-global', '', [], '', false); // Load in Head
+    wp_enqueue_script('honeyscroop-global');
+    wp_localize_script('honeyscroop-global', 'honeyShopData', $data);
+}
+add_action('wp_enqueue_scripts', 'honeyscroop_localize_global_data');
+
+
 function honeyscroop_add_module_type_to_scripts( string $tag, string $handle ): string {
 	$module_handles = array(
 		'honeyscroop-honey-finder',
@@ -187,6 +301,11 @@ function honeyscroop_add_module_type_to_scripts( string $tag, string $handle ): 
         'honeyscroop-bees',
         'honeyscroop-hive-scene',
         'honeyscroop-events-calendar',
+        'honeyscroop-shop-archive',
+        'honeyscroop-shop-single',
+        'honeyscroop-shop-cart',
+        'honeyscroop-faqs',
+        'honeyscroop-admin-spa',
 	);
 
 	if ( in_array( $handle, $module_handles, true ) ) {
@@ -196,4 +315,31 @@ function honeyscroop_add_module_type_to_scripts( string $tag, string $handle ): 
 	return $tag;
 }
 add_filter( 'script_loader_tag', 'honeyscroop_add_module_type_to_scripts', 10, 2 );
+
+/**
+ * Helper to inline small CSS files.
+ *
+ * @param string $handle The stylesheet handle.
+ * @param string $src    The stylesheet URL.
+ */
+function honeyscroop_inline_css( string $handle, string $src ): void {
+	$path = '';
+
+	if ( strpos( $src, HONEYSCROOP_URI ) !== false ) {
+		$path = str_replace( HONEYSCROOP_URI, HONEYSCROOP_DIR, $src );
+	} elseif ( strpos( $src, get_template_directory_uri() ) !== false ) {
+		$path = str_replace( get_template_directory_uri(), get_template_directory(), $src );
+	}
+
+	if ( $path && file_exists( $path ) ) {
+		$content = file_get_contents( $path );
+		// Basic minification: remove comments and extra whitespace
+		$content = preg_replace( '/\/\*.*?\*\//s', '', $content );
+		$content = preg_replace( '/\s+/', ' ', $content );
+		printf( '<style id="%s-inline">%s</style>', esc_attr( $handle ), $content );
+	} else {
+		// Fallback to enqueue if file not found or external
+		wp_enqueue_style( $handle, $src );
+	}
+}
 

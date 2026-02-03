@@ -3,15 +3,14 @@
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<!-- Announcement Bar -->
+<!-- Main Header -->
+<header id="masthead" class="site-header">
+    <!-- Announcement Bar -->
     <div class="announcement-bar">
         <div class="flex items-center justify-center gap-md">
             <span>Perfect for</span>
@@ -26,9 +25,6 @@
             </div>
         </div>
     </div>
-
-<!-- Main Header -->
-<header id="masthead" class="site-header">
     <div class="container">
         
         <!-- Header Row: Logo (Left) | Tools (Right) -->
@@ -37,7 +33,7 @@
             <!-- Left: Logo -->
             <div class="header-left">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="block">
-                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_cropped_transparent.webp' ) ); ?>" alt="<?php bloginfo( 'name' ); ?>" class="logo-img">
+                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_logo.webp' ) ); ?>" alt="<?php bloginfo( 'name' ); ?>" class="logo-img">
                 </a>
             </div>
 
@@ -45,27 +41,16 @@
             <div class="header-right-column">
                 <!-- Top Row: Tools -->
                 <div class="header-top-row header-tools">
-                 <!-- Currency Selector -->
-                <button class="header-boxed-btn mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="mr-2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-                    <span>UNITED STATES (USD$)</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ml-1 opacity-50"><path d="m6 9 6 6 6-6"/></svg>
-                </button>
-
-                 <!-- Search -->
-                 <button class="icon-btn-boxed" aria-label="Search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                 </button>
+                <!-- Currency Selector -->
+                  <div id="currency-selector-root"></div>
 
                  <!-- Account -->
-                 <a href="#" class="icon-btn" aria-label="Account">
+                 <a href="<?php echo esc_url( home_url( '/my-account/' ) ); ?>" class="icon-btn" aria-label="Account">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                  </a>
 
                  <!-- Cart -->
-                 <a href="#" class="icon-btn relative" aria-label="Cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                 </a>
+                 <div id="cart-widget-root" class="flex items-center"></div>
                 </div>
                 <!-- Bottom Row: Navigation -->
                 <div class="header-bottom-row">

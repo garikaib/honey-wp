@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { Search, User, ShoppingBag, ChevronDown, Globe, Menu, X } from 'lucide-react';
+import CartWidget from '../shop/components/CartWidget';
+import { CurrencyProvider } from '../shop/context/CurrencyContext';
+import CurrencySelector from '../shop/components/CurrencySelector';
 
 const menuItems = window.honeyscroopHeaderData?.primaryMenu || [];
 
@@ -175,27 +178,53 @@ const HeaderNav = () => {
         const header = document.getElementById('masthead');
         if (!header) return;
 
+        // Initialize Spacer
+        const spacer = document.createElement('div');
+        spacer.className = 'header-spacer';
+        if (header.parentNode) {
+            header.parentNode.insertBefore(spacer, header.nextSibling); // Insert AFTER header (since header is fixed/top)
+            // Actually, if header is fixed at top, spacer should push content down.
+            // If inserted after, it pushes main content. 
+        }
+
+        const updateSpacer = () => {
+            // Spacer should always match the full height of the header (expanded)
+            // unless we want it to shrink. Expanding it once and keeping it helps prevent layout shift.
+            spacer.style.height = `${header.offsetHeight}px`;
+        };
+
+        // Initial set
+        updateSpacer();
+        window.addEventListener('resize', updateSpacer);
+
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
 
             // At the top: Show full header
-            if (currentScrollY <= 80) {
-                header.classList.remove('smart-compact');
-                header.classList.remove('smart-hidden'); // Cleanup
+            if (currentScrollY <= 50) {
+                if (header.classList.contains('smart-compact')) {
+                    header.classList.remove('smart-compact');
+                }
             }
-            // Scrolled: Show compact header (always)
+            // Scrolled: Show compact header
             else {
-                header.classList.add('smart-compact');
-                header.classList.remove('smart-hidden');
+                if (!header.classList.contains('smart-compact')) {
+                    header.classList.add('smart-compact');
+                }
             }
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', updateSpacer);
+            if (spacer.parentNode) spacer.parentNode.removeChild(spacer);
+        };
     }, []);
 
     return (
-        <>
+        <CurrencyProvider>
             {/* Desktop Navigation */}
             <nav className="hidden md:flex justify-center ml-24">
                 <ul className="flex items-center space-x-16 text-[12px] font-bold tracking-[0.2em] uppercase text-gray-800">
@@ -234,7 +263,19 @@ const HeaderNav = () => {
                 items={menuItems}
                 onClose={() => setMobileMenuOpen(false)}
             />
-        </>
+
+            {/* Inject Cart Widget into Header Tools */}
+            {document.getElementById('cart-widget-root') && createPortal(
+                <CartWidget />,
+                document.getElementById('cart-widget-root')
+            )}
+
+            {/* Inject Currency Selector */}
+            {document.getElementById('currency-selector-root') && createPortal(
+                <CurrencySelector />,
+                document.getElementById('currency-selector-root')
+            )}
+        </CurrencyProvider>
     );
 };
 

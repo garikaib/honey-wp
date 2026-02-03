@@ -9,26 +9,26 @@ const ProductGrid = () => {
         {
             id: 1,
             title: 'Raw Honey',
-            link: '/shop/raw-honey',
-            imageSrc: '/wp-content/uploads/2026/01/DSC_9644-scaled.jpg'
+            link: '/product-category/raw-honey/',
+            imageSrc: '/wp-content/uploads/2026/01/DSC_9644.webp'
         },
         {
             id: 2,
-            title: 'Infused Honey',
-            link: '/shop/infused-honey',
-            imageSrc: '/wp-content/uploads/2026/01/DSC_9622-scaled.jpg'
+            title: 'Honey Products',
+            link: '/product-category/honey-products/',
+            imageSrc: '/wp-content/uploads/2026/01/IMG-20241121-WA0041.webp'
         },
         {
             id: 3,
-            title: 'Other Products',
-            link: '/shop/other-products',
-            imageSrc: '/wp-content/uploads/2026/01/IMG-20241121-WA0042.jpg'
+            title: 'Infused Honey',
+            link: '/product-category/infused-honey/',
+            imageSrc: '/wp-content/uploads/2026/01/DSC_9622.webp'
         },
         {
             id: 4,
-            title: 'Honey Products',
-            link: '/shop/honey-products',
-            imageSrc: '/wp-content/uploads/2026/01/IMG-20241121-WA0041.jpg'
+            title: 'Other Products',
+            link: '/product-category/other-products/',
+            imageSrc: '/wp-content/uploads/2026/01/IMG-20241121-WA0042.webp'
         }
     ];
 

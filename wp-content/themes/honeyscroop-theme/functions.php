@@ -19,26 +19,38 @@ define( 'HONEYSCROOP_DIR', get_stylesheet_directory() );
 define( 'HONEYSCROOP_URI', get_stylesheet_directory_uri() );
 
 /**
- * Enqueue parent and child theme styles.
+ * Inline parent and child theme styles for performance.
  */
-function honeyscroop_enqueue_styles(): void {
-	// Enqueue parent theme stylesheet.
-	wp_enqueue_style(
-		'twentytwentyfive-style',
-		get_parent_theme_file_uri( 'style.css' ),
-		array(),
-		wp_get_theme( 'twentytwentyfive' )->get( 'Version' )
-	);
+function honeyscroop_inline_styles(): void {
+	// Inline parent theme stylesheet.
+	if ( function_exists( 'honeyscroop_inline_css' ) ) {
+		honeyscroop_inline_css(
+			'twentytwentyfive-style',
+			get_parent_theme_file_uri( 'style.css' )
+		);
 
-	// Enqueue child theme stylesheet.
-	wp_enqueue_style(
-		'honeyscroop-style',
-		get_stylesheet_uri(),
-		array( 'twentytwentyfive-style' ),
-		HONEYSCROOP_VERSION
-	);
+		// Inline child theme stylesheet.
+		honeyscroop_inline_css(
+			'honeyscroop-style',
+			get_stylesheet_uri()
+		);
+	} else {
+		// Fallback to regular enqueue if helper is missing
+		wp_enqueue_style(
+			'twentytwentyfive-style',
+			get_parent_theme_file_uri( 'style.css' ),
+			array(),
+			wp_get_theme( 'twentytwentyfive' )->get( 'Version' )
+		);
+		wp_enqueue_style(
+			'honeyscroop-style',
+			get_stylesheet_uri(),
+			array( 'twentytwentyfive-style' ),
+			HONEYSCROOP_VERSION
+		);
+	}
 }
-add_action( 'wp_enqueue_scripts', 'honeyscroop_enqueue_styles' );
+add_action( 'wp_head', 'honeyscroop_inline_styles', 5 );
 
 /**
  * Theme setup.
@@ -52,6 +64,10 @@ function honeyscroop_setup(): void {
 	add_theme_support( 'editor-styles' );
 	add_editor_style( 'dist/editor.css' );
 	add_theme_support( 'wp-block-styles' );
+
+	// Image sizes
+	add_image_size( 'blog-card', 600, 400, true );
+	add_image_size( 'blog-hero', 1600, 900, true );
 
 	// Register nav menus.
 	register_nav_menus(
@@ -131,11 +147,23 @@ function honeyscroop_get_menu_items( string $location ): array {
 
 // Load modular includes.
 require_once get_stylesheet_directory() . '/inc/assets.php';
-require_once get_stylesheet_directory() . '/inc/cpt-honey-variety.php';
+require_once get_stylesheet_directory() . '/inc/cpt-honey-variety.php'; // Keeping for legacy/reference if needed, or remove if replacing completely.
 require_once get_stylesheet_directory() . '/inc/cpt-partner.php';
 require_once get_stylesheet_directory() . '/inc/cpt-event.php';
+require_once get_stylesheet_directory() . '/inc/cpt-faq.php'; // FAQ CPT
+require_once get_stylesheet_directory() . '/inc/cpt-product.php'; // New Product CPT
+require_once get_stylesheet_directory() . '/inc/cpt-order.php';   // New Order CPT
+require_once get_stylesheet_directory() . '/inc/email-templates.php'; // Branded Email Templates
+require_once get_stylesheet_directory() . '/inc/magic-link.php';      // Magic Link Auth
+require_once get_stylesheet_directory() . '/inc/smtp.php';            // SMTP Settings
+require_once get_stylesheet_directory() . '/inc/admin-spa.php';    // Admin React App
+require_once get_stylesheet_directory() . '/inc/cron-currency.php'; // Currency Cron
 require_once get_stylesheet_directory() . '/inc/customizer-social.php';
 require_once get_stylesheet_directory() . '/inc/meta-boxes.php';
+require_once get_stylesheet_directory() . '/inc/account.php';
+require_once get_stylesheet_directory() . '/inc/newsletter.php'; // Newsletter System
+require_once get_stylesheet_directory() . '/inc/turnstile.php'; // Cloudflare Turnstile
+require_once get_stylesheet_directory() . '/inc/login-styling.php'; // Premium Login Styling
 
 /**
  * Customizer Settings
