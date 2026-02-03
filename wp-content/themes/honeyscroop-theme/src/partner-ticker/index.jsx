@@ -6,6 +6,13 @@ const PartnerTicker = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Use localized data if available to avoid network request
+        if (window.honeyscroopPartnerData?.partners) {
+            setPartners(window.honeyscroopPartnerData.partners);
+            setLoading(false);
+            return;
+        }
+
         const fetchPartners = async () => {
             try {
                 // Fetch partners with embedded featured media

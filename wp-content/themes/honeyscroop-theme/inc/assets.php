@@ -125,9 +125,42 @@ function honeyscroop_enqueue_assets(): void {
         wp_enqueue_script(
             'honeyscroop-partner-ticker',
             HONEYSCROOP_URI . '/dist/partner-ticker.js',
-            array(),
+            array('honeyscroop-global'),
             filemtime( $partner_js_path ),
             true
+        );
+
+        // Fetch partners for localized data
+        $partners_query = new WP_Query(array(
+            'post_type' => 'partner',
+            'posts_per_page' => 20,
+            'fields' => 'ids',
+        ));
+
+        $localized_partners = [];
+        if ($partners_query->have_posts()) {
+            foreach ($partners_query->posts as $post_id) {
+                $logo_id = get_post_thumbnail_id($post_id);
+                $logo_url = '';
+                if ($logo_id) {
+                    $logo_url = wp_get_attachment_image_url($logo_id, 'medium');
+                }
+                
+                $localized_partners[] = [
+                    'id' => $post_id,
+                    'title' => get_the_title($post_id),
+                    'logoUrl' => $logo_url
+                ];
+            }
+        }
+        wp_reset_postdata();
+
+        wp_localize_script(
+            'honeyscroop-partner-ticker',
+            'honeyscroopPartnerData',
+            array(
+                'partners' => $localized_partners,
+            )
         );
     }
 	// Vendor Script (GSAP)
@@ -306,6 +339,9 @@ function honeyscroop_add_module_type_to_scripts( string $tag, string $handle ): 
         'honeyscroop-shop-cart',
         'honeyscroop-faqs',
         'honeyscroop-admin-spa',
+        'honeyscroop-vendor-react',
+        'honeyscroop-vendor-icons',
+        'honeyscroop-vendor',
 	);
 
 	if ( in_array( $handle, $module_handles, true ) ) {

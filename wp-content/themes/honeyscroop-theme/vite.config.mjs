@@ -27,8 +27,16 @@ export default defineConfig({
                 entryFileNames: '[name].js',
                 chunkFileNames: '[name].js',
                 assetFileNames: '[name].[ext]',
-                manualChunks: {
-                    vendor: ['gsap']
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+                            return 'vendor-react';
+                        }
+                        if (id.includes('lucide-react')) {
+                            return 'vendor-icons';
+                        }
+                        return 'vendor';
+                    }
                 }
             },
         },
