@@ -8,10 +8,12 @@
 ?>
 <!-- Full Width Clickable Promo Image -->
 <a href="/shop" class="honey-hero">
-    <img 
-        src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/VJ70752.webp' ) ); ?>" 
-        alt="Honeyscoop Promotion" 
-        class="hero-img"
-        loading="eager"
+    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/VJ70752.webp' ) ); ?>" 
+             alt="Honeyscroop Promotion" 
+             class="hero-img" 
+             width="1200" 
+             height="800"
+             loading="eager"
+             fetchpriority="high"
     />
 </a>

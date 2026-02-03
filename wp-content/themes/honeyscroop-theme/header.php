@@ -4,6 +4,9 @@
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php wp_head(); ?>
+
+    <!-- Preload LCP Image -->
+    <link rel="preload" as="image" href="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/VJ70752.webp' ) ); ?>" fetchpriority="high">
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
@@ -32,8 +35,13 @@
             
             <!-- Left: Logo -->
             <div class="header-left">
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="block">
-                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_logo.webp' ) ); ?>" alt="<?php bloginfo( 'name' ); ?>" class="logo-img">
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="text-2xl font-serif font-bold tracking-tight text-white flex items-center gap-2">
+                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_logo.webp' ) ); ?>" 
+                         alt="Honeyscoop" 
+                         width="300" 
+                         height="209"
+                         class="h-10 w-auto">
+                    <span class="hidden sm:inline">Honeyscoop</span>
                 </a>
             </div>
 

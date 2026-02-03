@@ -113,7 +113,11 @@
                 <div class="footer-column lg:col-span-2">
                     <div class="footer-logo mb-6">
                         <div class="inline-flex items-center justify-center bg-honey-50 rounded-full w-20 h-20 p-4 shadow-md">
-                            <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_cropped_transparent.webp' ) ); ?>" alt="Honeyscoop" class="w-full h-auto">
+                            <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_cropped_transparent.webp' ) ); ?>" 
+                                 alt="Honeyscoop" 
+                                 width="951" 
+                                 height="662"
+                                 class="w-full h-auto">
                         </div>
                     </div>
                     <p class="footer-blurb">
@@ -198,9 +202,9 @@
                         Zimbabwe (USD)
                     </div>
                     <div class="payment-icons flex items-center gap-4">
-                        <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/EcoCash-App-Image.png' ) ); ?>" alt="EcoCash" class="h-6 w-auto">
-                        <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/INNBUCKS_WHITE_LOGO_B.png' ) ); ?>" alt="InnBucks" class="h-6 w-auto">
-                        <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/unnamed.webp' ) ); ?>" alt="Omari" class="h-6 w-auto">
+                        <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/EcoCash-App-Image.png' ) ); ?>" alt="EcoCash" class="h-6 w-auto" width="480" height="480">
+                        <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/INNBUCKS_WHITE_LOGO_B.png' ) ); ?>" alt="InnBucks" class="h-6 w-auto" width="564" height="136">
+                        <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/unnamed.webp' ) ); ?>" alt="Omari" class="h-6 w-auto" width="240" height="240">
                     </div>
                 </div>
             </div>

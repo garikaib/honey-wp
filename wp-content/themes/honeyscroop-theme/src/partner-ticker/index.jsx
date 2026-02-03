@@ -75,6 +75,8 @@ const PartnerTicker = () => {
                             <img
                                 src={partner.logoUrl}
                                 alt={partner.title}
+                                width={200}
+                                height={64}
                                 className="h-16 w-auto object-contain opacity-100 transition-all duration-300 hover:opacity-80 hover:grayscale"
                             />
                         )}
@@ -93,6 +95,8 @@ const PartnerTicker = () => {
                             <img
                                 src={partner.logoUrl}
                                 alt={partner.title}
+                                width={200}
+                                height={64}
                                 className="h-16 w-auto object-contain opacity-100 transition-all duration-300 hover:opacity-80 hover:grayscale"
                             />
                         )}
