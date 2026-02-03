@@ -121,13 +121,15 @@ const OrderForm = ({ items, total, onCancel }) => {
     const inputStyle = {
         width: '100%',
         padding: '14px 18px',
-        backgroundColor: '#F9FAFB',
-        border: '2px solid #E5E7EB',
+        backgroundColor: document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.05)' : '#F9FAFB',
+        border: '2px solid',
+        borderColor: document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : '#E5E7EB',
         borderRadius: '14px',
         fontSize: '16px',
         fontFamily: 'Outfit, sans-serif',
         outline: 'none',
-        transition: 'all 0.2s ease'
+        transition: 'all 0.2s ease',
+        color: document.documentElement.classList.contains('dark') ? '#FFFBEB' : '#1F2937'
     };
 
     return (
@@ -136,7 +138,7 @@ const OrderForm = ({ items, total, onCancel }) => {
             style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
         >
             <div
-                className="bg-white w-full overflow-hidden animate-slideUp"
+                className="bg-white dark:bg-surface-glass w-full overflow-hidden animate-slideUp border dark:border-white/10"
                 style={{
                     maxWidth: '480px',
                     borderRadius: '28px',
@@ -169,73 +171,38 @@ const OrderForm = ({ items, total, onCancel }) => {
                             width: '80px',
                             height: '80px',
                             backgroundColor: '#D1FAE5',
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            margin: '0 auto 24px auto'
-                        }}>
-                            <svg style={{ width: '40px', height: '40px', color: '#10B981' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        }} className="rounded-full flex items-center justify-center mx-auto mb-6 dark:bg-green-900/20">
+                            <svg className="w-10 h-10 text-green-500 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
-                        <h4 style={{ fontSize: '22px', fontWeight: '700', color: '#1F2937', marginBottom: '8px' }}>Thank You!</h4>
-                        <p style={{ color: '#6B7280', marginBottom: '24px', lineHeight: '1.6' }}>
+                        <h4 className="text-2xl font-bold text-gray-800 dark:text-honey-50 mb-2">Thank You!</h4>
+                        <p className="text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
                             We've received your order and will contact you shortly via email.
                         </p>
 
                         {/* Password Display if account created */}
                         {generatedPassword && (
-                            <div style={{
-                                backgroundColor: '#FEF3C7',
-                                border: '2px solid #FCD34D',
-                                borderRadius: '16px',
-                                padding: '20px',
-                                marginBottom: '24px',
-                                textAlign: 'left'
-                            }}>
-                                <p style={{ fontSize: '13px', fontWeight: '700', color: '#92400E', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                            <div className="bg-amber-50 dark:bg-honey-900/20 border-2 border-amber-200 dark:border-honey-500/30 rounded-2xl p-5 mb-6 text-left">
+                                <p className="text-[11px] font-bold text-amber-700 dark:text-honey-300 mb-3 uppercase tracking-wider">
                                     🔐 Your Account Password
                                 </p>
-                                <div style={{
-                                    display: 'flex',
-                                    gap: '8px',
-                                    alignItems: 'center'
-                                }}>
+                                <div className="flex gap-2 items-center">
                                     <input
                                         type="text"
                                         readOnly
                                         value={generatedPassword}
-                                        style={{
-                                            flex: 1,
-                                            padding: '12px 16px',
-                                            backgroundColor: '#FFFFFF',
-                                            border: '1px solid #FCD34D',
-                                            borderRadius: '10px',
-                                            fontFamily: 'monospace',
-                                            fontSize: '15px',
-                                            fontWeight: '600'
-                                        }}
+                                        className="flex-1 p-3 bg-white dark:bg-black/20 border border-amber-200 dark:border-honey-500/20 rounded-xl font-mono text-sm font-semibold dark:text-honey-50 outline-none"
                                     />
                                     <button
                                         type="button"
                                         onClick={copyPassword}
-                                        style={{
-                                            padding: '12px 16px',
-                                            backgroundColor: copied ? '#10B981' : '#F59E0B',
-                                            color: '#FFFFFF',
-                                            border: 'none',
-                                            borderRadius: '10px',
-                                            fontWeight: '700',
-                                            cursor: 'pointer',
-                                            transition: 'all 0.2s',
-                                            whiteSpace: 'nowrap'
-                                        }}
+                                        className={`px-4 py-3 rounded-xl font-bold text-white transition-all whitespace-nowrap ${copied ? 'bg-green-600' : 'bg-honey-600 hover:bg-honey-700'}`}
                                     >
-                                        {copied ? '✓ Copied!' : 'Copy'}
+                                        {copied ? '✓' : 'Copy'}
                                     </button>
                                 </div>
-                                <p style={{ fontSize: '12px', color: '#B45309', marginTop: '12px' }}>
+                                <p className="text-xs text-amber-600 dark:text-honey-400/60 mt-3">
                                     Save this password! You can use it to log in to your account.
                                 </p>
                             </div>
@@ -286,56 +253,32 @@ const OrderForm = ({ items, total, onCancel }) => {
                                 letterSpacing: '0.1em',
                                 marginBottom: '12px'
                             }}>How would you like to order?</label>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                            <div className="grid grid-cols-2 gap-3">
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, method: 'whatsapp' })}
-                                    style={{
-                                        padding: '18px 16px',
-                                        borderRadius: '14px',
-                                        border: formData.method === 'whatsapp' ? '2px solid #22C55E' : '2px solid #E5E7EB',
-                                        backgroundColor: formData.method === 'whatsapp' ? '#F0FDF4' : '#FFFFFF',
-                                        color: formData.method === 'whatsapp' ? '#16A34A' : '#6B7280',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        gap: '8px',
-                                        transition: 'all 0.2s'
-                                    }}
+                                    className={`p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 ${formData.method === 'whatsapp' ? 'border-green-500 bg-green-50 dark:bg-green-900/20 text-green-600' : 'border-gray-200 dark:border-white/10 dark:text-gray-400'}`}
                                 >
                                     <WhatsAppIcon />
-                                    <span style={{ fontWeight: '700', fontSize: '14px' }}>WhatsApp</span>
-                                    <span style={{ fontSize: '11px', opacity: 0.7 }}>Instant chat</span>
+                                    <span className="font-bold text-sm">WhatsApp</span>
+                                    <span className="text-[10px] opacity-70">Instant chat</span>
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, method: 'email' })}
-                                    style={{
-                                        padding: '18px 16px',
-                                        borderRadius: '14px',
-                                        border: formData.method === 'email' ? '2px solid #3B82F6' : '2px solid #E5E7EB',
-                                        backgroundColor: formData.method === 'email' ? '#EFF6FF' : '#FFFFFF',
-                                        color: formData.method === 'email' ? '#2563EB' : '#6B7280',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        gap: '8px',
-                                        transition: 'all 0.2s'
-                                    }}
+                                    className={`p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 ${formData.method === 'email' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600' : 'border-gray-200 dark:border-white/10 dark:text-gray-400'}`}
                                 >
                                     <EmailIcon />
-                                    <span style={{ fontWeight: '700', fontSize: '14px' }}>Email</span>
-                                    <span style={{ fontSize: '11px', opacity: 0.7 }}>We'll call you</span>
+                                    <span className="font-bold text-sm">Email</span>
+                                    <span className="text-[10px] opacity-70">We'll call you</span>
                                 </button>
                             </div>
                         </div>
 
                         {/* Form Fields */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                        <div className="flex flex-col gap-4">
                             <div>
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>Full Name</label>
+                                <label className="block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Full Name</label>
                                 <input
                                     required
                                     type="text"
@@ -343,12 +286,10 @@ const OrderForm = ({ items, total, onCancel }) => {
                                     style={inputStyle}
                                     value={formData.name}
                                     onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                    onFocus={e => { e.target.style.borderColor = '#FBBF24'; e.target.style.boxShadow = '0 0 0 4px rgba(251, 191, 36, 0.15)'; }}
-                                    onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; }}
                                 />
                             </div>
                             <div>
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>Email Address</label>
+                                <label className="block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Email Address</label>
                                 <input
                                     required
                                     type="email"
@@ -356,12 +297,10 @@ const OrderForm = ({ items, total, onCancel }) => {
                                     style={inputStyle}
                                     value={formData.email}
                                     onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                    onFocus={e => { e.target.style.borderColor = '#FBBF24'; e.target.style.boxShadow = '0 0 0 4px rgba(251, 191, 36, 0.15)'; }}
-                                    onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; }}
                                 />
                             </div>
                             <div>
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>Phone Number</label>
+                                <label className="block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Phone Number</label>
                                 <input
                                     required
                                     type="tel"
@@ -369,39 +308,22 @@ const OrderForm = ({ items, total, onCancel }) => {
                                     style={inputStyle}
                                     value={formData.phone}
                                     onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                                    onFocus={e => { e.target.style.borderColor = '#FBBF24'; e.target.style.boxShadow = '0 0 0 4px rgba(251, 191, 36, 0.15)'; }}
-                                    onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; }}
                                 />
                             </div>
 
                             {/* Create Account Checkbox */}
-                            <div style={{
-                                backgroundColor: '#F0FDF4',
-                                border: '1px solid #BBF7D0',
-                                borderRadius: '14px',
-                                padding: '16px 18px',
-                                display: 'flex',
-                                alignItems: 'flex-start',
-                                gap: '14px',
-                                cursor: 'pointer'
-                            }} onClick={() => setFormData({ ...formData, createAccount: !formData.createAccount })}>
+                            <div className="bg-green-50/50 dark:bg-green-900/10 border border-green-100 dark:border-green-500/20 rounded-2xl p-4 flex items-start gap-4 cursor-pointer" onClick={() => setFormData({ ...formData, createAccount: !formData.createAccount })}>
                                 <input
                                     type="checkbox"
                                     checked={formData.createAccount}
                                     onChange={e => setFormData({ ...formData, createAccount: e.target.checked })}
-                                    style={{
-                                        width: '22px',
-                                        height: '22px',
-                                        accentColor: '#22C55E',
-                                        marginTop: '2px',
-                                        cursor: 'pointer'
-                                    }}
+                                    className="w-5 h-5 accent-green-600 mt-1 cursor-pointer"
                                 />
                                 <div>
-                                    <span style={{ fontWeight: '600', color: '#166534', fontSize: '15px', display: 'block', marginBottom: '4px' }}>
+                                    <span className="font-bold color-green-800 dark:text-green-400 text-sm block mb-1">
                                         Create an account
                                     </span>
-                                    <span style={{ fontSize: '13px', color: '#4ADE80', lineHeight: '1.4' }}>
+                                    <span className="text-xs text-green-600 dark:text-green-500/70 leading-relaxed">
                                         Track orders and checkout faster next time
                                     </span>
                                 </div>
@@ -409,22 +331,11 @@ const OrderForm = ({ items, total, onCancel }) => {
                         </div>
 
                         {/* Buttons */}
-                        <div style={{ display: 'flex', gap: '12px', marginTop: '28px' }}>
+                        <div className="flex gap-3 mt-8">
                             <button
                                 type="button"
                                 onClick={onCancel}
-                                style={{
-                                    flex: 1,
-                                    padding: '18px',
-                                    color: '#6B7280',
-                                    fontWeight: '700',
-                                    fontSize: '16px',
-                                    backgroundColor: '#F3F4F6',
-                                    border: 'none',
-                                    borderRadius: '14px',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s'
-                                }}
+                                className="flex-1 py-4 text-gray-500 dark:text-gray-400 font-bold rounded-2xl bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 transition-all"
                             >
                                 Cancel
                             </button>
@@ -487,7 +398,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, formatPrice }) => {
     };
 
     return (
-        <div className={`group flex gap-5 bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-100 transition-all duration-300 ${isRemoving ? 'opacity-0 scale-95 -translate-x-4' : 'opacity-100 scale-100 translate-x-0'}`}>
+        <div className={`group flex gap-5 bg-white dark:bg-surface-glass p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-white/10 hover:shadow-md dark:hover:shadow-honey-900/20 hover:border-amber-100 dark:hover:border-honey-500/30 transition-all duration-300 ${isRemoving ? 'opacity-0 scale-95 -translate-x-4' : 'opacity-100 scale-100 translate-x-0'}`}>
             {/* Image */}
             <div className="w-28 h-28 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
                 <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
@@ -497,25 +408,25 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, formatPrice }) => {
             <div className="flex-1 flex flex-col justify-between">
                 <div>
                     <div className="flex justify-between items-start mb-1">
-                        <h3 className="text-lg font-bold text-gray-900 group-hover:text-amber-700 transition-colors" dangerouslySetInnerHTML={{ __html: item.title }} />
-                        <span className="text-xl font-bold text-amber-600">{formatPrice((item.price * item.quantity) / 100)}</span>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-honey-50 group-hover:text-amber-700 dark:group-hover:text-honey-400 transition-colors" dangerouslySetInnerHTML={{ __html: item.title }} />
+                        <span className="text-xl font-bold text-amber-600 dark:text-honey-400">{formatPrice((item.price * item.quantity) / 100)}</span>
                     </div>
-                    <p className="text-gray-400 text-sm">{formatPrice(item.price / 100)} each</p>
+                    <p className="text-gray-400 dark:text-gray-500 text-sm">{formatPrice(item.price / 100)} each</p>
                 </div>
 
                 <div className="flex items-center justify-between mt-3">
                     {/* Quantity Controls */}
-                    <div className="flex items-center bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
+                    <div className="flex items-center bg-gray-50 dark:bg-white/5 rounded-xl overflow-hidden border border-gray-200 dark:border-white/10">
                         <button
                             onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
-                            className="w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-amber-100 hover:text-amber-700 transition-all font-bold text-lg"
+                            className="w-10 h-10 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-amber-100 dark:hover:bg-honey-900/30 hover:text-amber-700 dark:hover:text-honey-300 transition-all font-bold text-lg"
                         >
                             −
                         </button>
-                        <span className="w-12 text-center font-bold text-gray-800">{item.quantity}</span>
+                        <span className="w-12 text-center font-bold text-gray-800 dark:text-honey-50">{item.quantity}</span>
                         <button
                             onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                            className="w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-amber-100 hover:text-amber-700 transition-all font-bold text-lg"
+                            className="w-10 h-10 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-amber-100 dark:hover:bg-honey-900/30 hover:text-amber-700 dark:hover:text-honey-300 transition-all font-bold text-lg"
                         >
                             +
                         </button>
@@ -524,7 +435,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, formatPrice }) => {
                     {/* Remove Button */}
                     <button
                         onClick={handleRemove}
-                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                        className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
                         title="Remove item"
                     >
                         <TrashIcon />
@@ -580,8 +491,8 @@ const ShopCart = () => {
                     ) : (
                         <>
                             <BeeAnimation />
-                            <h1 className="text-4xl font-serif text-gray-800 mb-4 mt-6">Your Cart is Empty</h1>
-                            <p className="text-gray-500 text-lg mb-8 max-w-md mx-auto">
+                            <h1 className="text-4xl font-serif text-gray-800 dark:text-honey-50 mb-4 mt-6">Your Cart is Empty</h1>
+                            <p className="text-gray-500 dark:text-gray-400 text-lg mb-8 max-w-md mx-auto">
                                 Looks like you haven't added any sweetness yet. Let's fix that!
                             </p>
                             <a
@@ -604,12 +515,12 @@ const ShopCart = () => {
     }
 
     return (
-        <div className="bg-gradient-to-b from-amber-50/30 to-white min-h-screen">
+        <div className="bg-gradient-to-b from-amber-50/30 to-white dark:from-dark-bg dark:to-dark-bg min-h-screen">
             <div className="container mx-auto px-4 py-12 lg:py-16">
                 {/* Header */}
                 <div className={`mb-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <h1 className="text-4xl lg:text-5xl font-serif text-gray-900 mb-2">Your Cart</h1>
-                    <p className="text-gray-500 text-lg">{items.length} item{items.length !== 1 ? 's' : ''} • Ready to order</p>
+                    <h1 className="text-4xl lg:text-5xl font-serif text-gray-900 dark:text-honey-50 mb-2">Your Cart</h1>
+                    <p className="text-gray-500 dark:text-gray-400 text-lg">{items.length} item{items.length !== 1 ? 's' : ''} • Ready to order</p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -633,37 +544,37 @@ const ShopCart = () => {
 
                     {/* Summary Sidebar */}
                     <div className="lg:col-span-1">
-                        <div className={`bg-white p-8 rounded-3xl border border-gray-100 shadow-xl sticky top-8 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '300ms' }}>
+                        <div className={`bg-white dark:bg-surface-glass p-8 rounded-3xl border border-gray-100 dark:border-white/10 shadow-xl sticky top-8 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '300ms' }}>
                             {/* Decorative Element */}
                             <div className="absolute top-0 left-8 right-8 h-1 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-400 rounded-full"></div>
 
-                            <h3 className="text-2xl font-serif font-bold text-gray-900 mb-6 pt-2">Order Summary</h3>
+                            <h3 className="text-2xl font-serif font-bold text-gray-900 dark:text-honey-50 mb-6 pt-2">Order Summary</h3>
 
                             {/* Items List Mini */}
                             <div className="space-y-3 mb-6 max-h-48 overflow-y-auto">
                                 {items.map(item => (
                                     <div key={item.id} className="flex justify-between text-sm">
-                                        <span className="text-gray-600 truncate flex-1 mr-2" dangerouslySetInnerHTML={{ __html: `${item.title} × ${item.quantity}` }} />
-                                        <span className="text-gray-900 font-medium">{formatPrice((item.price * item.quantity) / 100)}</span>
+                                        <span className="text-gray-600 dark:text-gray-400 truncate flex-1 mr-2" dangerouslySetInnerHTML={{ __html: `${item.title} × ${item.quantity}` }} />
+                                        <span className="text-gray-900 dark:text-honey-100 font-medium">{formatPrice((item.price * item.quantity) / 100)}</span>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="border-t border-dashed border-gray-200 pt-4 mb-6">
+                            <div className="border-t border-dashed border-gray-200 dark:border-white/10 pt-4 mb-6">
                                 <div className="flex justify-between items-center mb-2">
-                                    <span className="text-gray-500">Subtotal</span>
-                                    <span className="font-medium">{formatPrice(total / 100)}</span>
+                                    <span className="text-gray-500 dark:text-gray-400">Subtotal</span>
+                                    <span className="font-medium dark:text-honey-100">{formatPrice(total / 100)}</span>
                                 </div>
-                                <div className="flex justify-between items-center text-sm text-gray-400">
+                                <div className="flex justify-between items-center text-sm text-gray-400 dark:text-gray-500">
                                     <span>Shipping</span>
                                     <span>Calculated at checkout</span>
                                 </div>
                             </div>
 
-                            <div className="border-t border-gray-200 pt-4 mb-8">
+                            <div className="border-t border-gray-200 dark:border-white/10 pt-4 mb-8">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-xl font-bold text-gray-900">Total</span>
-                                    <span className="text-2xl font-bold text-amber-600">{formatPrice(total / 100)}</span>
+                                    <span className="text-xl font-bold text-gray-900 dark:text-honey-50">Total</span>
+                                    <span className="text-2xl font-bold text-amber-600 dark:text-honey-400">{formatPrice(total / 100)}</span>
                                 </div>
                             </div>
 

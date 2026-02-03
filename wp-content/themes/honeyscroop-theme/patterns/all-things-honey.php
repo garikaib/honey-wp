@@ -16,10 +16,10 @@
 <!-- Brand Introduction Text -->
 <section class="brand-intro">
     <div class="brand-intro-content">
-        <h2 class="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-6">
-            Savor the Golden Richness of <span class="text-honey-600">Pure Honey</span>
+        <h2 class="text-2xl md:text-3xl font-serif font-bold text-gray-900 dark:text-honey-50 mb-6 transition-colors">
+            Savor the Golden Richness of <span class="text-honey-600 dark:text-honey-400 transition-colors">Pure Honey</span>
         </h2>
-        <p class="text-base text-gray-800 leading-relaxed font-light max-w-3xl mx-auto">
+        <p class="text-base text-gray-800 dark:text-gray-300 leading-relaxed font-light max-w-3xl mx-auto transition-colors">
             Honeyscoop brings you nature's finest treasures, harvested directly from the vibrant landscapes of Zimbabwe. Born from a passion for healing and purity, every drop of our unprocessed honey is full of life and nutrients — a sweet promise of nature's bounty dedicated to your health and bliss.
         </p>
     </div>

@@ -112,7 +112,7 @@
                 <!-- Column 1: Brand Info -->
                 <div class="footer-column lg:col-span-2">
                     <div class="footer-logo mb-6">
-                        <div class="inline-flex items-center justify-center rounded-full w-24 h-24 p-4 bg-white dark:bg-white/20 transition-colors shadow-lg">
+                        <div class="inline-flex items-center justify-center rounded-full w-24 h-24 p-4 bg-white/40 dark:bg-white/20 transition-colors shadow-lg">
                             <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_logo.webp' ) ); ?>" 
                                  alt="Honeyscoop" 
                                  width="240" 
@@ -124,12 +124,16 @@
                         Savor the sweetness of nature with Honeyscoop. We are a family dedicated to bringing you the golden richness of pure, ethically sourced honey from Zimbabwe's vibrant landscapes.
                     </p>
                     <div class="footer-contact">
-                        <p class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-honey-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <p class="flex items-center gap-2 mb-3">
+                            <span class="text-honey-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </span>
                             <?php echo esc_html( $settings['address'] ?? '45 Cunningham Road, Greendale, Harare' ); ?>
                         </p>
-                        <p class="flex items-center gap-2 font-bold text-honey-100">
-                            <svg class="w-4 h-4 text-honey-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5.983C3 4.888 3.895 4 5 4h.445c.962 0 1.836.586 2.212 1.474l.822 1.944a2.212 2.212 0 01-.482 2.373l-1.505 1.505a1.505 1.505 0 00-.317 1.595 12.015 12.015 0 004.836 4.836 1.505 1.505 0 001.595-.317l1.505-1.505a2.212 2.212 0 012.373-.482l1.944.822c.888.376 1.474 1.252 1.474 2.212v.445c0 1.105-.895 2-2 2a14.152 14.152 0 01-13.633-13.633z"></path></svg>
+                        <p class="flex items-center gap-2 font-bold text-honey-100 mb-6">
+                            <span class="text-honey-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </span>
                             <?php echo esc_html( $settings['phoneNumber'] ?? '+263 714 239 920' ); ?>
                         </p>
                     </div>

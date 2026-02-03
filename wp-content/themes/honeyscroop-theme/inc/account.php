@@ -94,33 +94,33 @@ function honeyscroop_render_dashboard() {
 
 	ob_start();
 	?>
-	<div class="account-container max-w-3xl mx-auto my-10 p-8 border border-gray-100 rounded-xl shadow-sm">
+	<div class="account-container max-w-3xl mx-auto my-10 p-8 border border-gray-100 dark:border-white/10 rounded-2xl shadow-sm bg-surface">
 		<!-- Header -->
 		<div class="text-center mb-10">
-			<div class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4">
+			<div class="w-20 h-20 bg-amber-100 dark:bg-honey-900/30 text-amber-600 dark:text-honey-400 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4">
 				<?php echo strtoupper( substr( $current_user->display_name, 0, 1 ) ); ?>
 			</div>
-			<h2 class="text-2xl font-bold text-gray-800">Welcome, <?php echo esc_html( $current_user->display_name ); ?>!</h2>
-			<p class="text-gray-500"><?php echo esc_html( $current_user->user_email ); ?></p>
+			<h2 class="text-2xl font-bold text-gray-800 dark:text-honey-50">Welcome, <?php echo esc_html( $current_user->display_name ); ?>!</h2>
+			<p class="text-gray-500 dark:text-gray-400"><?php echo esc_html( $current_user->user_email ); ?></p>
 		</div>
 
 		<!-- Navigation -->
-		<div class="flex justify-center gap-4 mb-8">
-			<a href="?view=overview" class="px-4 py-2 rounded-lg <?php echo $view === 'overview' ? 'bg-amber-100 text-amber-700 font-medium' : 'text-gray-600 hover:bg-gray-50'; ?>">Overview</a>
-			<a href="?view=orders" class="px-4 py-2 rounded-lg <?php echo $view === 'orders' ? 'bg-amber-100 text-amber-700 font-medium' : 'text-gray-600 hover:bg-gray-50'; ?>">Order History</a>
-			<a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>" class="px-4 py-2 text-red-500 hover:bg-red-50 rounded-lg">Logout</a>
+		<div class="flex justify-center flex-wrap gap-2 mb-10">
+			<a href="?view=overview" class="px-6 py-2.5 rounded-xl transition-all <?php echo $view === 'overview' ? 'bg-amber-100 dark:bg-honey-500 text-amber-700 dark:text-white font-bold' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5'; ?>">Overview</a>
+			<a href="?view=orders" class="px-6 py-2.5 rounded-xl transition-all <?php echo $view === 'orders' ? 'bg-amber-100 dark:bg-honey-500 text-amber-700 dark:text-white font-bold' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5'; ?>">Order History</a>
+			<a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>" class="px-6 py-2.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl font-medium transition-all">Logout</a>
 		</div>
 
 		<!-- Overview Tab -->
 		<?php if ( $view === 'overview' ) : ?>
 			<div class="grid grid-cols-2 gap-6">
-				<a href="?view=orders" class="block bg-gray-50 hover:bg-amber-50 rounded-xl p-6 text-center transition-colors group cursor-pointer">
-					<h3 class="text-gray-500 text-sm font-medium uppercase tracking-wider mb-2">My Orders</h3>
-					<span class="text-3xl font-bold text-gray-800 group-hover:text-amber-600 transition-colors"><?php echo $order_count; ?></span>
+				<a href="?view=orders" class="block bg-gray-50 dark:bg-white/5 hover:bg-amber-50 dark:hover:bg-honey-900/20 rounded-2xl p-8 text-center transition-all group cursor-pointer border border-transparent hover:border-amber-100 dark:hover:border-honey-500/30">
+					<h3 class="text-gray-500 dark:text-gray-400 text-[11px] font-bold uppercase tracking-widest mb-3">My Orders</h3>
+					<span class="text-4xl font-bold text-gray-800 dark:text-honey-50 group-hover:text-honey-600 dark:group-hover:text-honey-400 transition-colors"><?php echo $order_count; ?></span>
 				</a>
-				<div class="bg-gray-50 rounded-xl p-6 text-center">
-					<h3 class="text-gray-500 text-sm font-medium uppercase tracking-wider mb-2">Member Since</h3>
-					<span class="text-lg font-medium text-gray-800"><?php echo date( 'F Y', strtotime( $current_user->user_registered ) ); ?></span>
+				<div class="bg-gray-50 dark:bg-white/5 rounded-2xl p-8 text-center border border-transparent">
+					<h3 class="text-gray-500 dark:text-gray-400 text-[11px] font-bold uppercase tracking-widest mb-3">Member Since</h3>
+					<span class="text-xl font-bold text-gray-800 dark:text-honey-50"><?php echo date( 'F Y', strtotime( $current_user->user_registered ) ); ?></span>
 				</div>
 			</div>
 		<?php endif; ?>
@@ -128,43 +128,43 @@ function honeyscroop_render_dashboard() {
 		<!-- Orders Tab -->
 		<?php if ( $view === 'orders' ) : ?>
 			<div>
-				<h3 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Order History</h3>
+				<h3 class="text-2xl font-serif font-bold text-gray-800 dark:text-honey-50 mb-8 border-b dark:border-white/10 pb-4">Order History</h3>
 				
 				<?php if ( empty( $orders ) ) : ?>
 					<!-- Empty State with Bee Animation -->
-					<div class="text-center py-12">
-						<div class="bee-scene mb-6">
-							<div class="bee text-4xl animate-bounce">🐝</div>
-							<div class="flowers text-2xl mt-2">🌻 🌼 🌷</div>
+					<div class="text-center py-16">
+						<div class="bee-scene mb-8">
+							<div class="bee text-5xl animate-bounce">🐝</div>
+							<div class="flowers text-3xl mt-4 opacity-70">🌻 🌼 🌷</div>
 						</div>
-						<h4 class="text-lg font-semibold text-gray-700">No orders placed yet</h4>
-						<p class="text-gray-500 mb-6">The bees are waiting for your first request!</p>
-						<a href="<?php echo esc_url( home_url( '/shop' ) ); ?>" class="inline-block bg-honey-600 text-white px-6 py-2 rounded-lg hover:bg-honey-700 transition-colors">Start Shopping</a>
+						<h4 class="text-xl font-bold text-gray-800 dark:text-honey-50 mb-3">No orders placed yet</h4>
+						<p class="text-gray-500 dark:text-gray-400 mb-8 max-w-sm mx-auto">The bees are waiting for your first request! Start your honey journey today.</p>
+						<a href="<?php echo esc_url( home_url( '/shop' ) ); ?>" class="inline-block bg-honey-600 dark:bg-honey-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-honey-700 dark:hover:bg-honey-600 transition-all shadow-lg shadow-honey-500/20">Start Shopping</a>
 					</div>
 				<?php else : ?>
 					<div class="overflow-x-auto">
 						<table class="w-full text-left">
 							<thead>
-								<tr class="border-b border-gray-200">
-									<th class="pb-3 font-medium text-gray-500 text-sm uppercase">Order #</th>
-									<th class="pb-3 font-medium text-gray-500 text-sm uppercase">Date</th>
-									<th class="pb-3 font-medium text-gray-500 text-sm uppercase">Status</th>
-									<th class="pb-3 font-medium text-gray-500 text-sm uppercase text-right">Total</th>
+								<tr class="border-b border-gray-100 dark:border-white/10">
+									<th class="pb-4 font-bold text-gray-400 dark:text-gray-500 text-[11px] uppercase tracking-widest">Order #</th>
+									<th class="pb-4 font-bold text-gray-400 dark:text-gray-500 text-[11px] uppercase tracking-widest">Date</th>
+									<th class="pb-4 font-bold text-gray-400 dark:text-gray-500 text-[11px] uppercase tracking-widest">Status</th>
+									<th class="pb-4 font-bold text-gray-400 dark:text-gray-500 text-[11px] uppercase tracking-widest text-right">Total</th>
 								</tr>
 							</thead>
-							<tbody class="divide-y divide-gray-100">
+							<tbody class="divide-y divide-gray-50 dark:divide-white/5">
 								<?php foreach ( $orders as $order ) : 
 									$total = get_post_meta( $order->ID, '_order_total', true );
 									$status = $order->post_status === 'lead' ? 'Pending' : ucfirst($order->post_status);
-									$status_color = $status === 'Pending' ? 'text-amber-600 bg-amber-50' : 'text-gray-600 bg-gray-50';
+									$status_color = $status === 'Pending' ? 'text-amber-600 bg-amber-50 dark:text-honey-300 dark:bg-honey-900/30' : 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-white/5';
 								?>
-								<tr class="hover:bg-gray-50/50 transition-colors">
-									<td class="py-4 font-medium text-gray-900"><?php echo $order->ID; ?></td>
-									<td class="py-4 text-gray-600"><?php echo get_the_date( 'M j, Y', $order ); ?></td>
-									<td class="py-4">
-										<span class="px-2 py-1 rounded text-xs font-medium <?php echo $status_color; ?>"><?php echo $status; ?></span>
+								<tr class="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
+									<td class="py-5 font-bold text-gray-900 dark:text-honey-50"><?php echo $order->ID; ?></td>
+									<td class="py-5 text-gray-600 dark:text-gray-400"><?php echo get_the_date( 'M j, Y', $order ); ?></td>
+									<td class="py-5">
+										<span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider <?php echo $status_color; ?>"><?php echo $status; ?></span>
 									</td>
-									<td class="py-4 text-right font-medium text-gray-900">$<?php echo number_format( $total / 100, 2 ); ?></td>
+									<td class="py-5 text-right font-bold text-gray-900 dark:text-honey-50">$<?php echo number_format( $total / 100, 2 ); ?></td>
 								</tr>
 								<?php endforeach; ?>
 							</tbody>
@@ -195,16 +195,16 @@ function honeyscroop_render_auth_forms() {
 	ob_start();
 	?>
 	<div class="auth-wrapper py-16 px-4">
-		<div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-amber-100 relative">
+		<div class="max-w-md mx-auto bg-white dark:bg-surface-glass rounded-3xl shadow-2xl overflow-hidden border border-amber-100 dark:border-white/10 relative">
 			<!-- Decorative Top Border -->
 			<div class="h-2 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500"></div>
 
 			<!-- Tabs -->
-			<div class="flex text-center bg-amber-50/30 border-b border-amber-100">
-				<a href="?action=login" class="flex-1 py-5 text-sm font-bold uppercase tracking-widest transition-colors <?php echo $action === 'login' ? 'text-amber-700 bg-white shadow-sm' : 'text-gray-400 hover:text-amber-600 hover:bg-white/50'; ?>">
+			<div class="flex text-center bg-amber-50/30 dark:bg-honey-900/10 border-b border-amber-100 dark:border-white/10">
+				<a href="?action=login" class="flex-1 py-5 text-[11px] font-bold uppercase tracking-[0.2em] transition-all <?php echo $action === 'login' ? 'text-amber-700 dark:text-honey-400 bg-white dark:bg-white/5 shadow-sm' : 'text-gray-400 dark:text-gray-500 hover:text-amber-600 dark:hover:text-honey-400 hover:bg-white/50 dark:hover:bg-white/10'; ?>">
 					Sign In
 				</a>
-				<a href="?action=register" class="flex-1 py-5 text-sm font-bold uppercase tracking-widest transition-colors <?php echo $action === 'register' ? 'text-amber-700 bg-white shadow-sm' : 'text-gray-400 hover:text-amber-600 hover:bg-white/50'; ?>">
+				<a href="?action=register" class="flex-1 py-5 text-[11px] font-bold uppercase tracking-[0.2em] transition-all <?php echo $action === 'register' ? 'text-amber-700 dark:text-honey-400 bg-white dark:bg-white/5 shadow-sm' : 'text-gray-400 dark:text-gray-500 hover:text-amber-600 dark:hover:text-honey-400 hover:bg-white/50 dark:hover:bg-white/10'; ?>">
 					Register
 				</a>
 			</div>
@@ -212,11 +212,11 @@ function honeyscroop_render_auth_forms() {
 			<div class="p-8 md:p-10">
 				
 				<!-- Header Text -->
-				<div class="text-center mb-8">
-					<h3 class="font-serif text-3xl text-gray-800 mb-2">
+				<div class="text-center mb-10">
+					<h3 class="font-serif text-3xl text-gray-800 dark:text-honey-50 mb-3">
 						<?php echo $action === 'login' ? 'Welcome Back' : 'Join the Hive'; ?>
 					</h3>
-					<p class="text-gray-500 text-sm">
+					<p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
 						<?php echo $action === 'login' ? 'Enter your details to access your account.' : 'Create an account to track orders and checkout faster.'; ?>
 					</p>
 				</div>
@@ -427,6 +427,37 @@ function honeyscroop_render_auth_forms() {
 			-webkit-box-shadow: 0 0 0 30px #F9FAFB inset !important;
 			-webkit-text-fill-color: #1F2937 !important;
 			transition: background-color 5000s ease-in-out 0s;
+		}
+
+		/* Dark Mode Overrides */
+		html.dark .account-container {
+			background: var(--bg-surface);
+			border-color: rgba(255, 255, 255, 0.1);
+		}
+		html.dark .wp-login-styled input[type="text"], 
+		html.dark .wp-login-styled input[type="password"],
+		html.dark .register-form input[type="text"], 
+		html.dark .register-form input[type="email"],
+		html.dark .register-form input[type="password"] {
+			background-color: rgba(255, 255, 255, 0.05);
+			border-color: rgba(255, 255, 255, 0.1);
+			color: #FFFBEB;
+		}
+		html.dark .wp-login-styled input[type="text"]:focus, 
+		html.dark .wp-login-styled input[type="password"]:focus,
+		html.dark .register-form input[type="text"]:focus, 
+		html.dark .register-form input[type="email"]:focus,
+		html.dark .register-form input[type="password"]:focus {
+			border-color: var(--color-honey-500);
+			background-color: rgba(255, 255, 255, 0.08);
+		}
+		html.dark .wp-login-styled label,
+		html.dark .register-form label {
+			color: #9CA3AF;
+		}
+		html.dark input:-webkit-autofill {
+			-webkit-box-shadow: 0 0 0 30px #1A1A14 inset !important;
+			-webkit-text-fill-color: #FFFBEB !important;
 		}
 	</style>
 	<?php

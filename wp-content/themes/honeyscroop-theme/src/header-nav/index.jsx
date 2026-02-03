@@ -139,8 +139,8 @@ const MobileDrawer = ({ isOpen, items, onClose }) => {
             <div className="mobile-drawer-overlay" onClick={onClose}></div>
             <div className="mobile-drawer-content">
                 <div className="flex justify-between items-center mb-8">
-                    <span className="text-[12px] font-bold tracking-widest text-gray-400 uppercase">Menu</span>
-                    <button onClick={onClose} className="text-gray-500 hover:text-gray-900">
+                    <span className="text-[12px] font-bold tracking-widest text-gray-400 dark:text-gray-500 uppercase">Menu</span>
+                    <button onClick={onClose} className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors">
                         <X size={24} strokeWidth={1.5} />
                     </button>
                 </div>
@@ -222,6 +222,16 @@ const HeaderNav = () => {
                     {menuItems.map((item, idx) => (
                         <NavItem key={idx} item={item} />
                     ))}
+                    {/* Integrated Account Icon */}
+                    <li className="relative">
+                        <a
+                            href="/my-account/"
+                            className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                            aria-label="Account"
+                        >
+                            <User size={20} strokeWidth={1.5} />
+                        </a>
+                    </li>
                 </ul>
             </nav>
 
@@ -229,21 +239,23 @@ const HeaderNav = () => {
             <div className="flex md:hidden items-center justify-between py-2">
                 <button
                     onClick={() => setMobileMenuOpen(true)}
-                    className="text-gray-500 hover:text-gray-900"
+                    className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                     aria-label="Open Menu"
                 >
                     <Menu size={24} strokeWidth={1.5} />
                 </button>
 
-                <a href="/" className="block">
-                    <img
-                        src="/wp-content/uploads/2026/01/honescoop_logo.webp"
-                        alt="Honeyscoop"
-                        className="h-8 w-auto dark:brightness-0 dark:invert transition-[filter] duration-300"
-                    />
+                <a href="/" className="block group mt-2">
+                    <div className="relative p-1.5 rounded-lg transition-all duration-300 dark:bg-white/40">
+                        <img
+                            src="/wp-content/uploads/2026/01/honescoop_logo.webp"
+                            alt="Honeyscoop"
+                            className="h-12 w-auto dark:brightness-0 dark:invert transition-[filter] duration-300"
+                        />
+                    </div>
                 </a>
 
-                <a href="#" className="text-gray-500 hover:text-gray-900 relative">
+                <a href="#" className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors relative">
                     <ShoppingBag size={24} strokeWidth={1.5} />
                 </a>
             </div>

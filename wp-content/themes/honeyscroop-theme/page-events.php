@@ -8,7 +8,7 @@
 get_header();
 ?>
 
-<main id="primary" class="site-main bg-honey-50/30 min-h-screen">
+<main id="primary" class="site-main bg-page min-h-screen transition-colors">
     
     <!-- Hero Section -->
     <div class="events-hero py-24 text-center relative overflow-hidden bg-honey-900 border-b border-honey-100/10">
@@ -29,7 +29,7 @@ get_header();
     </div>
 
     <!-- React Calendar Root -->
-    <div id="events-calendar-root" class="bg-white min-h-[600px] relative">
+    <div id="events-calendar-root" class="bg-page min-h-[600px] relative transition-colors">
         <!-- Loading State (SSR Mimic) -->
         <div class="container py-20 flex justify-center">
              <div class="flex items-center gap-3 text-honey-600 animate-pulse">

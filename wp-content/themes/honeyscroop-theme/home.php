@@ -1,14 +1,14 @@
 <?php
 get_header();
 ?>
-<div class="bg-cream-50 min-h-screen py-20 relative overflow-hidden">
+<div class="bg-page min-h-screen py-20 relative overflow-hidden transition-colors">
     <!-- Decorative Elements -->
     <div class="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-amber-50/50 to-transparent pointer-events-none"></div>
 
     <div class="container mx-auto px-4 relative z-10">
         <div class="text-center max-w-2xl mx-auto mb-16 animate-fade-in-up">
-            <h1 class="text-5xl md:text-6xl font-serif text-secondary-900 mb-4">The Honey Log</h1>
-            <p class="text-lg text-secondary-600 font-light">Stories from the hive, recipes, and the buzz about bees.</p>
+            <h1 class="text-5xl md:text-6xl font-serif text-secondary-900 dark:text-honey-50 mb-4 transition-colors">The Honey Log</h1>
+            <p class="text-lg text-secondary-600 dark:text-gray-300 font-light transition-colors">Stories from the hive, recipes, and the buzz about bees.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -20,7 +20,7 @@ get_header();
                     if (!$img_url) $img_url = 'https://placehold.co/600x400';
                     $delay += 100; // Increment delay for staggered effect
             ?>
-            <article class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 blog-card" style="animation-delay: <?php echo $delay; ?>ms">
+            <article class="group bg-white dark:bg-surface-glass rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 blog-card border border-honey-100 dark:border-white/10" style="animation-delay: <?php echo $delay; ?>ms">
                 <a href="<?php the_permalink(); ?>" class="block relative overflow-hidden aspect-[3/2]">
                     <img src="<?php echo esc_url($img_url); ?>" alt="<?php the_title_attribute(); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300"></div>
@@ -34,13 +34,13 @@ get_header();
                         <span class="w-1 h-1 rounded-full bg-amber-300"></span>
                         <span class="text-secondary-400"><?php echo get_the_date('M d, Y'); ?></span>
                     </div>
-                    <h2 class="text-2xl font-serif text-secondary-900 mb-3 leading-tight group-hover:text-amber-600 transition-colors">
+                    <h2 class="text-2xl font-serif text-secondary-900 dark:text-honey-100 mb-3 leading-tight group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                         <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                     </h2>
-                    <p class="text-secondary-600 line-clamp-3 mb-6 font-light">
+                    <p class="text-secondary-600 dark:text-gray-300 line-clamp-3 mb-6 font-light transition-colors">
                         <?php echo get_the_excerpt(); ?>
                     </p>
-                    <a href="<?php the_permalink(); ?>" class="inline-flex items-center text-sm font-semibold text-secondary-900 group-hover:text-amber-600 transition-colors">
+                    <a href="<?php the_permalink(); ?>" class="inline-flex items-center text-sm font-semibold text-secondary-900 dark:text-honey-200 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                         Read Story
                         <svg class="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
@@ -86,7 +86,12 @@ get_header();
     transition: all 0.2s;
     text-decoration: none;
 }
+html.dark .nav-links a, html.dark .nav-links span {
+    border-color: rgba(255,255,255,0.1);
+    color: #9ca3af;
+}
 .nav-links a:hover, .nav-links span.current { border-color: #d97706; color: #d97706; background-color: #fffbeb; }
+html.dark .nav-links a:hover, html.dark .nav-links span.current { background-color: rgba(217, 119, 6, 0.1); border-color: #d97706; color: #fbbf24; }
 .nav-links svg { width: 1.25rem; height: 1.25rem; }
 </style>
 

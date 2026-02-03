@@ -58,6 +58,9 @@ html.dark {
     /* Gray 400 */
     --border-color: rgba(255, 255, 255, 0.08);
     --border-subtle: rgba(255, 255, 255, 0.05);
+
+    /* Dark Mode Markers */
+    --color-gray-700: var(--color-honey-300);
 }
 
 h1,
@@ -364,6 +367,14 @@ button {
     color: var(--color-honey-600);
 }
 
+html.dark .icon-btn {
+    color: var(--color-honey-300);
+}
+
+html.dark .icon-btn:hover {
+    color: var(--color-honey-200);
+}
+
 /* Footer */
 .site-footer {
     background-color: #1a0f05;
@@ -585,7 +596,7 @@ button {
 /* Patterns */
 .pattern-section {
     padding: var(--spacing-xl) 0;
-    background-color: var(--color-white);
+    background-color: var(--bg-surface);
 }
 
 /* Honey Hero */
@@ -635,7 +646,7 @@ button {
 }
 
 .brand-intro {
-    background-color: var(--color-white);
+    background-color: var(--bg-surface);
     padding: var(--spacing-xl) 0;
 }
 
@@ -648,7 +659,7 @@ button {
 
 /* Partner Belt */
 .partner-belt {
-    background-color: var(--color-cream);
+    background-color: var(--bg-page);
     padding: var(--spacing-xl) 0;
     border-top: 1px solid var(--color-honey-100);
     overflow: hidden;

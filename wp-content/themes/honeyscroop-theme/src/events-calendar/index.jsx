@@ -53,19 +53,19 @@ const EventsCalendar = () => {
         <div className="container py-16 md:py-24">
 
             {/* Controls Bar */}
-            <div className="flex flex-col md:flex-row justify-between items-center mb-12 pb-8 border-b border-gray-100">
-                <h2 className="text-3xl font-serif font-bold text-gray-800 mb-6 md:mb-0">Upcoming Gatherings</h2>
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 pb-8 border-b border-gray-100 dark:border-white/10">
+                <h2 class="text-3xl font-serif font-bold text-gray-800 dark:text-honey-50 mb-6 md:mb-0 transition-colors">Upcoming Gatherings</h2>
 
                 <div className="flex gap-4">
                     <button
                         onClick={() => setViewMode('list')}
-                        className={`px-6 py-2 rounded-full font-bold transition-colors ${viewMode === 'list' ? 'bg-honey-100 text-honey-900' : 'bg-white border border-gray-200 text-gray-500 hover:border-honey-200 hover:text-honey-600'}`}
+                        className={`px-6 py-2 rounded-full font-bold transition-all ${viewMode === 'list' ? 'bg-honey-100 dark:bg-honey-900/40 text-honey-900 dark:text-honey-100' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:border-honey-200 dark:hover:border-honey-500/50 hover:text-honey-600 dark:hover:text-honey-300'}`}
                     >
                         List View
                     </button>
                     <button
                         onClick={() => setViewMode('month')}
-                        className={`px-6 py-2 rounded-full font-bold transition-colors ${viewMode === 'month' ? 'bg-honey-100 text-honey-900' : 'bg-white border border-gray-200 text-gray-500 hover:border-honey-200 hover:text-honey-600'}`}
+                        className={`px-6 py-2 rounded-full font-bold transition-all ${viewMode === 'month' ? 'bg-honey-100 dark:bg-honey-900/40 text-honey-900 dark:text-honey-100' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:border-honey-200 dark:hover:border-honey-500/50 hover:text-honey-600 dark:hover:text-honey-300'}`}
                     >
                         Month View
                     </button>
@@ -83,12 +83,12 @@ const EventsCalendar = () => {
                         const imageUrl = event._embedded?.['wp:featuredmedia']?.[0]?.source_url || null;
 
                         return (
-                            <div key={event.id} className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-honey-900/5 transition-all duration-300 md:flex">
+                            <div key={event.id} className="group bg-white dark:bg-surface-glass rounded-2xl border border-gray-100 dark:border-white/10 overflow-hidden hover:shadow-xl hover:shadow-honey-900/5 transition-all duration-300 md:flex">
 
                                 {/* Date Badge (Mobile: Top, Desktop: Left) */}
-                                <div className="md:w-32 bg-honey-50/50 flex flex-col items-center justify-center p-6 border-b md:border-b-0 md:border-r border-honey-100">
-                                    <span className="text-honey-600 font-bold text-5xl font-serif">{startDate.day}</span>
-                                    <span className="text-gray-500 font-bold tracking-widest text-sm mt-1">{startDate.month}</span>
+                                <div class="md:w-32 bg-honey-50/50 dark:bg-amber-900/10 flex flex-col items-center justify-center p-6 border-b md:border-b-0 md:border-r border-honey-100 dark:border-white/10 transition-colors">
+                                    <span class="text-honey-600 dark:text-honey-400 font-bold text-5xl font-serif transition-colors">{startDate.day}</span>
+                                    <span class="text-gray-500 dark:text-gray-400 font-bold tracking-widest text-sm mt-1 transition-colors">{startDate.month}</span>
                                 </div>
 
                                 {/* Image (Hidden on mobile if small, or keep it) */}
@@ -107,20 +107,20 @@ const EventsCalendar = () => {
 
                                 {/* Content */}
                                 <div className="p-8 flex-1 flex flex-col justify-center">
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-honey-600 transition-colors" dangerouslySetInnerHTML={{ __html: event.title.rendered }} />
+                                    <h3 class="text-2xl font-bold text-gray-900 dark:text-honey-50 mb-3 group-hover:text-honey-600 dark:group-hover:text-honey-400 transition-colors" dangerouslySetInnerHTML={{ __html: event.title.rendered }} />
 
                                     <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-6 font-medium">
-                                        <div className="flex items-center gap-2">
-                                            <Clock className="w-4 h-4 text-honey-400" />
+                                        <div class="flex items-center gap-2">
+                                            <Clock className="w-4 h-4 text-honey-400 dark:text-honey-300 transition-colors" />
                                             {startDate.time}
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <MapPin className="w-4 h-4 text-honey-400" />
+                                        <div class="flex items-center gap-2">
+                                            <MapPin className="w-4 h-4 text-honey-400 dark:text-honey-300 transition-colors" />
                                             {location}
                                         </div>
                                     </div>
 
-                                    <div className="text-gray-600 leading-relaxed mb-6 line-clamp-2" dangerouslySetInnerHTML={{ __html: event.excerpt.rendered }} />
+                                    <div class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6 line-clamp-2 transition-colors" dangerouslySetInnerHTML={{ __html: event.excerpt.rendered }} />
 
                                     <a href={event.link} className="inline-flex items-center gap-2 text-honey-600 font-bold hover:gap-3 transition-all uppercase text-sm tracking-wide">
                                         Event Details <ArrowRight className="w-4 h-4" />
@@ -132,9 +132,9 @@ const EventsCalendar = () => {
                     })}
 
                     {events.length === 0 && !loading && (
-                        <div className="text-center py-20">
-                            <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                            <p className="text-gray-500 text-lg">No upcoming events found.</p>
+                        <div class="text-center py-20 transition-colors">
+                            <Calendar class="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
+                            <p class="text-gray-500 dark:text-gray-400 text-lg">No upcoming events found.</p>
                         </div>
                     )}
                 </div>

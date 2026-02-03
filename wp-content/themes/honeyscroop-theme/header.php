@@ -51,13 +51,14 @@
             
             <!-- Left: Logo -->
             <div class="header-left">
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="text-2xl font-serif font-bold tracking-tight text-white flex items-center gap-2">
-                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_logo.webp' ) ); ?>" 
-                         alt="Honeyscoop" 
-                         width="300" 
-                         height="209"
-                         class="h-10 w-auto">
-                    <span class="hidden sm:inline">Honeyscoop</span>
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="block group mt-2">
+                    <div class="relative p-2 rounded-xl transition-all duration-300 dark:bg-white/40">
+                        <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_logo.webp' ) ); ?>" 
+                             alt="Honeyscoop" 
+                             width="300" 
+                             height="209"
+                             class="h-14 w-auto dark:brightness-0 dark:invert transition-[filter] duration-300">
+                    </div>
                 </a>
             </div>
 
@@ -67,11 +68,6 @@
                 <div class="header-top-row header-tools">
                 <!-- Currency Selector -->
                   <div id="currency-selector-root"></div>
-
-                 <!-- Account -->
-                 <a href="<?php echo esc_url( home_url( '/my-account/' ) ); ?>" class="icon-btn" aria-label="Account">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                 </a>
 
                  <!-- Cart -->
                  <div id="cart-widget-root" class="flex items-center"></div>

@@ -78,7 +78,7 @@ const CategoryCard = ({ title, imageSrc, link, isLeftColumn, className = '' }) =
                         ref={contentRef}
                         className="relative overflow-hidden transition-transform duration-200 ease-out"
                     >
-                        <span className="inline-block bg-white/95 text-honey-900 border-b-4 border-honey-500 text-lg md:text-xl font-heading font-medium px-8 py-4 shadow-lg uppercase tracking-[0.15em] backdrop-blur-sm">
+                        <span className="inline-block bg-white/95 dark:bg-dark-surface/90 text-honey-900 dark:text-honey-50 border-b-4 border-honey-500 text-lg md:text-xl font-heading font-medium px-8 py-4 shadow-lg uppercase tracking-[0.15em] backdrop-blur-sm transition-colors">
                             {title}
                         </span>
                     </div>
