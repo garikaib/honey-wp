@@ -112,7 +112,7 @@
                 <!-- Column 1: Brand Info -->
                 <div class="footer-column lg:col-span-2">
                     <div class="footer-logo mb-6">
-                        <div class="inline-flex items-center justify-center rounded-full w-24 h-24 p-4 bg-white dark:bg-white/5 transition-colors shadow-lg">
+                        <div class="inline-flex items-center justify-center rounded-full w-24 h-24 p-4 bg-white dark:bg-white/10 transition-colors shadow-lg">
                             <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_logo.webp' ) ); ?>" 
                                  alt="Honeyscoop" 
                                  width="240" 
