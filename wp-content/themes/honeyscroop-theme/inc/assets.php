@@ -171,11 +171,21 @@ function honeyscroop_enqueue_assets(): void {
                 'partners' => $localized_partners,
             )
         );
-	// Vendor Script (GSAP)
+    // Vendor Script (React Core, etc.)
     $vendor_src = honeyscroop_get_asset_path( 'vendor.js' );
     wp_enqueue_script(
         'honeyscroop-vendor',
         $vendor_src,
+        array(),
+        null,
+        true
+    );
+
+    // Vendor GSAP (Animation Library - Separate chunk for performance)
+    $gsap_src = honeyscroop_get_asset_path( 'vendor-gsap.js' );
+    wp_enqueue_script(
+        'honeyscroop-vendor-gsap',
+        $gsap_src,
         array(),
         null,
         true
@@ -196,7 +206,7 @@ function honeyscroop_enqueue_assets(): void {
         wp_enqueue_script(
             'honeyscroop-bees',
             $bees_src,
-            array( 'honeyscroop-vendor' ),
+            array( 'honeyscroop-vendor-gsap' ),
             null,
             true
         );
@@ -208,7 +218,7 @@ function honeyscroop_enqueue_assets(): void {
         wp_enqueue_script(
             'honeyscroop-hive-scene',
             $hive_src,
-            array( 'honeyscroop-vendor' ),
+            array( 'honeyscroop-vendor-gsap' ),
             null,
             true
         );
@@ -342,11 +352,19 @@ function honeyscroop_add_module_type_to_scripts( string $tag, string $handle ): 
         'honeyscroop-faqs',
         'honeyscroop-admin-spa',
         'honeyscroop-vendor',
+        'honeyscroop-vendor-gsap',
 	);
 
 	if ( in_array( $handle, $module_handles, true ) ) {
 		return str_replace( '<script ', '<script type="module" ', $tag );
 	}
+
+    // Defer Google Tag Manager
+    if ( strpos( $tag, 'googletagmanager.com/gtag/js' ) !== false ) {
+        $tag = str_replace( 'async', 'defer', $tag );
+        // Also add fetchpriority low as it's not critical for initial paint
+        $tag = str_replace( ' src', ' fetchpriority="low" src', $tag );
+    }
 
 	return $tag;
 }

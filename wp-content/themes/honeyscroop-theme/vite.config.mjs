@@ -31,10 +31,10 @@ export default defineConfig({
                     vendor: [
                         'react',
                         'react-dom',
-                        'gsap',
                         'lucide-react',
                         'zustand'
-                    ]
+                    ],
+                    'vendor-gsap': ['gsap']
                 }
             },
         },
