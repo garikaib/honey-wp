@@ -14,6 +14,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Helper to resolve hashed filenames from Vite.
+ */
+function honeyscroop_get_asset_path( string $filename ): string {
+	$pattern = HONEYSCROOP_DIR . '/dist/' . str_replace( '.js', '.*.js', $filename );
+    if ( strpos( $filename, '.css' ) !== false ) {
+        $pattern = HONEYSCROOP_DIR . '/dist/' . str_replace( '.css', '.*.css', $filename );
+    }
+
+	$files = glob( $pattern );
+
+	if ( ! empty( $files ) ) {
+		return HONEYSCROOP_URI . '/dist/' . basename( $files[0] );
+	}
+
+	return HONEYSCROOP_URI . '/dist/' . $filename;
+}
+
+/**
  * Add preconnect hints for Google Fonts.
  */
 function honeyscroop_resource_hints( $urls, $relation_type ) {
@@ -43,15 +61,13 @@ function honeyscroop_enqueue_assets(): void {
 	);
 
 	// Compiled theme CSS (vanilla + Tailwind utilities).
-	$css_path = HONEYSCROOP_DIR . '/dist/style.css';
-	if ( file_exists( $css_path ) ) {
-		wp_enqueue_style(
-			'honeyscroop-dist-style',
-			HONEYSCROOP_URI . '/dist/style.css',
-			array(),
-			filemtime( $css_path )
-		);
-	}
+	$css_src = honeyscroop_get_asset_path( 'style.css' );
+    wp_enqueue_style(
+        'honeyscroop-dist-style',
+        $css_src,
+        array(),
+        null // Version is in the filename hash
+    );
 
 	// Google Fonts (Story Page)
 	if ( is_page_template( 'page-our-story.php' ) ) {
@@ -64,15 +80,14 @@ function honeyscroop_enqueue_assets(): void {
 	}
 
 	// Honey Finder React App.
-	$js_path = HONEYSCROOP_DIR . '/dist/honey-finder.js';
-	if ( file_exists( $js_path ) ) {
-		wp_enqueue_script(
-			'honeyscroop-honey-finder',
-			HONEYSCROOP_URI . '/dist/honey-finder.js',
-			array(),
-			filemtime( $js_path ),
-			true
-		);
+    $finder_src = honeyscroop_get_asset_path( 'honey-finder.js' );
+    wp_enqueue_script(
+        'honeyscroop-honey-finder',
+        $finder_src,
+        array(),
+        null,
+        true
+    );
 
 		// Localize script with REST API URL and nonce.
 		wp_localize_script(
@@ -84,18 +99,16 @@ function honeyscroop_enqueue_assets(): void {
 				'siteUrl' => esc_url_raw( home_url() ),
 			)
 		);
-	}
 
 	// Header Navigation React App.
-	$nav_js_path = HONEYSCROOP_DIR . '/dist/header-nav.js';
-	if ( file_exists( $nav_js_path ) ) {
-		wp_enqueue_script(
-			'honeyscroop-header-nav',
-			HONEYSCROOP_URI . '/dist/header-nav.js',
-			array('honeyscroop-global'),
-			filemtime( $nav_js_path ),
-			true // Load in footer to ensure DOM elements exist
-		);
+    $nav_src = honeyscroop_get_asset_path( 'header-nav.js' );
+    wp_enqueue_script(
+        'honeyscroop-header-nav',
+        $nav_src,
+        array('honeyscroop-global'),
+        null,
+        true
+    );
 
 		// Localize header nav with dynamic menu data.
 		wp_localize_script(
@@ -105,30 +118,26 @@ function honeyscroop_enqueue_assets(): void {
 				'primaryMenu' => honeyscroop_get_menu_items( 'primary' ),
 			)
 		);
-	}
 
     // Product Grid React App.
-    $grid_js_path = HONEYSCROOP_DIR . '/dist/product-grid.js';
-    if ( file_exists( $grid_js_path ) ) {
-        wp_enqueue_script(
-            'honeyscroop-product-grid',
-            HONEYSCROOP_URI . '/dist/product-grid.js',
-            array(),
-            filemtime( $grid_js_path ),
-            true
-        );
-    }
+    $grid_src = honeyscroop_get_asset_path( 'product-grid.js' );
+    wp_enqueue_script(
+        'honeyscroop-product-grid',
+        $grid_src,
+        array(),
+        null,
+        true
+    );
 
     // Partner Ticker React App.
-    $partner_js_path = HONEYSCROOP_DIR . '/dist/partner-ticker.js';
-    if ( file_exists( $partner_js_path ) ) {
-        wp_enqueue_script(
-            'honeyscroop-partner-ticker',
-            HONEYSCROOP_URI . '/dist/partner-ticker.js',
-            array('honeyscroop-global'),
-            filemtime( $partner_js_path ),
-            true
-        );
+    $partner_src = honeyscroop_get_asset_path( 'partner-ticker.js' );
+    wp_enqueue_script(
+        'honeyscroop-partner-ticker',
+        $partner_src,
+        array('honeyscroop-global'),
+        null,
+        true
+    );
 
         // Fetch partners for localized data
         $partners_query = new WP_Query(array(
@@ -162,18 +171,15 @@ function honeyscroop_enqueue_assets(): void {
                 'partners' => $localized_partners,
             )
         );
-    }
 	// Vendor Script (GSAP)
-	$vendor_js_path = HONEYSCROOP_DIR . '/dist/vendor.js';
-	if ( file_exists( $vendor_js_path ) ) {
-		wp_enqueue_script(
-			'honeyscroop-vendor',
-			HONEYSCROOP_URI . '/dist/vendor.js',
-			array(),
-			filemtime( $vendor_js_path ),
-			true
-		);
-	}
+    $vendor_src = honeyscroop_get_asset_path( 'vendor.js' );
+    wp_enqueue_script(
+        'honeyscroop-vendor',
+        $vendor_src,
+        array(),
+        null,
+        true
+    );
 
 	// Bees Animation & Custom Dropdown (Contact Page only)
 	if ( is_page_template( 'page-contact.php' ) ) {
@@ -186,30 +192,26 @@ function honeyscroop_enqueue_assets(): void {
 			true
 		);
 
-		$bees_js_path = HONEYSCROOP_DIR . '/dist/bees.js';
-		if ( file_exists( $bees_js_path ) ) {
-			wp_enqueue_script(
-				'honeyscroop-bees',
-				HONEYSCROOP_URI . '/dist/bees.js',
-				array( 'honeyscroop-vendor' ),
-				filemtime( $bees_js_path ),
-				true
-			);
-		}
+		$bees_src = honeyscroop_get_asset_path( 'bees.js' );
+        wp_enqueue_script(
+            'honeyscroop-bees',
+            $bees_src,
+            array( 'honeyscroop-vendor' ),
+            null,
+            true
+        );
 	}
 
 	// 404 Hive Scene (404 Page only)
 	if ( is_404() ) {
-		$hive_js_path = HONEYSCROOP_DIR . '/dist/hive-scene.js';
-		if ( file_exists( $hive_js_path ) ) {
-			wp_enqueue_script(
-				'honeyscroop-hive-scene',
-				HONEYSCROOP_URI . '/dist/hive-scene.js',
-				array( 'honeyscroop-vendor' ),
-				filemtime( $hive_js_path ),
-				true
-			);
-		}
+		$hive_src = honeyscroop_get_asset_path( 'hive-scene.js' );
+        wp_enqueue_script(
+            'honeyscroop-hive-scene',
+            $hive_src,
+            array( 'honeyscroop-vendor' ),
+            null,
+            true
+        );
 	}
     if ( is_page_template( 'page-events.php' ) ) {
         // Define development mode explicitly or relying on a constant/helper if available
@@ -219,18 +221,18 @@ function honeyscroop_enqueue_assets(): void {
 
         $events_js = $is_development
             ? 'http://localhost:5173/src/events-calendar/index.jsx'
-            : get_template_directory_uri() . '/dist/events-calendar.js';
+            : honeyscroop_get_asset_path( 'events-calendar.js' );
 
-        wp_enqueue_script( 'honeyscroop-events-calendar', $events_js, array(), '1.0.0', true );
+        wp_enqueue_script( 'honeyscroop-events-calendar', $events_js, array(), null, true );
     }
 
     // Shop Archive & Taxonomy
     if ( is_page_template( 'page-shop.php' ) || is_tax( 'product_category' ) ) {
         $shop_js = defined( 'WP_ENV' ) && 'development' === WP_ENV
             ? 'http://localhost:5173/src/shop/archive.jsx'
-            : HONEYSCROOP_URI . '/dist/shop-archive.js';
+            : honeyscroop_get_asset_path( 'shop-archive.js' );
 
-        wp_enqueue_script( 'honeyscroop-shop-archive', $shop_js, array(), HONEYSCROOP_VERSION, true );
+        wp_enqueue_script( 'honeyscroop-shop-archive', $shop_js, array(), null, true );
         
         wp_localize_script( 'honeyscroop-shop-archive', 'shopData', array(
             'restUrl'     => esc_url_raw( rest_url( 'wp/v2/product' ) ),
@@ -244,9 +246,9 @@ function honeyscroop_enqueue_assets(): void {
     if ( is_singular( 'product' ) ) {
         $single_js = defined( 'WP_ENV' ) && 'development' === WP_ENV
             ? 'http://localhost:5173/src/shop/single.jsx'
-            : HONEYSCROOP_URI . '/dist/shop-single.js';
+            : honeyscroop_get_asset_path( 'shop-single.js' );
 
-        wp_enqueue_script( 'honeyscroop-shop-single', $single_js, array(), HONEYSCROOP_VERSION, true );
+        wp_enqueue_script( 'honeyscroop-shop-single', $single_js, array(), null, true );
 
         wp_localize_script( 'honeyscroop-shop-single', 'productData', array(
             'productId' => get_the_ID(),
@@ -260,9 +262,9 @@ function honeyscroop_enqueue_assets(): void {
     if ( is_page_template( 'page-cart.php' ) ) {
         $cart_js = defined( 'WP_ENV' ) && 'development' === WP_ENV
             ? 'http://localhost:5173/src/shop/cart.jsx'
-            : HONEYSCROOP_URI . '/dist/shop-cart.js';
+            : honeyscroop_get_asset_path( 'shop-cart.js' );
 
-        wp_enqueue_script( 'honeyscroop-shop-cart', $cart_js, array(), HONEYSCROOP_VERSION, true );
+        wp_enqueue_script( 'honeyscroop-shop-cart', $cart_js, array(), null, true );
 
         wp_localize_script( 'honeyscroop-shop-cart', 'cartData', array(
             'orderUrl' => esc_url_raw( rest_url( 'honeyscroop/v1/submit-order' ) ),
@@ -274,9 +276,9 @@ function honeyscroop_enqueue_assets(): void {
     if ( is_page_template( 'page-faqs.php' ) ) {
         $faq_js = defined( 'WP_ENV' ) && 'development' === WP_ENV
             ? 'http://localhost:5173/src/faqs/index.jsx'
-            : HONEYSCROOP_URI . '/dist/faqs.js';
+            : honeyscroop_get_asset_path( 'faqs.js' );
 
-        wp_enqueue_script( 'honeyscroop-faqs', $faq_js, array(), HONEYSCROOP_VERSION, true );
+        wp_enqueue_script( 'honeyscroop-faqs', $faq_js, array(), null, true );
         
         wp_localize_script( 'honeyscroop-faqs', 'faqData', array(
             'restUrl' => esc_url_raw( rest_url( 'wp/v2/faq' ) ),
@@ -339,8 +341,6 @@ function honeyscroop_add_module_type_to_scripts( string $tag, string $handle ): 
         'honeyscroop-shop-cart',
         'honeyscroop-faqs',
         'honeyscroop-admin-spa',
-        'honeyscroop-vendor-react',
-        'honeyscroop-vendor-icons',
         'honeyscroop-vendor',
 	);
 
