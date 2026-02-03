@@ -12,7 +12,7 @@ const ProductCard = ({ product }) => {
     const displayPrice = formatPrice(price / 100);
 
     return (
-        <div className="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-honey-100">
+        <div className="group relative bg-white dark:bg-surface-glass rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all border border-honey-100 dark:border-white/10">
             <div className="aspect-square w-full overflow-hidden bg-gray-100">
                 <img
                     src={imageUrl}
@@ -26,21 +26,21 @@ const ProductCard = ({ product }) => {
                 )}
             </div>
             <div className="p-4">
-                <h3 className="text-lg font-serif font-bold text-honey-900">
+                <h3 className="text-lg font-serif font-bold text-honey-900 dark:text-honey-50 transition-colors">
                     <a href={product.link}>
                         <span aria-hidden="true" className="absolute inset-0" />
                         <span dangerouslySetInnerHTML={{ __html: product.title.rendered }} />
                     </a>
                 </h3>
-                <p className="mt-1 text-sm text-gray-500 line-clamp-2" dangerouslySetInnerHTML={{ __html: product.excerpt.rendered }} />
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 line-clamp-2 transition-colors" dangerouslySetInnerHTML={{ __html: product.excerpt.rendered }} />
                 <div className="mt-4 flex justify-between items-center">
-                    <p className="text-lg font-medium text-honey-700">
+                    <p className="text-lg font-medium text-honey-700 dark:text-honey-400 transition-colors">
                         {displayPrice}
                     </p>
                     {isOutOfStock ? (
                         <span className="text-gray-400 text-sm">Unavailable</span>
                     ) : (
-                        <span className="text-honey-600 font-bold text-sm group-hover:underline">View Details &rarr;</span>
+                        <span className="text-honey-600 dark:text-honey-500 font-bold text-sm group-hover:underline transition-colors">View Details &rarr;</span>
                     )}
                 </div>
             </div>

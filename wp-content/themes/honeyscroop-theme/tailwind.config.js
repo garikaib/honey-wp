@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+    darkMode: 'class',
     content: [
         "./*.php",
         "./inc/**/*.php",
@@ -39,6 +40,22 @@ module.exports = {
                 },
                 cream: '#FFFEF7',
                 forest: '#14532D',
+                // Semantic Colors (Mapped to CSS Variables)
+                page: 'var(--bg-page)',
+                surface: {
+                    DEFAULT: 'var(--bg-surface)',
+                    glass: 'var(--bg-surface-glass)',
+                },
+                border: {
+                    DEFAULT: 'var(--border-color)',
+                    subtle: 'var(--border-subtle)',
+                },
+                dark: {
+                    bg: '#0F0F0B', // Very deep charcoal/black
+                    surface: '#1A1A14', // Slightly lighter surface
+                    border: 'rgba(255, 255, 255, 0.08)',
+                    honey: '#F59E0B',
+                }
             },
             fontFamily: {
                 sans: ['"Outfit"', 'sans-serif'],

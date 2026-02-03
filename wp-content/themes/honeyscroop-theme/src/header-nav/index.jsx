@@ -5,6 +5,7 @@ import { Search, User, ShoppingBag, ChevronDown, Globe, Menu, X } from 'lucide-r
 import CartWidget from '../shop/components/CartWidget';
 import { CurrencyProvider } from '../shop/context/CurrencyContext';
 import CurrencySelector from '../shop/components/CurrencySelector';
+import DarkModeToggle from '../components/DarkModeToggle';
 
 const menuItems = window.honeyscroopHeaderData?.primaryMenu || [];
 
@@ -38,7 +39,7 @@ const NavItem = ({ item }) => {
         >
             <a
                 href={item.href}
-                className={`group flex items-center py-2 text-gray-800 hover:text-gray-900 transition-colors duration-200 ${isOpen ? 'text-gray-900' : ''}`}
+                className={`group flex items-center py-2 text-gray-800 dark:text-honey-50 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 ${isOpen ? 'text-gray-900 dark:text-white' : ''}`}
                 style={{ fontWeight: 700, letterSpacing: '0.2em' }}
             >
                 <span className="flex items-center relative">
@@ -58,22 +59,17 @@ const NavItem = ({ item }) => {
                 >
                     {isMega ? (
                         <div
-                            className="shadow-xl rounded-sm flex min-w-[400px]"
-                            style={{
-                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                                backdropFilter: 'blur(16px)',
-                                WebkitBackdropFilter: 'blur(16px)'
-                            }}
+                            className="shadow-xl rounded-sm flex min-w-[400px] bg-white/90 dark:bg-dark-surface/90 backdrop-blur-md border border-gray-100 dark:border-white/5"
                         >
                             {/* Left Column: Categories */}
-                            <div className="w-48 py-4 border-r border-gray-100/50">
+                            <div className="w-48 py-4 border-r border-gray-100/50 dark:border-white/10">
                                 <ul>
                                     {item.children.map((child, idx) => (
                                         <li key={idx}>
                                             <div
                                                 onMouseEnter={() => setActiveCategory(child.category)}
                                                 className={`flex items-center justify-between px-6 py-2.5 text-[13px] font-medium cursor-pointer transition-colors
-                                                    ${activeCategory === child.category ? 'text-amber-600 bg-amber-50/40' : 'text-gray-600 hover:text-amber-600'}
+                                                    ${activeCategory === child.category ? 'text-amber-600 bg-amber-50/40 dark:bg-amber-500/10' : 'text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400'}
                                                 `}
                                             >
                                                 <span>{child.category}</span>
@@ -93,7 +89,7 @@ const NavItem = ({ item }) => {
                                         <li key={idx}>
                                             <a
                                                 href={subItem.href}
-                                                className="block text-[13px] text-gray-500 hover:text-amber-600 transition-colors"
+                                                className="block text-[13px] text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
                                             >
                                                 {subItem.label}
                                             </a>
@@ -105,18 +101,13 @@ const NavItem = ({ item }) => {
                     ) : (
                         /* Standard Dropdown */
                         <ul
-                            className="shadow-xl rounded-sm min-w-[200px] py-4"
-                            style={{
-                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                                backdropFilter: 'blur(16px)',
-                                WebkitBackdropFilter: 'blur(16px)'
-                            }}
+                            className="shadow-xl rounded-sm min-w-[200px] py-4 bg-white/90 dark:bg-dark-surface/90 backdrop-blur-md border border-gray-100 dark:border-white/5"
                         >
                             {item.children.map((child, idx) => (
                                 <li key={idx}>
                                     <a
                                         href={child.href}
-                                        className="block px-8 py-2.5 text-[13px] text-gray-700 font-normal hover:text-amber-600 hover:bg-amber-50/30 transition-colors duration-150"
+                                        className="block px-8 py-2.5 text-[13px] text-gray-700 dark:text-gray-300 font-normal hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50/30 dark:hover:bg-amber-500/10 transition-colors duration-150"
                                     >
                                         {child.label}
                                     </a>
@@ -227,7 +218,7 @@ const HeaderNav = () => {
         <CurrencyProvider>
             {/* Desktop Navigation */}
             <nav className="hidden md:flex justify-center ml-24">
-                <ul className="flex items-center space-x-16 text-[12px] font-bold tracking-[0.2em] uppercase text-gray-800">
+                <ul className="flex items-center space-x-16 text-[12px] font-bold tracking-[0.2em] uppercase text-gray-800 dark:text-honey-50">
                     {menuItems.map((item, idx) => (
                         <NavItem key={idx} item={item} />
                     ))}
@@ -272,7 +263,10 @@ const HeaderNav = () => {
 
             {/* Inject Currency Selector */}
             {document.getElementById('currency-selector-root') && createPortal(
-                <CurrencySelector />,
+                <div className="flex items-center gap-4">
+                    <CurrencySelector />
+                    <DarkModeToggle />
+                </div>,
                 document.getElementById('currency-selector-root')
             )}
         </CurrencyProvider>

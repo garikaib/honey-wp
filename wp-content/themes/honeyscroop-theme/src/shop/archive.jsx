@@ -35,8 +35,8 @@ const ShopArchive = () => {
     return (
         <div className="container mx-auto px-4 py-12">
             <header className="text-center mb-12">
-                <h1 className="text-5xl font-serif font-bold text-honey-900 mb-4">Our Collection</h1>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                <h1 className="text-5xl font-serif font-bold text-honey-900 dark:text-honey-50 mb-4 transition-colors">Our Collection</h1>
+                <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto transition-colors">
                     Discover our range of premium raw honeys, infused varieties, and pantry staples.
                 </p>
             </header>
@@ -48,7 +48,7 @@ const ShopArchive = () => {
                         onClick={() => setActiveCategory(0)}
                         className={`px-6 py-2 rounded-full border transition-all ${activeCategory === 0
                             ? 'bg-honey-500 text-white border-honey-500 shadow-lg'
-                            : 'bg-white text-honey-900 border-honey-200 hover:border-honey-500'
+                            : 'bg-white text-honey-900 border-honey-200 hover:border-honey-500 dark:bg-white/5 dark:text-honey-100 dark:border-white/10 dark:hover:border-honey-400'
                             }`}
                     >
                         All Products
@@ -59,7 +59,7 @@ const ShopArchive = () => {
                             onClick={() => setActiveCategory(cat.term_id)}
                             className={`px-6 py-2 rounded-full border transition-all ${activeCategory === cat.term_id
                                 ? 'bg-honey-500 text-white border-honey-500 shadow-lg'
-                                : 'bg-white text-honey-900 border-honey-200 hover:border-honey-500'
+                                : 'bg-white text-honey-900 border-honey-200 hover:border-honey-500 dark:bg-white/5 dark:text-honey-100 dark:border-white/10 dark:hover:border-honey-400'
                                 }`}
                         >
                             {cat.name}

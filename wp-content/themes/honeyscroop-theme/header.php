@@ -7,6 +7,22 @@
 
     <!-- Preload LCP Image -->
     <link rel="preload" as="image" href="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/VJ70752.webp' ) ); ?>" fetchpriority="high">
+
+    <script id="dark-mode-init">
+        (function() {
+            try {
+                const theme = localStorage.getItem('honeyscroop-theme');
+                const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (theme === 'dark' || (!theme && systemTheme)) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } catch (e) {
+                console.error('Dark mode init failed:', e);
+            }
+        })();
+    </script>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>

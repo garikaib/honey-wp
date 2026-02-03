@@ -1,5 +1,5 @@
 :root {
-    /* Colors */
+    /* Base Palette */
     --color-honey-50: #FFFBEB;
     --color-honey-100: #FEF3C7;
     --color-honey-600: #D97706;
@@ -16,6 +16,16 @@
     --color-gray-700: #374151;
     --color-gray-800: #1F2937;
     --color-gray-900: #111827;
+
+    /* Semantic Theme Variables (Light Mode Default) */
+    --bg-page: var(--color-cream);
+    --bg-surface: var(--color-white);
+    --bg-surface-glass: rgba(255, 255, 255, 0.7);
+    --text-main: var(--color-honey-900);
+    --text-muted: var(--color-gray-500);
+    --border-color: var(--color-gray-100);
+    --border-subtle: rgba(0, 0, 0, 0.05);
+
     --font-heading: 'Cormorant Garamond', serif;
     --font-body: 'Outfit', sans-serif;
 
@@ -34,6 +44,22 @@
     --max-width-narrow: 680px;
 }
 
+/* Dark Mode Overrides */
+html.dark {
+    /* Premium Dark Palette */
+    --bg-page: #0F0F0B;
+    /* Deep Charcoal/Black */
+    --bg-surface: #1A1A14;
+    /* Slightly lighter surface */
+    --bg-surface-glass: rgba(15, 15, 11, 0.7);
+    --text-main: #FFFBEB;
+    /* Honey 50 */
+    --text-muted: #9CA3AF;
+    /* Gray 400 */
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-subtle: rgba(255, 255, 255, 0.05);
+}
+
 h1,
 h2,
 h3,
@@ -44,11 +70,12 @@ h4,
 
 /* Base Styles */
 body {
-    background-color: var(--color-cream);
-    color: var(--color-honey-900);
+    background-color: var(--bg-page);
+    color: var(--text-main);
     font-family: var(--font-body);
     line-height: 1.5;
     margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ul,
@@ -259,8 +286,8 @@ button {
 
 /* Header */
 .site-header {
-    background-color: var(--color-white);
-    border-bottom: 1px solid var(--color-gray-100);
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
     position: fixed;
     width: 100%;
     top: 0;
@@ -276,10 +303,10 @@ button {
 /* Scroll Up: Show Compact, Transparent Header */
 .site-header.smart-compact {
     transform: translateY(0);
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: var(--bg-surface-glass);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--border-subtle);
     box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
 }
 
