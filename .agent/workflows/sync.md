@@ -12,20 +12,33 @@ This workflow describes how to synchronize the WordPress site between the local 
 
 Custom DDEV host commands have been created to simplify the process.
 
-### Push to Production
-
-Push local database and `wp-content/uploads` (media) to the production server.
+### Full Sync (DB + Files)
 
 ```bash
 ddev prod-push
 ```
 
-**What it does:**
-1. Exports the local database.
-2. Transfers the database to the remote server.
-3. Imports the database on remote and runs `wp search-replace` to update URLs.
-4. Syncs the entire site directory (excluding sensitive/local files like `.env`, `wp-config.php`, `.git`, etc.) using `rsync` with `zstd` compression and checksum verification. The script uses `sudo` on the remote server to ensure full write access to the `htdocs` directory.
-5. Sets correct ownership (`www-data:www-data`) on the remote server.
+### Code-Only Sync
+
+If you only want to deploy theme updates without overwriting the production database:
+
+```bash
+# From the project root
+rsync -ahvz --compress-choice=zstd --checksum --delete \
+    --exclude-from='.gitignore' \
+    --exclude='.git/' \
+    --exclude='.ddev/' \
+    --exclude='wp-config.php' \
+    --exclude='.env' \
+    ./ ubuntu@51.195.252.90:/var/www/honeyscoop.co.zw/htdocs/ --rsync-path="sudo rsync"
+```
+
+## Deployment Workflow
+
+1. **Build**: Run `npm run build` in the theme directory.
+2. **Commit**: git add/commit/push to GitHub.
+3. **Sync**: Run `ddev prod-push` or the manual `rsync` command.
+4. **Verify**: Check the live site.
 
 ### Pull from Production
 

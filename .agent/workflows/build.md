@@ -18,8 +18,5 @@ cd /home/garikaib/Documents/sites/honey-wp/wp-content/themes/honeyscroop-theme
 npm run build
 ```
 
-## Notes
-- Compiled assets go to `dist/` directory
-- Tailwind CSS is processed via PostCSS
-- React blocks are bundled by Vite
-- After building, refresh the WordPress site to see changes
+## Deployment
+After building, use the [Sync Workflow](file:///.agent/workflows/sync.md) to push changes to production.
