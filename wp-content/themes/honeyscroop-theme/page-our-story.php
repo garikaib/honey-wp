@@ -76,7 +76,7 @@ get_header();
                 <div class="md:w-2/5">
                      <div class="polaroid-frame bg-white dark:bg-white/5 transform -rotate-3 w-full border dark:border-white/10 transition-colors">
                          <div class="aspect-[3/4] overflow-hidden rounded mb-4">
-                            <img src="https://honeyscroop.ddev.site/wp-content/uploads/2026/01/20250510_084203-1-scaled.jpg" alt="Vincent Mutimbanyoka" class="w-full h-full object-cover">
+                            <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/20250510_084203-1-scaled.jpg' ) ); ?>" alt="Vincent Mutimbanyoka" class="w-full h-full object-cover">
                          </div>
                          <div class="font-handwritten text-2xl text-center text-gray-900 dark:text-honey-50 transition-colors">Vincent Mutimbanyoka</div>
                          <div class="font-note text-lg text-center text-gray-500 dark:text-gray-400 transition-colors">Founder & Chief Taster</div>
@@ -113,7 +113,7 @@ get_header();
             <!-- Card 1 -->
             <div class="polaroid-frame bg-white dark:bg-white/5 transform rotate-2 h-auto border dark:border-white/10 transition-colors">
                 <div class="h-64 mb-4 overflow-hidden rounded">
-                    <img src="https://honeyscroop.ddev.site/wp-content/uploads/2026/01/DSC_9617-scaled.jpg" alt="Zimbabwean Roots" class="w-full h-full object-cover">
+                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/DSC_9617-scaled.jpg' ) ); ?>" alt="Zimbabwean Roots" class="w-full h-full object-cover">
                 </div>
                 <h3 class="font-handwritten text-2xl mb-2 text-center text-gray-900 dark:text-honey-50 transition-colors">Zimbabwean Roots</h3>
                 <p class="font-note text-lg text-center text-gray-600 dark:text-gray-400 transition-colors">Proudly local produce, harvested from our vibrant landscapes.</p>
@@ -122,7 +122,7 @@ get_header();
             <!-- Card 2 -->
             <div class="polaroid-frame bg-white dark:bg-white/5 transform -rotate-1 mt-12 md:mt-0 border dark:border-white/10 transition-colors">
                 <div class="h-64 mb-4 overflow-hidden rounded">
-                    <img src="https://honeyscroop.ddev.site/wp-content/uploads/2026/01/Trade-Center-April_-61.jpg" alt="Empowerment" class="w-full h-full object-cover">
+                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/Trade-Center-April_-61.jpg' ) ); ?>" alt="Empowerment" class="w-full h-full object-cover">
                 </div>
                 <h3 class="font-handwritten text-2xl mb-2 text-center text-gray-900 dark:text-honey-50 transition-colors">Empowerment</h3>
                 <p class="font-note text-lg text-center text-gray-600 dark:text-gray-400 transition-colors">Uplifting rural communities and Zimbabwean exporters.</p>
@@ -132,7 +132,7 @@ get_header();
             <div class="polaroid-frame bg-white dark:bg-white/5 transform rotate-3 border dark:border-white/10 transition-colors">
                  <div class="tape-strip tape-top-center transform rotate-45" style="top: -10px;"></div>
                 <div class="h-64 mb-4 overflow-hidden rounded">
-                    <img src="https://honeyscroop.ddev.site/wp-content/uploads/2026/01/DSC_9625-scaled.jpg" alt="Pure Quality" class="w-full h-full object-cover">
+                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/DSC_9625-scaled.jpg' ) ); ?>" alt="Pure Quality" class="w-full h-full object-cover">
                 </div>
                 <h3 class="font-handwritten text-2xl mb-2 text-center text-gray-900 dark:text-honey-50 transition-colors">Pure Quality</h3>
                 <p class="font-note text-lg text-center text-gray-600 dark:text-gray-400 transition-colors">Testing against the highest global standards.</p>
@@ -182,7 +182,7 @@ get_header();
              <!-- Image -->
              <div class="md:w-1/2">
                  <div class="rounded-2xl overflow-hidden shadow-lg transform rotate-2 aspect-video">
-                    <img src="https://honeyscroop.ddev.site/wp-content/uploads/2026/01/DSC_9625-scaled.jpg" alt="Sustainability" class="w-full h-full object-cover">
+                    <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/DSC_9625-scaled.jpg' ) ); ?>" alt="Sustainability" class="w-full h-full object-cover">
                  </div>
              </div>
          </div>
