@@ -169,7 +169,7 @@ button {
 
 /* Header Specifics */
 .header-row {
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     padding: var(--spacing-md) 0;

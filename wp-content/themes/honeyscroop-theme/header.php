@@ -47,10 +47,10 @@
     <div class="container">
         
         <!-- Header Row: Logo (Left) | Tools (Right) -->
-        <div class="header-row hidden-mobile">
+        <div class="header-row">
             
-            <!-- Left: Logo -->
-            <div class="header-left">
+            <!-- Left: Logo (Desktop Only) -->
+            <div class="header-left hidden md:block">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="block group mt-2">
                     <div class="relative p-2 rounded-xl transition-all duration-300 dark:bg-white/40">
                         <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/01/honescoop_logo.webp' ) ); ?>" 
@@ -64,17 +64,17 @@
 
             <!-- Right: Generic Column -->
             <div class="header-right-column">
-                <!-- Top Row: Tools -->
-                <div class="header-top-row header-tools">
+                <!-- Top Row: Tools (Desktop Only) -->
+                <div class="header-top-row header-tools hidden md:flex">
                 <!-- Currency Selector -->
                   <div id="currency-selector-root"></div>
 
                  <!-- Cart -->
                  <div id="cart-widget-root" class="flex items-center"></div>
                 </div>
-                <!-- Bottom Row: Navigation -->
-                <div class="header-bottom-row">
-                    <div id="header-nav-root"></div>
+                <!-- Bottom Row: Navigation (Includes Mobile Header & Menu) -->
+                <div class="header-bottom-row w-full md:w-auto">
+                    <div id="header-nav-root" class="w-full"></div>
                 </div>
             </div>
         </div>

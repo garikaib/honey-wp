@@ -222,8 +222,8 @@ const HeaderNav = () => {
                     {menuItems.map((item, idx) => (
                         <NavItem key={idx} item={item} />
                     ))}
-                    {/* Integrated Account Icon */}
-                    <li className="relative">
+                    {/* Integrated Account Icon - Aligned with other items */}
+                    <li className="relative flex items-center">
                         <a
                             href="/my-account/"
                             className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -236,28 +236,32 @@ const HeaderNav = () => {
             </nav>
 
             {/* Mobile Header Row (Visible only on mobile) */}
-            <div className="flex md:hidden items-center justify-between py-2">
-                <button
-                    onClick={() => setMobileMenuOpen(true)}
-                    className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-                    aria-label="Open Menu"
-                >
-                    <Menu size={24} strokeWidth={1.5} />
-                </button>
+            <div className="flex md:hidden items-center justify-between py-2 w-full">
+                {/* Left: Menu */}
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={() => setMobileMenuOpen(true)}
+                        className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                        aria-label="Open Menu"
+                    >
+                        <Menu size={24} strokeWidth={1.5} />
+                    </button>
+                </div>
 
-                <a href="/" className="block group mt-2">
-                    <div className="relative p-1.5 rounded-lg transition-all duration-300 dark:bg-white/40">
-                        <img
-                            src="/wp-content/uploads/2026/01/honescoop_logo.webp"
-                            alt="Honeyscoop"
-                            className="h-12 w-auto dark:brightness-0 dark:invert transition-[filter] duration-300"
-                        />
-                    </div>
-                </a>
+                {/* Right: Account & Cart */}
+                <div className="flex items-center gap-5">
+                    <a
+                        href="/my-account/"
+                        className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                        aria-label="Account"
+                    >
+                        <User size={22} strokeWidth={1.5} />
+                    </a>
 
-                <a href="#" className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors relative">
-                    <ShoppingBag size={24} strokeWidth={1.5} />
-                </a>
+                    <a href="/cart" className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors relative">
+                        <ShoppingBag size={22} strokeWidth={1.5} />
+                    </a>
+                </div>
             </div>
 
             {/* Mobile Drawer */}
