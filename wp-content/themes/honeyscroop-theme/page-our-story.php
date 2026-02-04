@@ -41,7 +41,7 @@ get_header();
                     <span class="absolute -bottom-2 left-0 w-full h-1 bg-honey-300 dark:bg-honey-600 rounded transform -rotate-1 transition-colors"></span>
                 </h2>
                 <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg mb-6 transition-colors">
-                    Savor the Sweetness of Nature with Honeyscoop. Our journey began not in a boardroom, but in the wild, lush landscapes of Zimbabwe. What started as a quest for the purest sweetness turned into a mission to bottle nature's finest moments.
+                    Savour the Sweetness of Nature with Honeyscoop. Our journey began not in a boardroom, but in the wild, lush landscapes of Zimbabwe. What started as a quest for the purest sweetness turned into a mission to bottle nature's finest moments.
                 </p>
                 <p class="font-note text-2xl text-honey-600 dark:text-honey-400 transform -rotate-1 transition-colors">
                     "From the jungle to your jar!"

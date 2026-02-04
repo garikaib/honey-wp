@@ -121,7 +121,7 @@
                         </div>
                     </div>
                     <p class="footer-blurb">
-                        Savor the sweetness of nature with Honeyscoop. We are a family dedicated to bringing you the golden richness of pure, ethically sourced honey from Zimbabwe's vibrant landscapes.
+                        Savour the sweetness of nature with Honeyscoop. We are a family dedicated to bringing you the golden richness of pure, ethically sourced honey from Zimbabwe's vibrant landscapes.
                     </p>
                     <div class="footer-contact">
                         <p class="flex items-center gap-2 mb-3">

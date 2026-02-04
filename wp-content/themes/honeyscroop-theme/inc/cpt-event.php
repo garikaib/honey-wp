@@ -78,7 +78,7 @@ function honeyscroop_seed_events() {
         [ 'title' => 'Taste of Zimbabwe Festival', 'excerpt' => 'A culinary journey featuring Honeyscoop products.' ],
         [ 'title' => 'Sustainable Farming Expo', 'excerpt' => 'Exploring eco-friendly farming practices in the region.' ],
         [ 'title' => 'Community Market Day', 'excerpt' => 'Meet the farmers and taste the freshest produce.' ],
-        [ 'title' => 'Sweet & Savory Cooking Class', 'excerpt' => 'Cooking with honey: from glaze to dessert.' ],
+        [ 'title' => 'Sweet & Savoury Cooking Class', 'excerpt' => 'Cooking with honey: from glaze to dessert.' ],
         [ 'title' => 'The Hive Charity Gala', 'excerpt' => 'Supporting rural communities through sustainable trade.' ],
         [ 'title' => 'Butterscoop Launch Party', 'excerpt' => 'Celebrating the launch of our new peanut butter range.' ],
         [ 'title' => 'Wild Flower Tour', 'excerpt' => 'Discover the flora that gives our honey its unique flavor.' ],
