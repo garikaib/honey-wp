@@ -92,6 +92,22 @@ add_action( 'rest_api_init', function () {
             return current_user_can( 'manage_options' );
         }
     ));
+    // Orders endpoints
+    register_rest_route( 'honeyscroop/v1', '/orders', array(
+        'methods'             => 'GET',
+        'callback'            => 'honeyscroop_get_orders',
+        'permission_callback' => function () {
+            return current_user_can( 'manage_options' );
+        }
+    ));
+
+    register_rest_route( 'honeyscroop/v1', '/orders/(?P<id>\d+)', array(
+        'methods'             => 'POST',
+        'callback'            => 'honeyscroop_update_order',
+        'permission_callback' => function () {
+            return current_user_can( 'manage_options' );
+        }
+    ));
 });
 
 function honeyscroop_save_options( $request ) {
@@ -145,3 +161,107 @@ function honeyscroop_get_stats() {
         'products' => $total_products
     ));
 }
+
+/**
+ * Get Orders for Admin SPA
+ */
+function honeyscroop_get_orders( $request ) {
+    $status = $request->get_param('status');
+    $page   = $request->get_param('page') ? absint( $request->get_param('page') ) : 1;
+    $per_page = 20;
+
+    $args = array(
+        'post_type'      => 'shop_order',
+        'post_status'    => $status && $status !== 'all' ? $status : array('lead', 'processing', 'completed', 'cancelled'),
+        'posts_per_page' => $per_page,
+        'paged'          => $page,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    );
+
+    $query = new WP_Query( $args );
+    $orders = array();
+
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $order_id = get_the_ID();
+            
+            $orders[] = array(
+                'id'       => $order_id,
+                'title'    => get_the_title(),
+                'date'     => get_the_date('Y-m-d H:i:s'),
+                'status'   => get_post_status(),
+                'customer' => array(
+                    'name'  => get_post_meta( $order_id, '_order_customer_name', true ),
+                    'email' => get_post_meta( $order_id, '_order_customer_email', true ),
+                    'phone' => get_post_meta( $order_id, '_order_customer_phone', true ),
+                ),
+                'total'    => (int) get_post_meta( $order_id, '_order_total', true ),
+                'items'    => json_decode( get_post_meta( $order_id, '_order_items', true ), true ),
+                'type'     => get_post_meta( $order_id, '_order_type', true ),
+            );
+        }
+        wp_reset_postdata();
+    }
+
+    return rest_ensure_response( array(
+        'orders' => $orders,
+        'total'  => $query->found_posts,
+        'pages'  => $query->max_num_pages,
+    ));
+}
+
+/**
+ * Update Order Status
+ */
+function honeyscroop_update_order( $request ) {
+    $order_id = $request->get_param('id');
+    $params = $request->get_json_params();
+    $status = isset($params['status']) ? sanitize_text_field($params['status']) : null;
+
+    if ( ! $order_id ) {
+        return new WP_Error( 'missing_id', 'Order ID is required', array( 'status' => 400 ) );
+    }
+
+    $updated = false;
+
+    // Update Status
+    if ( $status ) {
+        // Map friendly status to WP post status if needed, or assume direct match
+        // Allowed statuses: 'lead', 'processing', 'completed', 'cancelled', 'trash'
+        $allowed_statuses = array('lead', 'processing', 'completed', 'cancelled', 'trash');
+        
+        if ( in_array( $status, $allowed_statuses ) ) {
+            $result = wp_update_post( array(
+                'ID'          => $order_id,
+                'post_status' => $status,
+            ));
+            
+            if ( ! is_wp_error( $result ) ) {
+                $updated = true;
+            }
+        }
+    }
+
+    if ( $updated ) {
+        return rest_ensure_response( array( 
+            'success' => true, 
+            'message' => 'Order updated successfully',
+            'status'  => get_post_status( $order_id )
+        ));
+    }
+
+    return new WP_Error( 'update_failed', 'Could not update order', array( 'status' => 500 ) );
+}
+
+/**
+ * Redirect native shop_order list to SPA.
+ */
+add_action( 'admin_init', function() {
+    global $pagenow;
+    if ( $pagenow === 'edit.php' && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'shop_order' ) {
+        wp_safe_redirect( admin_url( 'admin.php?page=honeyscroop&tab=orders' ) );
+        exit;
+    }
+});

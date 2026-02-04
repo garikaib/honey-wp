@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { RefreshCw, Save, Check, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { RefreshCw, Save, Check, AlertCircle, Coins, Info } from 'lucide-react';
+import gsap from 'gsap';
 
 const availableCurrencies = [
     { code: 'USD', name: 'US Dollar', symbol: '$' },
@@ -13,6 +14,7 @@ const availableCurrencies = [
 
 const CurrencyPage = () => {
     const [loading, setLoading] = useState(false);
+    const [contentLoading, setContentLoading] = useState(true);
     const [rates, setRates] = useState({});
     const [settings, setSettings] = useState({
         activeCurrencies: ['USD', 'ZWG', 'ZAR'],
@@ -27,6 +29,8 @@ const CurrencyPage = () => {
             NZD: 1.63
         }
     });
+
+    const pageRef = useRef(null);
 
     // Load saved settings from WP Options API on mount
     useEffect(() => {
@@ -50,11 +54,23 @@ const CurrencyPage = () => {
                 }
             } catch (err) {
                 console.error('Failed to load currency settings:', err);
+            } finally {
+                setTimeout(() => setContentLoading(false), 200);
             }
         };
 
         fetchSettings();
     }, []);
+
+    // Entry Animation
+    useEffect(() => {
+        if (!contentLoading && pageRef.current) {
+            gsap.fromTo(pageRef.current,
+                { opacity: 0, y: 15 },
+                { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+            );
+        }
+    }, [contentLoading]);
 
     const toggleCurrency = (code) => {
         if (code === 'USD') return; // Cannot disable base
@@ -157,49 +173,40 @@ const CurrencyPage = () => {
         }
     };
 
+    if (contentLoading) return null; // Or a spinner if preferred, but existing wrapper has spinner?
+
     return (
-        <div className="space-y-8 animate-fade-in-up">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <div className="flex justify-between items-center mb-6">
-                    <div>
-                        <h2 className="text-xl font-bold text-gray-800">Currency Configuration</h2>
-                        <p className="text-sm text-gray-500">Manage active currencies and exchange rates.</p>
-                    </div>
-                    <div className="flex gap-3">
-                        <button
-                            onClick={fetchLiveRates}
-                            disabled={loading}
-                            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium"
-                        >
-                            <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
-                            Sync Rates
-                        </button>
-                        <button
-                            onClick={saveSettings}
-                            disabled={loading}
-                            className="flex items-center gap-2 px-6 py-2 bg-honey-600 text-white rounded-lg hover:bg-honey-700 transition-colors shadow-sm text-sm font-medium"
-                        >
-                            <Save size={16} />
-                            Save Changes
-                        </button>
+        <div ref={pageRef} className="space-y-8 opacity-0">
+            <div className="bg-white rounded-2xl shadow-xl shadow-amber-900/5 border border-amber-100/50 overflow-hidden">
+                <div className="px-8 py-6 bg-gradient-to-r from-amber-50 to-white border-b border-amber-100 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg shadow-emerald-500/20">
+                            <Coins className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-800">Currency Settings</h2>
+                            <p className="text-sm text-gray-500">Manage rates, active currencies, and auto-updates.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-
+                <div className="p-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Active Currencies */}
                     <div>
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">Active Currencies</h3>
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-amber-800 mb-6 flex items-center gap-2">
+                            <span>Active Currencies</span>
+                            <div className="h-px bg-amber-100 flex-1"></div>
+                        </h3>
                         <div className="space-y-3">
                             {availableCurrencies.map(currency => (
-                                <div key={currency.code} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:border-honey-200 transition-colors">
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${settings.activeCurrencies.includes(currency.code) ? 'bg-honey-100 text-honey-700' : 'bg-gray-100 text-gray-400'}`}>
+                                <div key={currency.code} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-amber-400 hover:border-2 hover:shadow-lg hover:shadow-amber-500/10 transition-all bg-gray-50/50 group">
+                                    <div className="flex items-center gap-4">
+                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm shadow-sm transition-colors ${settings.activeCurrencies.includes(currency.code) ? 'bg-amber-100 text-amber-800' : 'bg-white text-gray-300'}`}>
                                             {currency.symbol}
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-gray-800">{currency.name}</p>
-                                            <p className="text-xs text-gray-400">{currency.code}</p>
+                                            <p className={`font-bold transition-colors ${settings.activeCurrencies.includes(currency.code) ? 'text-gray-900' : 'text-gray-400'}`}>{currency.name}</p>
+                                            <p className="text-xs font-mono text-gray-400">{currency.code}</p>
                                         </div>
                                     </div>
                                     <label className="relative inline-flex items-center cursor-pointer">
@@ -210,7 +217,7 @@ const CurrencyPage = () => {
                                             onChange={() => toggleCurrency(currency.code)}
                                             disabled={currency.code === 'USD'}
                                         />
-                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-honey-600"></div>
+                                        <div className="w-12 h-7 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-500"></div>
                                     </label>
                                 </div>
                             ))}
@@ -219,24 +226,25 @@ const CurrencyPage = () => {
 
                     {/* Exchange Rates */}
                     <div>
-                        <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400">Exchange Rates (vs USD)</h3>
-                            <span className="text-xs px-2 py-1 bg-blue-50 text-blue-600 rounded border border-blue-100">Base: 1 USD</span>
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-amber-800">Exchange Rates</h3>
+                            <span className="text-[10px] font-bold px-3 py-1 bg-blue-50 text-blue-600 rounded-full border border-blue-100 tracking-wide uppercase">Base: 1 USD</span>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="bg-gray-50 rounded-2xl border border-gray-100 p-6 space-y-4">
                             {settings.activeCurrencies.map(code => {
                                 if (code === 'USD') return null;
                                 return (
                                     <div key={code} className="flex items-center gap-4">
-                                        <div className="w-16 font-bold text-gray-700">{code}</div>
-                                        <div className="flex-1 relative">
+                                        <div className="w-16 font-bold text-gray-500 text-sm">{code}</div>
+                                        <div className="flex-1 relative group">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium">rate</span>
                                             <input
                                                 type="number"
                                                 step="0.01"
                                                 value={settings.rates[code] || ''}
                                                 onChange={(e) => updateRate(code, e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-honey-500 focus:border-transparent transition-all"
+                                                className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-400 transition-all font-mono font-medium text-gray-800"
                                                 placeholder="0.00"
                                             />
                                         </div>
@@ -245,15 +253,30 @@ const CurrencyPage = () => {
                             })}
                         </div>
 
-                        <div className="mt-8 p-4 bg-amber-50 rounded-lg border border-amber-100 flex gap-3">
-                            <AlertCircle size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
-                            <div className="text-sm text-amber-800">
-                                <p className="font-semibold mb-1">Rate Sources</p>
-                                <ul className="list-disc pl-4 space-y-1 opacity-90">
-                                    <li><strong>ZWG</strong>: Synced from Zimpricecheck (Buy Rate).</li>
-                                    <li><strong>Others</strong>: Synced from OpenExchangeRates.</li>
-                                </ul>
-                            </div>
+                        <div className="mt-8 flex gap-4 pt-8 border-t border-gray-100">
+                            <button
+                                onClick={fetchLiveRates}
+                                disabled={loading}
+                                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white border-2 border-gray-100 text-gray-600 font-bold rounded-xl hover:border-gray-300 hover:text-gray-800 transition-all text-sm disabled:opacity-50"
+                            >
+                                <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
+                                {loading ? 'Syncing...' : 'Sync Live Rates'}
+                            </button>
+                            <button
+                                onClick={saveSettings}
+                                disabled={loading}
+                                className="flex-[2] flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all shadow-lg hover:shadow-xl text-sm disabled:opacity-50"
+                            >
+                                <Save size={18} />
+                                {loading ? 'Saving...' : 'Save Configuration'}
+                            </button>
+                        </div>
+
+                        <div className="mt-6 flex flex-col md:flex-row gap-3 opacity-60 hover:opacity-100 transition-opacity">
+                            <Info size={16} className="text-gray-400 flex-shrink-0 mt-0.5" />
+                            <p className="text-xs text-gray-500 leading-relaxed">
+                                <strong>Rate Sources:</strong> ZWG rates are sourced from Zimpricecheck (Black Market - Buy Rate). Major currencies come from OpenExchangeRates. Rates are cached for performance.
+                            </p>
                         </div>
                     </div>
                 </div>
