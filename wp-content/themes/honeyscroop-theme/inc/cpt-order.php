@@ -229,6 +229,6 @@ function honeyscroop_render_order_meta_box( WP_Post $post ): void {
 		}
 	}
 	echo '</tbody>';
-	echo '<tfoot><tr><th colspan="3" style="text-align:right">Total:</th><th>$' . esc_html( number_format( $total / 100, 2 ) ) . '</th></tr></tfoot>';
+	echo '<tfoot><tr><th colspan="3" style="text-align:right">Total:</th><th>$' . esc_html( number_format( (float) $total / 100, 2 ) ) . '</th></tr></tfoot>';
 	echo '</table>';
 }

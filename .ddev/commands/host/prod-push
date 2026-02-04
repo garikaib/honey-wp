@@ -43,6 +43,7 @@ rsync -ahvz --compress-choice=zstd --checksum --delete --progress \
     --exclude='scraper/' \
     --exclude='scripts/' \
     --exclude='seed-posts.php' \
+    --exclude='seed-shop.php' \
     --exclude='probe_db*.py' \
     --exclude='gbdzoma.json' \
     --exclude='wp-config-ddev.php' \
