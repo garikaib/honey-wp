@@ -46,6 +46,10 @@ function honeyscroop_register_order_cpt(): void {
 		'menu_position'       => 6,
 		'menu_icon'           => 'dashicons-clipboard',
 		'supports'            => array( 'title', 'custom-fields' ), // Title will be Order ID
+		'capabilities'        => array(
+			'create_posts' => 'do_not_allow',
+		),
+		'map_meta_cap'        => true,
 	);
 
 	register_post_type( 'shop_order', $args );

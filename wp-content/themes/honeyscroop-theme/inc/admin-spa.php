@@ -39,24 +39,23 @@ function honeyscroop_admin_enqueue_scripts( $hook ) {
         return;
     }
 
-    $asset_file = get_stylesheet_directory() . '/dist/admin-spa.js';
-    
-    // In production, we assume only one file or managed by index logic
-    // For now, simpler implementation assuming build output
+    // Use helper to resolve hashed filenames
+    $script_src = honeyscroop_get_asset_path( 'admin-spa.js' );
+    $style_src  = honeyscroop_get_asset_path( 'style.css' );
     
     wp_enqueue_script(
         'honeyscroop-admin-spa',
-        get_stylesheet_directory_uri() . '/dist/admin-spa.js',
+        $script_src,
         array( 'wp-element', 'wp-api-fetch', 'wp-i18n' ),
-        file_exists($asset_file) ? filemtime($asset_file) : '1.0.0',
+        null, // Version controlled by hash
         true
     );
 
     wp_enqueue_style(
         'honeyscroop-admin-style',
-        get_stylesheet_directory_uri() . '/dist/style.css',
+        $style_src,
         array(),
-        '1.0.0'
+        null // Version controlled by hash
     );
     
     // Localize Data
@@ -260,7 +259,7 @@ function honeyscroop_update_order( $request ) {
  */
 add_action( 'admin_init', function() {
     global $pagenow;
-    if ( $pagenow === 'edit.php' && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'shop_order' ) {
+    if ( in_array( $pagenow, array( 'edit.php', 'post-new.php' ), true ) && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'shop_order' ) {
         wp_safe_redirect( admin_url( 'admin.php?page=honeyscroop&tab=orders' ) );
         exit;
     }
