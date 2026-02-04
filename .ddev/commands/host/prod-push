@@ -1,0 +1,65 @@
+#!/bin/bash
+
+## Description: Push local database and media to production site
+## Usage: prod-push
+## Example: ddev prod-push
+
+# Find the project root (directory containing .ddev)
+PROJECT_ROOT=$(cd "$(dirname "$0")" && while [ ! -d .ddev ] && [ "$PWD" != "/" ]; do cd ..; done; pwd)
+cd "$PROJECT_ROOT"
+
+REMOTE_USER="ubuntu"
+REMOTE_HOST="51.195.252.90"
+REMOTE_PATH="/var/www/honeyscoop.co.zw/htdocs"
+REMOTE_DB_NAME="honeyscoop_co_zw"
+REMOTE_DB_USER="honeyscoop_co_zw"
+REMOTE_DB_PASS="lkWCO8zkGiWO11pM"
+LOCAL_URL="https://honeyscroop.ddev.site"
+REMOTE_URL="https://honeyscoop.co.zw"
+
+# Export and push database
+echo "Exporting local database..."
+ddev wp db export db.sql
+echo "Pushing database to remote..."
+scp db.sql $REMOTE_USER@$REMOTE_HOST:~/db_push.sql
+rm db.sql
+
+echo "Importing database on remote and updating URLs..."
+ssh $REMOTE_USER@$REMOTE_HOST "
+    cd $REMOTE_PATH && \
+    mariadb -u $REMOTE_DB_USER -p$REMOTE_DB_PASS $REMOTE_DB_NAME < ~/db_push.sql && \
+    wp search-replace '$LOCAL_URL' '$REMOTE_URL' --all-tables --allow-root && \
+    rm ~/db_push.sql
+"
+
+# Push WordPress files
+echo "Syncing WordPress files to remote..."
+rsync -ahvz --compress-choice=zstd --checksum --delete --progress \
+    --exclude='.git/' \
+    --exclude='.ddev/' \
+    --exclude='.agent/' \
+    --exclude='docs/' \
+    --exclude='venv/' \
+    --exclude='scraper/' \
+    --exclude='scripts/' \
+    --exclude='seed-posts.php' \
+    --exclude='probe_db*.py' \
+    --exclude='gbdzoma.json' \
+    --exclude='wp-config-ddev.php' \
+    --exclude='.env' \
+    --exclude='wp-config.php' \
+    --exclude='db.sql' \
+    --exclude='db_push.sql' \
+    --exclude='wp-content/uploads/' \
+    ./ $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/ --rsync-path="sudo rsync"
+
+# Fix permissions and flush cache on remote
+echo "Finalizing on remote (permissions + cache flush)..."
+ssh $REMOTE_USER@$REMOTE_HOST "
+    sudo chown -R www-data:www-data $REMOTE_PATH && \
+    sudo chown www-data:www-data /var/www/honeyscoop.co.zw/wp-config.php && \
+    cd $REMOTE_PATH && \
+    wp cache flush --allow-root
+"
+
+echo "Push complete!"

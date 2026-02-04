@@ -36,6 +36,8 @@ wp-content/plugins/hello.php
 
 # DDEV
 .ddev/
+!.ddev/config.yaml
+!.ddev/commands/
 
 # Node.js
 node_modules/

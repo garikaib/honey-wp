@@ -1,0 +1,47 @@
+#!/bin/bash
+
+## Description: Pull remote database and media to local site
+## Usage: ddev prod-pull
+## Example: ddev prod-pull
+
+REMOTE_USER="ubuntu"
+REMOTE_HOST="51.195.252.90"
+REMOTE_PATH="/var/www/honeyscoop.co.zw/htdocs"
+REMOTE_DB_NAME="honeyscoop_co_zw"
+REMOTE_DB_USER="honeyscoop_co_zw"
+REMOTE_DB_PASS="lkWCO8zkGiWO11pM"
+LOCAL_URL="https://honeyscroop.ddev.site"
+REMOTE_URL="https://honeyscoop.co.zw"
+
+# Export and pull database
+echo "Exporting remote database..."
+ssh $REMOTE_USER@$REMOTE_HOST "cd $REMOTE_PATH && wp db export ~/db_pull.sql --allow-root"
+echo "Pulling database from remote..."
+scp $REMOTE_USER@$REMOTE_HOST:~/db_pull.sql .
+ssh $REMOTE_USER@$REMOTE_HOST "rm ~/db_pull.sql"
+
+echo "Importing database locally and updating URLs..."
+ddev wp db import db_pull.sql
+ddev wp search-replace '$REMOTE_URL' '$LOCAL_URL' --all-tables
+rm db_pull.sql
+
+# Pull WordPress files
+echo "Syncing WordPress files from remote..."
+rsync -ahvz --compress-choice=zstd --checksum --progress \
+    --exclude='.git/' \
+    --exclude='.ddev/' \
+    --exclude='.agent/' \
+    --exclude='docs/' \
+    --exclude='venv/' \
+    --exclude='scraper/' \
+    --exclude='scripts/' \
+    --exclude='seed-posts.php' \
+    --exclude='probe_db*.py' \
+    --exclude='gbdzoma.json' \
+    --exclude='wp-config-ddev.php' \
+    --exclude='.env' \
+    --exclude='wp-config.php' \
+    --exclude='wp-config.php' \
+    $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/ ./ --rsync-path="sudo rsync"
+
+echo "Pull complete!"

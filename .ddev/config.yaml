@@ -1,0 +1,17 @@
+name: honeyscroop
+type: wordpress
+docroot: ""
+php_version: "8.3"
+webserver_type: nginx-fpm
+xdebug_enabled: false
+additional_hostnames: []
+additional_fqdns:
+  - dev.honeyscroop.co.zw
+database:
+  type: mariadb
+  version: "10.11"
+hooks:
+  post-start:
+    - exec: wp core download --version=6.9.1 --skip-content || true
+    - exec: "[ -f wp-config.php ] || wp config create --dbname=db --dbuser=db --dbpass=db --dbhost=db"
+    - exec: wp core install --url='$DDEV_PRIMARY_URL' --title='Honeyscroop' --admin_user=admin --admin_password=admin --admin_email=admin@example.com --skip-email || true
