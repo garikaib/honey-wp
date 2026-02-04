@@ -17,10 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Helper to resolve hashed filenames from Vite.
  */
 function honeyscroop_get_asset_path( string $filename ): string {
-	$pattern = HONEYSCROOP_DIR . '/dist/' . str_replace( '.js', '.*.js', $filename );
-    if ( strpos( $filename, '.css' ) !== false ) {
-        $pattern = HONEYSCROOP_DIR . '/dist/' . str_replace( '.css', '.*.css', $filename );
-    }
+	$base = pathinfo( $filename, PATHINFO_FILENAME );
+	$ext  = pathinfo( $filename, PATHINFO_EXTENSION );
+	$pattern = HONEYSCROOP_DIR . '/dist/' . $base . '.*.' . $ext;
 
 	$files = glob( $pattern );
 
@@ -225,8 +224,7 @@ function honeyscroop_enqueue_assets(): void {
 	}
     if ( is_page_template( 'page-events.php' ) ) {
         // Define development mode explicitly or relying on a constant/helper if available
-        // For now, assume production if no explicit dev logic is robustly passed here variables from outside scope
-        // Re-declaring variables or using simpler logic:
+        // For now, assume production if no explicit dev logic is robustlysimpler logic:
         $is_development = defined( 'WP_ENV' ) && 'development' === WP_ENV; 
 
         $events_js = $is_development
