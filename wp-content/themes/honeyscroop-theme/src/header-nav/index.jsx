@@ -163,6 +163,9 @@ const NavItem = ({ item }) => {
     );
 };
 
+import MobileCurrencySelector from '../shop/components/MobileCurrencySelector';
+import MobileAppearanceToggle from '../components/MobileAppearanceToggle';
+
 const MobileDrawer = ({ isOpen, items, onClose }) => {
     const drawerRef = useRef(null);
     const overlayRef = useRef(null);
@@ -240,23 +243,22 @@ const MobileDrawer = ({ isOpen, items, onClose }) => {
                 {/* Mobile Drawer Footer: Settings */}
                 <div className="mobile-drawer-footer">
                     <div className="mb-8">
-                        <div className="flex items-center gap-2 mb-4">
+                        <div className="flex items-center gap-2 mb-6">
                             <Globe size={14} className="text-honey-600" />
-                            <span className="text-[10px] font-bold tracking-[0.15em] text-muted uppercase">Currency</span>
+                            <span className="text-[10px] font-bold tracking-[0.15em] text-muted uppercase">Currency Selection</span>
                         </div>
-                        <div className="pl-6">
-                            <CurrencySelector />
+                        <div className="pl-0">
+                            <MobileCurrencySelector />
                         </div>
                     </div>
 
                     <div>
-                        <div className="flex items-center gap-2 mb-4">
+                        <div className="flex items-center gap-2 mb-6">
                             <Moon size={14} className="text-honey-600" />
                             <span className="text-[10px] font-bold tracking-[0.15em] text-muted uppercase">Appearance</span>
                         </div>
-                        <div className="flex items-center justify-between pl-6 pr-2">
-                            <span className="text-[14px] font-medium font-serif italic text-muted">Dark Mode</span>
-                            <DarkModeToggle />
+                        <div className="w-full">
+                            <MobileAppearanceToggle />
                         </div>
                     </div>
                 </div>
