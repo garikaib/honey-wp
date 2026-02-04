@@ -164,6 +164,7 @@ require_once get_stylesheet_directory() . '/inc/account.php';
 require_once get_stylesheet_directory() . '/inc/newsletter.php'; // Newsletter System
 require_once get_stylesheet_directory() . '/inc/turnstile.php'; // Cloudflare Turnstile
 require_once get_stylesheet_directory() . '/inc/login-styling.php'; // Premium Login Styling
+require_once get_stylesheet_directory() . '/inc/seeder.php'; // Data Seeder
 
 /**
  * Customizer Settings

@@ -263,6 +263,7 @@ function honeyscroop_enqueue_assets(): void {
         wp_localize_script( 'honeyscroop-shop-single', 'productData', array(
             'productId' => get_the_ID(),
             'restUrl'   => esc_url_raw( rest_url( 'wp/v2/product/' . get_the_ID() ) ),
+            'collectionUrl' => esc_url_raw( rest_url( 'wp/v2/product' ) ),
             'orderUrl'  => esc_url_raw( rest_url( 'honeyscroop/v1/submit-order' ) ),
             'nonce'     => wp_create_nonce( 'wp_rest' ),
         ) );

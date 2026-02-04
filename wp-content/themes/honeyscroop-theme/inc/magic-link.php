@@ -137,7 +137,7 @@ function honeyscroop_process_magic_login() {
 	
 	// Already logged in
 	if ( is_user_logged_in() ) {
-		wp_safe_redirect( home_url( '/account/' ) );
+		wp_safe_redirect( home_url( '/my-account/' ) );
 		exit;
 	}
 	
@@ -153,11 +153,11 @@ function honeyscroop_process_magic_login() {
 		wp_set_current_user( $user_id );
 		
 		// Redirect to account page
-		wp_safe_redirect( home_url( '/account/' ) );
+		wp_safe_redirect( home_url( '/my-account/' ) );
 		exit;
 	} else {
 		// Invalid or expired token
-		wp_safe_redirect( add_query_arg( 'magic_error', 'expired', home_url( '/account/' ) ) );
+		wp_safe_redirect( add_query_arg( 'magic_error', 'expired', home_url( '/my-account/' ) ) );
 		exit;
 	}
 }
@@ -168,90 +168,134 @@ add_action( 'template_redirect', 'honeyscroop_process_magic_login', 1 );
  */
 function honeyscroop_add_magic_link_form() {
 	?>
-	<div id="magic-link-section" style="display: none; margin-top: 24px; padding-top: 24px; border-top: 1px solid #E5E7EB;">
-		<p style="text-align: center; color: #6B7280; font-size: 14px; margin-bottom: 16px;">
-			— Or sign in without a password —
-		</p>
-		<div id="magic-link-form">
-			<input 
-				type="email" 
-				id="magic-link-email" 
-				placeholder="Enter your email"
-				style="width: 100%; padding: 12px 16px; border: 2px solid #E5E7EB; border-radius: 12px; font-size: 16px; margin-bottom: 12px; outline: none;"
-			>
+	<div id="magic-link-section" style="display: none; margin-top: 24px;">
+		<div id="magic-link-form" class="register-form">
+			<div class="form-group">
+				<label for="magic-link-email">Email Address</label>
+				<input 
+					type="email" 
+					id="magic-link-email" 
+					placeholder="john@example.com"
+					required
+					style="box-sizing: border-box;"
+				>
+			</div>
+			
 			<button 
 				type="button" 
 				id="magic-link-btn"
-				style="width: 100%; padding: 14px; background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer;"
+				class="register-btn"
 			>
 				✨ Send Magic Link
 			</button>
-			<p id="magic-link-message" style="text-align: center; margin-top: 12px; font-size: 14px; display: none;"></p>
+
+			<div id="magic-link-back-wrapper" style="text-align: center; margin-top: 20px;">
+				<button 
+					type="button" 
+					id="back-to-login"
+					style="background: none; border: none; color: #9CA3AF; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: color 0.2s;"
+				>
+					← Back to Password Login
+				</button>
+			</div>
+
+			<p id="magic-link-message" style="text-align: center; margin-top: 20px; font-size: 14px; display: none; font-weight: 500;"></p>
 		</div>
 	</div>
 
-	<div id="magic-link-toggle-wrapper" style="text-align: center; margin-top: 20px;">
+	<div id="magic-link-toggle-wrapper" style="text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.05);">
 		<button 
 			type="button" 
 			id="toggle-magic-link"
-			style="background: none; border: none; color: #9CA3AF; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: color 0.2s;"
-			onmouseover="this.style.color='#D97706'"
-			onmouseout="this.style.color='#9CA3AF'"
+			style="background: none; border: none; color: #9CA3AF; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: color 0.2s;"
 		>
 			✨ Use Magic Link instead
 		</button>
 	</div>
 
 	<script>
-		document.getElementById('toggle-magic-link').addEventListener('click', function() {
-			const section = document.getElementById('magic-link-section');
-			const wrapper = document.getElementById('magic-link-toggle-wrapper');
-			section.style.display = 'block';
-			wrapper.style.display = 'none';
-		});
+		(function() {
+			const toggleBtn = document.getElementById('toggle-magic-link');
+			const backBtn = document.getElementById('back-to-login');
+			const magicSection = document.getElementById('magic-link-section');
+			const toggleWrapper = document.getElementById('magic-link-toggle-wrapper');
+			const loginForm = document.getElementById('loginform');
+			const magicBtn = document.getElementById('magic-link-btn');
+			const magicEmail = document.getElementById('magic-link-email');
+			const magicMsg = document.getElementById('magic-link-message');
 
-		document.getElementById('magic-link-btn').addEventListener('click', async function() {
-			const email = document.getElementById('magic-link-email').value;
-			const btn = this;
-			const msg = document.getElementById('magic-link-message');
-			
-			if (!email) {
-				msg.textContent = 'Please enter your email';
-				msg.style.color = '#EF4444';
-				msg.style.display = 'block';
-				return;
-			}
-			
-			btn.disabled = true;
-			btn.textContent = 'Sending...';
-			
-			try {
-				const res = await fetch('<?php echo esc_url( rest_url( 'honeyscroop/v1/send-magic-link' ) ); ?>', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ email })
+			if (toggleBtn) {
+				toggleBtn.addEventListener('mouseover', () => toggleBtn.style.color = '#D97706');
+				toggleBtn.addEventListener('mouseout', () => toggleBtn.style.color = '#9CA3AF');
+				toggleBtn.addEventListener('click', function() {
+					magicSection.style.display = 'block';
+					toggleWrapper.style.display = 'none';
+					if (loginForm) loginForm.style.display = 'none';
+					
+					// Update header text if possible
+					const headerText = document.querySelector('.auth-wrapper h3');
+					if (headerText) headerText.textContent = 'Passwordless Sign In';
 				});
-				const data = await res.json();
-				
-				msg.textContent = data.message;
-				msg.style.color = data.success ? '#10B981' : '#EF4444';
-				msg.style.display = 'block';
-				
-				if (data.success) {
-					btn.textContent = '✓ Check Your Email';
-					btn.style.background = '#10B981';
-				} else {
-					btn.textContent = '✨ Send Magic Link';
-					btn.disabled = false;
-				}
-			} catch (e) {
-				msg.textContent = 'Something went wrong. Please try again.';
-				msg.style.color = '#EF4444';
-				msg.style.display = 'block';
-				btn.textContent = '✨ Send Magic Link';
-				btn.disabled = false;
 			}
-		});
+
+			if (backBtn) {
+				backBtn.addEventListener('mouseover', () => backBtn.style.color = '#D97706');
+				backBtn.addEventListener('mouseout', () => backBtn.style.color = '#9CA3AF');
+				backBtn.addEventListener('click', function() {
+					magicSection.style.display = 'none';
+					toggleWrapper.style.display = 'block';
+					if (loginForm) loginForm.style.display = 'flex';
+					
+					// Revert header text
+					const headerText = document.querySelector('.auth-wrapper h3');
+					if (headerText) headerText.textContent = 'Welcome Back';
+				});
+			}
+
+			if (magicBtn) {
+				magicBtn.addEventListener('click', async function() {
+					const email = magicEmail.value;
+					
+					if (!email) {
+						magicMsg.textContent = 'Please enter your email';
+						magicMsg.style.color = '#EF4444';
+						magicMsg.style.display = 'block';
+						return;
+					}
+					
+					magicBtn.disabled = true;
+					magicBtn.originalText = magicBtn.textContent;
+					magicBtn.textContent = 'Sending...';
+					
+					try {
+						const res = await fetch('<?php echo esc_url( rest_url( 'honeyscroop/v1/send-magic-link' ) ); ?>', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({ email })
+						});
+						const data = await res.json();
+						
+						magicMsg.textContent = data.message;
+						magicMsg.style.color = data.success ? '#10B981' : '#EF4444';
+						magicMsg.style.display = 'block';
+						
+						if (data.success) {
+							magicBtn.textContent = '✓ Check Your Email';
+							magicBtn.style.background = '#10B981';
+						} else {
+							magicBtn.textContent = magicBtn.originalText;
+							magicBtn.disabled = false;
+						}
+					} catch (e) {
+						magicMsg.textContent = 'Something went wrong. Please try again.';
+						magicMsg.style.color = '#EF4444';
+						magicMsg.style.display = 'block';
+						magicBtn.textContent = magicBtn.originalText;
+						magicBtn.disabled = false;
+					}
+				});
+			}
+		})();
 	</script>
 	<?php
 }

@@ -114,7 +114,7 @@ function honeyscroop_send_email( $to, $subject, $body_content ) {
  */
 function honeyscroop_send_welcome_email( $email, $name, $username, $password ) {
 	$site_name = get_bloginfo( 'name' );
-	$login_url = home_url( '/account/' );
+	$login_url = home_url( '/my-account/' );
 	
 	$content = <<<HTML
 <h1 style="margin: 0 0 20px 0; color: #1F2937; font-size: 28px; font-weight: 700;">Welcome to {$site_name}! 🍯</h1>
@@ -189,7 +189,7 @@ function honeyscroop_send_magic_link_email( $email, $name, $magic_link ) {
 
 <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto 24px auto;">
     <tr>
-        <td style="background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%); border-radius: 14px;">
+        <td style="background: linear-gradient(135deg, #F59E0B 0%, #EAB308 100%); border-radius: 14px;">
             <a href="{$magic_link}" style="display: inline-block; padding: 18px 48px; color: #FFFFFF; font-size: 18px; font-weight: 700; text-decoration: none;">
                 ✨ Log In Now
             </a>

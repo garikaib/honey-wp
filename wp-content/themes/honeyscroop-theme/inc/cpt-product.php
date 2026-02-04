@@ -236,6 +236,16 @@ function honeyscroop_register_product_rest_fields(): void {
 					'price'        => (int) get_post_meta( $post_id, '_product_price', true ),
 					'sku'          => get_post_meta( $post_id, '_product_sku', true ),
 					'availability' => get_post_meta( $post_id, '_product_availability', true ),
+					// Seeded Data for Demo
+					'is_bestseller' => ( $post_id % 3 === 0 ), // Mock: Every 3rd product
+					'is_featured'   => ( $post_id % 2 === 0 ), // Mock: Every 2nd product
+					'related_ids'   => get_posts( array(
+						'post_type'      => 'product',
+						'fields'         => 'ids',
+						'posts_per_page' => 4,
+						'orderby'        => 'rand',
+						'exclude'        => array( $post_id ),
+					) ),
 				);
 			},
 			'schema'       => array(

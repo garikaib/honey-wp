@@ -39,7 +39,7 @@ const NavItem = ({ item }) => {
     };
 
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && dropdownRef.current) {
             // Dropdown Entrance
             gsap.fromTo(dropdownRef.current,
                 { opacity: 0, y: 10, scale: 0.98, display: 'block' },
@@ -54,7 +54,7 @@ const NavItem = ({ item }) => {
                     { opacity: 1, y: 0, duration: 0.4, stagger: 0.04, ease: "power2.out", delay: 0.1 }
                 );
             }
-        } else {
+        } else if (dropdownRef.current) {
             // Dropdown Exit
             gsap.to(dropdownRef.current, {
                 opacity: 0,

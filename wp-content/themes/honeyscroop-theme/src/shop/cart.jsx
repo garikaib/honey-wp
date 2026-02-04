@@ -54,7 +54,6 @@ const OrderForm = ({ items, total, onCancel }) => {
     const [generatedPassword, setGeneratedPassword] = useState('');
     const [copied, setCopied] = useState(false);
     const { orderUrl, nonce } = window.cartData || {};
-    // Use dynamic settings or fallback
     const globalSettings = window.honeyShopData?.settings || {};
     const whatsappNumber = globalSettings.whatsappNumber || '263772123456';
     const clearCart = useCartStore(state => state.clearCart);
@@ -117,225 +116,164 @@ const OrderForm = ({ items, total, onCancel }) => {
         }
     };
 
-    // Input style object for consistency
-    const inputStyle = {
-        width: '100%',
-        padding: '14px 18px',
-        backgroundColor: document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.05)' : '#F9FAFB',
-        border: '2px solid',
-        borderColor: document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : '#E5E7EB',
-        borderRadius: '14px',
-        fontSize: '16px',
-        fontFamily: 'Outfit, sans-serif',
-        outline: 'none',
-        transition: 'all 0.2s ease',
-        color: document.documentElement.classList.contains('dark') ? '#FFFBEB' : '#1F2937'
-    };
-
     return (
         <div
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+            style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}
         >
             <div
-                className="bg-white dark:bg-surface-glass w-full overflow-hidden animate-slideUp border dark:border-white/10"
-                style={{
-                    maxWidth: '480px',
-                    borderRadius: '28px',
-                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-                }}
+                className="bg-white dark:bg-[#1a1a14] w-full max-w-[650px] overflow-hidden animate-slideUp border dark:border-white/10 shadow-2xl rounded-[32px] relative"
             >
-                {/* Header */}
+                {/* Premium Gradient Header */}
                 <div
+                    className="relative px-8 text-center overflow-hidden"
                     style={{
                         background: 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #F59E0B 100%)',
-                        padding: '28px 24px',
-                        textAlign: 'center'
+                        paddingTop: '32px',
+                        paddingBottom: '24px'
                     }}
                 >
-                    <h3 style={{
-                        fontSize: '24px',
-                        fontFamily: 'Cormorant Garamond, serif',
-                        fontWeight: '700',
-                        color: '#FFFFFF',
-                        margin: 0,
-                        textShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                    }}>
-                        {step === 3 ? '🎉 Order Placed!' : '🍯 Complete Your Order'}
+                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                    <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/20 rounded-full blur-3xl"></div>
+
+                    <h3 className="relative text-2xl font-serif font-bold text-white drop-shadow-sm mb-1.5">
+                        {step === 3 ? 'Order Placed!' : 'Complete Your Order'}
                     </h3>
+                    <p className="relative text-white/90 text-xs font-medium max-w-xs mx-auto leading-relaxed">
+                        {step === 3 ? 'Thank you for shopping with us' : 'Enter your details below to finalize your sweet purchase'}
+                    </p>
                 </div>
 
                 {step === 3 ? (
-                    <div style={{ padding: '40px 32px', textAlign: 'center' }}>
-                        <div style={{
-                            width: '80px',
-                            height: '80px',
-                            backgroundColor: '#D1FAE5',
-                        }} className="rounded-full flex items-center justify-center mx-auto mb-6 dark:bg-green-900/20">
-                            <svg className="w-10 h-10 text-green-500 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="p-10 text-center">
+                        <div className="w-24 h-24 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
+                            <svg className="w-12 h-12 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
-                        <h4 className="text-2xl font-bold text-gray-800 dark:text-honey-50 mb-2">Thank You!</h4>
-                        <p className="text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
-                            We've received your order and will contact you shortly via email.
+                        <h4 className="text-3xl font-serif font-bold text-gray-900 dark:text-honey-50 mb-4">Thank You!</h4>
+                        <p className="text-gray-500 dark:text-gray-400 mb-8 text-lg leading-relaxed max-w-sm mx-auto">
+                            We've received your order. We'll be in touch shortly to finalize everything.
                         </p>
 
-                        {/* Password Display if account created */}
+                        {/* Password Display */}
                         {generatedPassword && (
-                            <div className="bg-amber-50 dark:bg-honey-900/20 border-2 border-amber-200 dark:border-honey-500/30 rounded-2xl p-5 mb-6 text-left">
-                                <p className="text-[11px] font-bold text-amber-700 dark:text-honey-300 mb-3 uppercase tracking-wider">
-                                    🔐 Your Account Password
+                            <div className="bg-amber-50 dark:bg-honey-900/20 border-2 border-amber-200 dark:border-honey-500/30 rounded-2xl p-6 mb-8 text-left relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-amber-200/50 to-transparent rounded-bl-full"></div>
+                                <p className="text-xs font-bold text-amber-700 dark:text-honey-300 mb-3 uppercase tracking-widest flex items-center gap-2">
+                                    <span className="text-lg">🔐</span> Account Password
                                 </p>
-                                <div className="flex gap-2 items-center">
+                                <div className="flex gap-3 items-center">
                                     <input
                                         type="text"
                                         readOnly
                                         value={generatedPassword}
-                                        className="flex-1 p-3 bg-white dark:bg-black/20 border border-amber-200 dark:border-honey-500/20 rounded-xl font-mono text-sm font-semibold dark:text-honey-50 outline-none"
+                                        className="flex-1 p-3.5 bg-white dark:bg-black/30 border border-amber-200 dark:border-honey-500/20 rounded-xl font-mono text-base font-bold text-gray-800 dark:text-honey-50 outline-none tracking-wide"
                                     />
                                     <button
                                         type="button"
                                         onClick={copyPassword}
-                                        className={`px-4 py-3 rounded-xl font-bold text-white transition-all whitespace-nowrap ${copied ? 'bg-green-600' : 'bg-honey-600 hover:bg-honey-700'}`}
+                                        className={`px-5 py-3.5 rounded-xl font-bold text-white transition-all shadow-md active:scale-95 ${copied ? 'bg-green-600' : 'bg-honey-600 hover:bg-honey-700'}`}
                                     >
                                         {copied ? '✓' : 'Copy'}
                                     </button>
                                 </div>
-                                <p className="text-xs text-amber-600 dark:text-honey-400/60 mt-3">
-                                    Save this password! You can use it to log in to your account.
+                                <p className="text-xs text-amber-600/80 dark:text-honey-400/60 mt-3 font-medium">
+                                    Save this to log in and track your sweet order!
                                 </p>
                             </div>
                         )}
 
                         <button
                             onClick={() => window.location.href = '/shop'}
-                            style={{
-                                padding: '16px 32px',
-                                background: 'linear-gradient(135deg, #F59E0B 0%, #EAB308 100%)',
-                                color: '#FFFFFF',
-                                border: 'none',
-                                borderRadius: '14px',
-                                fontWeight: '700',
-                                fontSize: '16px',
-                                cursor: 'pointer',
-                                boxShadow: '0 4px 14px -2px rgba(245, 158, 11, 0.4)'
-                            }}
+                            className="w-full py-4 bg-gradient-to-r from-honey-500 to-honey-600 text-white font-bold text-lg rounded-xl shadow-lg shadow-honey-500/30 hover:shadow-honey-500/50 hover:-translate-y-1 transition-all"
                         >
                             Continue Shopping
                         </button>
                     </div>
                 ) : (
-                    <form onSubmit={handleSubmit} style={{ padding: '28px 32px 32px' }}>
-                        {/* Order Summary Mini */}
-                        <div style={{
-                            backgroundColor: '#FFFBEB',
-                            borderRadius: '14px',
-                            padding: '16px 20px',
-                            marginBottom: '24px',
-                            border: '1px solid #FDE68A',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>
-                            <span style={{ color: '#78716C', fontWeight: '500' }}>{items.length} item(s)</span>
-                            <span style={{ fontSize: '20px', fontWeight: '700', color: '#B45309' }}>{formatPrice(total / 100)}</span>
+                    <form onSubmit={handleSubmit} className="p-8">
+                        {/* Order Summary Mini Panel */}
+                        <div className="flex justify-between items-center bg-amber-50 dark:bg-honey-900/20 border border-amber-100 dark:border-honey-500/20 p-5 rounded-2xl mb-8">
+                            <span className="text-gray-600 dark:text-gray-300 font-medium text-lg">{items.length} item(s) to order</span>
+                            <span className="text-2xl font-bold text-honey-700 dark:text-honey-400">{formatPrice(total / 100)}</span>
                         </div>
 
-                        {/* Contact Method Selection */}
-                        <div style={{ marginBottom: '24px' }}>
-                            <label style={{
-                                display: 'block',
-                                fontSize: '11px',
-                                fontWeight: '700',
-                                color: '#9CA3AF',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.1em',
-                                marginBottom: '12px'
-                            }}>How would you like to order?</label>
-                            <div className="grid grid-cols-2 gap-3">
+                        {/* Contact Method Cards */}
+                        <div className="mb-8">
+                            <label className="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4 ml-1">How would you like to order?</label>
+                            <div className="grid grid-cols-2 gap-4">
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, method: 'whatsapp' })}
-                                    className={`p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 ${formData.method === 'whatsapp' ? 'border-green-500 bg-green-50 dark:bg-green-900/20 text-green-600' : 'border-gray-200 dark:border-white/10 dark:text-gray-400'}`}
+                                    className={`relative p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 overflow-hidden group ${formData.method === 'whatsapp' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-white/5 hover:border-gray-300'}`}
                                 >
-                                    <WhatsAppIcon />
-                                    <span className="font-bold text-sm">WhatsApp</span>
-                                    <span className="text-[10px] opacity-70">Instant chat</span>
+                                    {formData.method === 'whatsapp' && <div className="absolute top-3 right-3 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>}
+                                    <div className={`p-3 rounded-full ${formData.method === 'whatsapp' ? 'bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400' : 'bg-gray-200 dark:bg-white/10 text-gray-500'}`}>
+                                        <WhatsAppIcon />
+                                    </div>
+                                    <div className="text-center">
+                                        <span className={`block font-bold text-base ${formData.method === 'whatsapp' ? 'text-green-700 dark:text-green-300' : 'text-gray-600 dark:text-gray-400'}`}>WhatsApp</span>
+                                        <span className={`text-[11px] font-medium ${formData.method === 'whatsapp' ? 'text-green-600/70 dark:text-green-400/70' : 'text-gray-400'}`}>Instant Chat</span>
+                                    </div>
                                 </button>
+
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, method: 'email' })}
-                                    className={`p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 ${formData.method === 'email' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600' : 'border-gray-200 dark:border-white/10 dark:text-gray-400'}`}
+                                    className={`relative p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 overflow-hidden group ${formData.method === 'email' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-white/5 hover:border-gray-300'}`}
                                 >
-                                    <EmailIcon />
-                                    <span className="font-bold text-sm">Email</span>
-                                    <span className="text-[10px] opacity-70">We'll call you</span>
+                                    {formData.method === 'email' && <div className="absolute top-3 right-3 w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>}
+                                    <div className={`p-3 rounded-full ${formData.method === 'email' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400' : 'bg-gray-200 dark:bg-white/10 text-gray-500'}`}>
+                                        <EmailIcon />
+                                    </div>
+                                    <div className="text-center">
+                                        <span className={`block font-bold text-base ${formData.method === 'email' ? 'text-blue-700 dark:text-blue-300' : 'text-gray-600 dark:text-gray-400'}`}>Email</span>
+                                        <span className={`text-[11px] font-medium ${formData.method === 'email' ? 'text-blue-600/70 dark:text-blue-400/70' : 'text-gray-400'}`}>Detailed Quote</span>
+                                    </div>
                                 </button>
                             </div>
                         </div>
 
-                        {/* Form Fields */}
-                        <div className="flex flex-col gap-4">
-                            <div>
-                                <label className="block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Full Name</label>
-                                <input
-                                    required
-                                    type="text"
-                                    placeholder="John Doe"
-                                    style={inputStyle}
-                                    value={formData.name}
-                                    onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Email Address</label>
-                                <input
-                                    required
-                                    type="email"
-                                    placeholder="john@example.com"
-                                    style={inputStyle}
-                                    value={formData.email}
-                                    onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">Phone Number</label>
-                                <input
-                                    required
-                                    type="tel"
-                                    placeholder="+263 77 123 4567"
-                                    style={inputStyle}
-                                    value={formData.phone}
-                                    onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                                />
+                        {/* Interactive Inputs */}
+                        <div className="space-y-4 mb-8">
+                            <div className="group">
+                                <label className="block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1.5 ml-1 transition-colors group-focus-within:text-honey-600">Full Name</label>
+                                <input required type="text" placeholder="John Doe" className="w-full p-4 bg-gray-50 dark:bg-white/5 border-2 border-transparent dark:border-white/10 rounded-xl outline-none focus:bg-white dark:focus:bg-black/20 focus:border-honey-300 dark:focus:border-honey-600 transition-all font-medium text-gray-800 dark:text-gray-100 placeholder-gray-400"
+                                    value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
                             </div>
 
-                            {/* Create Account Checkbox */}
-                            <div className="bg-green-50/50 dark:bg-green-900/10 border border-green-100 dark:border-green-500/20 rounded-2xl p-4 flex items-start gap-4 cursor-pointer" onClick={() => setFormData({ ...formData, createAccount: !formData.createAccount })}>
-                                <input
-                                    type="checkbox"
-                                    checked={formData.createAccount}
-                                    onChange={e => setFormData({ ...formData, createAccount: e.target.checked })}
-                                    className="w-5 h-5 accent-green-600 mt-1 cursor-pointer"
-                                />
-                                <div>
-                                    <span className="font-bold color-green-800 dark:text-green-400 text-sm block mb-1">
-                                        Create an account
-                                    </span>
-                                    <span className="text-xs text-green-600 dark:text-green-500/70 leading-relaxed">
-                                        Track orders and checkout faster next time
-                                    </span>
-                                </div>
+                            <div className="group">
+                                <label className="block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1.5 ml-1 transition-colors group-focus-within:text-honey-600">Email Address</label>
+                                <input required type="email" placeholder="john@example.com" className="w-full p-4 bg-gray-50 dark:bg-white/5 border-2 border-transparent dark:border-white/10 rounded-xl outline-none focus:bg-white dark:focus:bg-black/20 focus:border-honey-300 dark:focus:border-honey-600 transition-all font-medium text-gray-800 dark:text-gray-100 placeholder-gray-400"
+                                    value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
                             </div>
+
+                            <div className="group">
+                                <label className="block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1.5 ml-1 transition-colors group-focus-within:text-honey-600">Phone Number</label>
+                                <input required type="tel" placeholder="+263 77 123 4567" className="w-full p-4 bg-gray-50 dark:bg-white/5 border-2 border-transparent dark:border-white/10 rounded-xl outline-none focus:bg-white dark:focus:bg-black/20 focus:border-honey-300 dark:focus:border-honey-600 transition-all font-medium text-gray-800 dark:text-gray-100 placeholder-gray-400"
+                                    value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+                            </div>
+
+                            {/* Create Account Toggle */}
+                            <label className="flex items-center gap-4 p-4 rounded-xl border border-dashed border-gray-300 dark:border-white/20 hover:border-honey-400 dark:hover:border-honey-600 bg-gray-50/50 dark:bg-white/5 cursor-pointer transition-all group select-none">
+                                <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${formData.createAccount ? 'bg-honey-500 border-honey-500' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-transparent'}`}>
+                                    {formData.createAccount && <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                                </div>
+                                <input type="checkbox" checked={formData.createAccount} onChange={e => setFormData({ ...formData, createAccount: e.target.checked })} className="hidden" />
+                                <div>
+                                    <span className="block font-bold text-sm text-gray-800 dark:text-honey-50 group-hover:text-honey-600 transition-colors">Create an account</span>
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">Save details for faster future checkout</span>
+                                </div>
+                            </label>
                         </div>
 
-                        {/* Buttons */}
-                        <div className="flex gap-3 mt-8">
+                        {/* Action Buttons */}
+                        <div className="flex gap-4">
                             <button
                                 type="button"
                                 onClick={onCancel}
-                                className="flex-1 py-4 text-gray-500 dark:text-gray-400 font-bold rounded-2xl bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 transition-all"
+                                className="px-8 py-4 text-gray-600 dark:text-gray-300 font-bold rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 transition-colors"
                             >
                                 Cancel
                             </button>
@@ -343,33 +281,17 @@ const OrderForm = ({ items, total, onCancel }) => {
                                 type="submit"
                                 disabled={submitting}
                                 style={{
-                                    flex: 1.5,
-                                    padding: '18px',
-                                    fontWeight: '700',
-                                    fontSize: '16px',
-                                    border: 'none',
-                                    borderRadius: '14px',
-                                    cursor: submitting ? 'not-allowed' : 'pointer',
-                                    transition: 'all 0.2s',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '10px',
                                     background: formData.method === 'whatsapp'
-                                        ? 'linear-gradient(135deg, #22C55E 0%, #16A34A 100%)'
-                                        : 'linear-gradient(135deg, #F59E0B 0%, #EAB308 100%)',
-                                    color: '#FFFFFF',
-                                    boxShadow: formData.method === 'whatsapp'
-                                        ? '0 4px 14px -2px rgba(34, 197, 94, 0.4)'
-                                        : '0 4px 14px -2px rgba(245, 158, 11, 0.4)'
+                                        ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
+                                        : 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                                    color: '#ffffff',
+                                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                                 }}
+                                className={`flex-1 py-4 font-bold text-lg rounded-xl text-white transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5 active:translate-y-0 ${submitting ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-lg'}`}
                             >
                                 {submitting ? (
                                     <>
-                                        <svg style={{ width: '20px', height: '20px', animation: 'spin 1s linear infinite' }} viewBox="0 0 24 24">
-                                            <circle style={{ opacity: 0.25 }} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                                            <path style={{ opacity: 0.75 }} fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                                        </svg>
+                                        <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
                                         Processing...
                                     </>
                                 ) : formData.method === 'whatsapp' ? (
@@ -377,7 +299,7 @@ const OrderForm = ({ items, total, onCancel }) => {
                                         <WhatsAppIcon /> Order via WhatsApp
                                     </>
                                 ) : (
-                                    'Place Order'
+                                    <>Place Order</>
                                 )}
                             </button>
                         </div>
