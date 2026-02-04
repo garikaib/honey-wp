@@ -138,6 +138,36 @@ function honeyscroop_register_product_meta(): void {
 			'default'           => 'in_stock',
 		)
 	);
+
+    // Rating stats meta.
+    register_post_meta(
+        'product',
+        '_product_average_rating',
+        array(
+            'show_in_rest' => true,
+            'single'       => true,
+            'type'         => 'number',
+            'default'      => 0,
+        )
+    );
+
+    register_post_meta(
+        'product',
+        '_product_review_count',
+        array(
+            'show_in_rest' => true,
+            'single'       => true,
+            'type'         => 'number',
+            'default'      => 0,
+        )
+    );
+
+    // Register comment rating meta.
+    register_meta( 'comment', '_rating', array(
+        'type'         => 'number',
+        'single'       => true,
+        'show_in_rest' => true,
+    ) );
 }
 add_action( 'init', 'honeyscroop_register_product_meta' );
 
@@ -236,6 +266,8 @@ function honeyscroop_register_product_rest_fields(): void {
 					'price'        => (int) get_post_meta( $post_id, '_product_price', true ),
 					'sku'          => get_post_meta( $post_id, '_product_sku', true ),
 					'availability' => get_post_meta( $post_id, '_product_availability', true ),
+                    'average_rating' => (float) get_post_meta( $post_id, '_product_average_rating', true ),
+                    'review_count'   => (int) get_post_meta( $post_id, '_product_review_count', true ),
 					// Seeded Data for Demo
 					'is_bestseller' => ( $post_id % 3 === 0 ), // Mock: Every 3rd product
 					'is_featured'   => ( $post_id % 2 === 0 ), // Mock: Every 2nd product

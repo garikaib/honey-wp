@@ -35,15 +35,71 @@ const ProductBadges = ({ isBestseller, isFeatured, isNew }) => (
     </div>
 );
 
-const ProductTabs = ({ description, reviewsCount = 0 }) => {
+import StarRating from './components/StarRating';
+
+const ProductTabs = ({ productId, description, avgRating = 0, reviewsCount = 0 }) => {
     const [activeTab, setActiveTab] = useState('description');
+    const [reviews, setReviews] = useState([]);
+    const [loadingReviews, setLoadingReviews] = useState(false);
+    const [hasReviewed, setHasReviewed] = useState(false);
+    const [showForm, setShowForm] = useState(false);
+
+    const [formStatus, setFormStatus] = useState({ loading: false, success: false, error: null });
+    const [formData, setFormData] = useState({ rating: 5, name: '', email: '', comment: '' });
+
+    const fetchReviews = async () => {
+        setLoadingReviews(true);
+        try {
+            const res = await fetch(`${window.honeyShopData.restUrl}honeyscroop/v1/product-reviews/${productId}`);
+            const data = await res.json();
+            setReviews(data.reviews || []);
+            setHasReviewed(data.has_reviewed);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoadingReviews(false);
+        }
+    };
+
+    useEffect(() => {
+        if (activeTab === 'reviews') {
+            fetchReviews();
+        }
+    }, [activeTab, productId]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setFormStatus({ loading: true, success: false, error: null });
+
+        try {
+            const res = await fetch(`${window.honeyShopData.restUrl}honeyscroop/v1/submit-review`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...formData, product_id: productId })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                setFormStatus({ loading: false, success: true, error: null });
+                setHasReviewed(true);
+                setShowForm(false);
+                fetchReviews(); // Refresh
+                // Optional: Update parent avgRating if needed via callback
+            } else {
+                setFormStatus({ loading: false, success: false, error: data.message });
+            }
+        } catch (err) {
+            setFormStatus({ loading: false, success: false, error: 'Connection failed.' });
+        }
+    };
 
     return (
         <div className="mt-16">
-            <div className="flex border-b border-gray-200 dark:border-white/10 mb-8">
+            <div className="flex border-b border-gray-200 dark:border-white/10 mb-8 overflow-x-auto">
                 <button
                     onClick={() => setActiveTab('description')}
-                    className={`pb-4 px-1 text-sm uppercase font-bold tracking-widest transition-all relative ${activeTab === 'description'
+                    className={`pb-4 px-1 text-sm uppercase font-bold tracking-widest transition-all whitespace-nowrap relative ${activeTab === 'description'
                         ? 'text-gray-900 dark:text-white'
                         : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                         }`}
@@ -55,7 +111,7 @@ const ProductTabs = ({ description, reviewsCount = 0 }) => {
                 </button>
                 <button
                     onClick={() => setActiveTab('reviews')}
-                    className={`pb-4 px-1 ml-8 text-sm uppercase font-bold tracking-widest transition-all relative ${activeTab === 'reviews'
+                    className={`pb-4 px-1 ml-8 text-sm uppercase font-bold tracking-widest transition-all whitespace-nowrap relative ${activeTab === 'reviews'
                         ? 'text-gray-900 dark:text-white'
                         : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                         }`}
@@ -67,7 +123,7 @@ const ProductTabs = ({ description, reviewsCount = 0 }) => {
                 </button>
                 <button
                     onClick={() => setActiveTab('info')}
-                    className={`pb-4 px-1 ml-8 text-sm uppercase font-bold tracking-widest transition-all relative ${activeTab === 'info'
+                    className={`pb-4 px-1 ml-8 text-sm uppercase font-bold tracking-widest transition-all whitespace-nowrap relative ${activeTab === 'info'
                         ? 'text-gray-900 dark:text-white'
                         : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                         }`}
@@ -85,8 +141,109 @@ const ProductTabs = ({ description, reviewsCount = 0 }) => {
                 )}
                 {activeTab === 'reviews' && (
                     <div className="animate-fade-in">
-                        <p className="text-gray-500 italic">No reviews yet. Be the first to review this product!</p>
-                        <button className="mt-4 text-honey-600 text-sm font-bold uppercase tracking-widest border-b border-honey-600 pb-0.5 hover:text-honey-700">Write a Review</button>
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                            <div>
+                                <h4 className="text-3xl font-serif text-gray-900 dark:text-white mb-2">{avgRating} <span className="text-xl text-gray-400">/ 5</span></h4>
+                                <StarRating rating={avgRating} size={20} />
+                                <p className="text-sm text-gray-500 mt-2">Based on {reviewsCount} reviews</p>
+                            </div>
+                            {!hasReviewed && !showForm && (
+                                <button
+                                    onClick={() => setShowForm(true)}
+                                    className="px-8 py-3 bg-gray-900 dark:bg-honey-600 text-white text-sm font-bold uppercase tracking-widest rounded-xl hover:bg-honey-600 transition-all shadow-lg"
+                                >
+                                    Write a Review
+                                </button>
+                            )}
+                        </div>
+
+                        {showForm && (
+                            <div className="bg-gray-50 dark:bg-white/5 p-8 rounded-[2rem] mb-12 border border-gray-100 dark:border-white/10">
+                                <h5 className="text-xl font-bold text-gray-800 dark:text-white mb-6">Your Review</h5>
+                                <form onSubmit={handleSubmit} className="space-y-6">
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <span className="text-sm font-bold uppercase tracking-widest opacity-60">Your Rating:</span>
+                                        <StarRating
+                                            rating={formData.rating}
+                                            interactive
+                                            size={24}
+                                            onRatingChange={(r) => setFormData({ ...formData, rating: r })}
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label className="block text-xs font-bold uppercase tracking-widest mb-2 opacity-60">Name</label>
+                                            <input
+                                                type="text" required
+                                                value={formData.name}
+                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                className="w-full bg-white dark:bg-gray-800 border-gray-200 dark:border-white/10 rounded-xl px-4 py-3"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold uppercase tracking-widest mb-2 opacity-60">Email</label>
+                                            <input
+                                                type="email" required
+                                                value={formData.email}
+                                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                                className="w-full bg-white dark:bg-gray-800 border-gray-200 dark:border-white/10 rounded-xl px-4 py-3"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-bold uppercase tracking-widest mb-2 opacity-60">Your Thoughts</label>
+                                        <textarea
+                                            rows="4" required
+                                            value={formData.comment}
+                                            onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
+                                            className="w-full bg-white dark:bg-gray-800 border-gray-200 dark:border-white/10 rounded-xl px-4 py-3"
+                                        ></textarea>
+                                    </div>
+
+                                    {formStatus.error && <p className="text-red-500 text-sm font-bold">{formStatus.error}</p>}
+
+                                    <div className="flex justify-end gap-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowForm(false)}
+                                            className="px-6 py-3 text-gray-500 font-bold uppercase tracking-widest text-xs hover:text-gray-800"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            disabled={formStatus.loading}
+                                            className="px-10 py-3 bg-honey-600 text-white font-bold uppercase tracking-widest text-xs rounded-xl shadow-xl hover:bg-honey-700 disabled:opacity-50"
+                                        >
+                                            {formStatus.loading ? 'Submitting...' : 'Post Review'}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        )}
+
+                        {loadingReviews ? (
+                            <div className="flex justify-center py-12"><div className="w-8 h-8 border-2 border-honey-200 border-t-honey-600 rounded-full animate-spin"></div></div>
+                        ) : reviews.length > 0 ? (
+                            <div className="space-y-8">
+                                {reviews.map(review => (
+                                    <div key={review.id} className="pb-8 border-b border-gray-100 dark:border-white/5 last:border-0">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div>
+                                                <h6 className="font-bold text-gray-900 dark:text-white">{review.author}</h6>
+                                                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{review.date}</span>
+                                            </div>
+                                            <StarRating rating={review.rating} size={14} />
+                                        </div>
+                                        <p className="text-gray-600 dark:text-gray-300 italic">"{review.content}"</p>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-gray-500 italic text-center py-12 border-2 border-dashed border-gray-100 dark:border-white/5 rounded-3xl">No reviews yet. Be the first to share your experience!</p>
+                        )}
                     </div>
                 )}
                 {activeTab === 'info' && (
@@ -113,6 +270,7 @@ const ProductTabs = ({ description, reviewsCount = 0 }) => {
         </div>
     );
 };
+
 
 const RelatedProducts = ({ productIds, currentProductId }) => {
     const [related, setRelated] = useState([]);
@@ -268,65 +426,78 @@ const ShopSingle = () => {
                     <div className="bg-white/90 dark:bg-white/5 backdrop-blur-xl border border-gray-100 dark:border-white/5 rounded-2xl p-8 lg:p-12 shadow-xl">
                         <h1 className="text-4xl lg:text-5xl font-serif font-bold text-gray-900 dark:text-white mb-4 leading-tight" dangerouslySetInnerHTML={{ __html: product.title.rendered }} />
 
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="text-3xl font-medium text-honey-600 dark:text-honey-400">
-                                {formatPrice(price / 100)}
+                        <div className="flex items-center justify-between mb-8 pb-8 border-b border-gray-100 dark:border-white/10">
+                            <div className="flex items-center gap-4">
+                                <div className="text-4xl font-bold text-honey-600 dark:text-honey-400 transition-colors">
+                                    {formatPrice(price / 100)}
+                                </div>
+                                {!isOutOfStock && (
+                                    <span className="text-[10px] text-green-600 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 font-bold uppercase tracking-wider rounded-full border border-green-100 dark:border-green-900/30">In Stock</span>
+                                )}
                             </div>
-                            {!isOutOfStock && (
-                                <span className="text-green-600 bg-green-50 dark:bg-green-900/20 px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full">In Stock</span>
-                            )}
+
+                            <div className="flex flex-col items-end gap-1">
+                                <StarRating rating={details.average_rating || 0} size={16} />
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{details.review_count || 0} Reviews</span>
+                            </div>
                         </div>
 
-                        <div className="prose prose-lg text-gray-600 dark:text-gray-300 mb-8 max-w-none" dangerouslySetInnerHTML={{ __html: product.excerpt?.rendered || product.content.rendered.substring(0, 150) + "..." }} />
+                        <div className="prose prose-lg text-gray-600 dark:text-gray-300 mb-8 max-w-none line-clamp-3" dangerouslySetInnerHTML={{ __html: product.excerpt?.rendered || product.content.rendered.substring(0, 150) + "..." }} />
 
                         {/* Add to Cart Section */}
-                        <div className="py-8 border-y border-gray-100 dark:border-white/10 mb-8">
+                        <div className="py-8 mb-8">
                             {!isOutOfStock ? (
                                 <div className="flex flex-col sm:flex-row gap-4">
-                                    <div className="flex items-center border border-gray-300 dark:border-white/20 rounded-lg overflow-hidden h-14">
+                                    <div className="flex items-center border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 rounded-xl overflow-hidden h-14">
                                         <button
-                                            className="px-4 h-full bg-transparent hover:bg-gray-100 dark:hover:bg-white/10 transition text-gray-500"
+                                            className="px-5 h-full bg-transparent hover:bg-gray-100 dark:hover:bg-white/10 transition text-gray-400 hover:text-gray-700 dark:hover:text-white"
                                             onClick={() => setQty(q => Math.max(1, q - 1))}
                                         >-</button>
-                                        <div className="w-12 h-full flex items-center justify-center font-bold text-gray-900 dark:text-white border-x border-gray-200 dark:border-white/10">{qty}</div>
+                                        <div className="w-12 h-full flex items-center justify-center font-bold text-gray-900 dark:text-white border-x border-gray-100 dark:border-white/10">{qty}</div>
                                         <button
-                                            className="px-4 h-full bg-transparent hover:bg-gray-100 dark:hover:bg-white/10 transition text-gray-500"
+                                            className="px-5 h-full bg-transparent hover:bg-gray-100 dark:hover:bg-white/10 transition text-gray-400 hover:text-gray-700 dark:hover:text-white"
                                             onClick={() => setQty(q => q + 1)}
                                         >+</button>
                                     </div>
 
                                     <button
                                         onClick={handleAddToCart}
-                                        className="flex-1 h-14 bg-gray-900 dark:bg-honey-600 text-white font-bold uppercase tracking-widest text-sm hover:bg-honey-600 dark:hover:bg-honey-500 transition-colors shadow-lg shadow-gray-900/10 dark:shadow-none rounded-lg"
+                                        className="flex-1 h-14 bg-gray-900 dark:bg-honey-600 text-white font-bold uppercase tracking-[0.2em] text-xs hover:bg-honey-600 dark:hover:bg-honey-500 transition-all shadow-xl shadow-gray-900/10 dark:shadow-none active:scale-95 rounded-xl"
                                     >
-                                        Add to cart
+                                        Add to curation
                                     </button>
                                 </div>
                             ) : (
-                                <div className="p-4 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/20 rounded-lg text-center font-bold">
+                                <div className="p-5 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/20 rounded-xl text-center font-bold text-sm tracking-wide">
                                     Currently Out of Stock
                                 </div>
                             )}
                         </div>
 
-                        <div className="flex items-center gap-6 text-xs font-bold uppercase tracking-widest text-gray-400">
-                            <span>SKU: {sku || 'N/A'}</span>
-                            <span>Category: <a href="#" className="hover:text-honey-600 transition-colors">Honey</a></span>
+                        <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+                            <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gray-200 dark:bg-white/10"></span> SKU: {sku || 'N/A'}</span>
+                            <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gray-200 dark:bg-white/10"></span> Category: <a href="#" className="text-honey-600 hover:underline">Honey</a></span>
                         </div>
 
                         {/* Added Notification */}
                         {showAdded && (
-                            <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-900/30 rounded-lg animate-fade-in-up flex items-center justify-between">
-                                <span className="font-medium flex items-center gap-2">
-                                    <span className="text-xl">✨</span> Added to cart!
+                            <div className="mt-8 p-5 bg-green-500 text-white rounded-2xl animate-fade-in-up flex items-center justify-between shadow-lg shadow-green-500/20">
+                                <span className="font-bold text-sm flex items-center gap-3 tracking-wide">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    Added to your curation!
                                 </span>
-                                <a href="/cart" className="text-sm font-bold underline hover:text-green-800 dark:hover:text-white">View Cart</a>
+                                <a href="/cart" className="text-xs font-black uppercase tracking-widest bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30 transition-colors">Checkout</a>
                             </div>
                         )}
                     </div>
 
                     {/* Tabs Section */}
-                    <ProductTabs description={product.content.rendered} />
+                    <ProductTabs
+                        productId={product.id}
+                        description={product.content.rendered}
+                        avgRating={details.average_rating || 0}
+                        reviewsCount={details.review_count || 0}
+                    />
 
                 </div>
             </div>
