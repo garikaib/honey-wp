@@ -1,11 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { createRoot } from 'react-dom/client';
-import { Search, User, ShoppingBag, ChevronDown, Globe, Menu, X } from 'lucide-react';
+import { Search, User, ShoppingBag, ChevronDown, Globe, Menu, X, Home, ShoppingCart, Newspaper, Calendar, Heart, Mail, Moon } from 'lucide-react';
 import CartWidget from '../shop/components/CartWidget';
 import { CurrencyProvider } from '../shop/context/CurrencyContext';
 import CurrencySelector from '../shop/components/CurrencySelector';
 import DarkModeToggle from '../components/DarkModeToggle';
+import gsap from 'gsap';
+
+const getIcon = (label) => {
+    switch (label.toLowerCase()) {
+        case 'home': return <Home size={20} strokeWidth={1.5} />;
+        case 'shop': return <ShoppingCart size={20} strokeWidth={1.5} />;
+        case 'news': return <Newspaper size={20} strokeWidth={1.5} />;
+        case 'events': return <Calendar size={20} strokeWidth={1.5} />;
+        case 'our story': return <Heart size={20} strokeWidth={1.5} />;
+        case 'contact': return <Mail size={20} strokeWidth={1.5} />;
+        default: return <ChevronDown size={20} strokeWidth={1.5} />;
+    }
+};
 
 const menuItems = window.honeyscroopHeaderData?.primaryMenu || [];
 
@@ -13,6 +26,8 @@ const NavItem = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeCategory, setActiveCategory] = useState(item.children?.[0]?.category || null);
     const timeoutRef = useRef(null);
+    const dropdownRef = useRef(null);
+    const itemsRef = useRef([]);
 
     const handleMouseEnter = () => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -22,6 +37,37 @@ const NavItem = ({ item }) => {
     const handleMouseLeave = () => {
         timeoutRef.current = setTimeout(() => setIsOpen(false), 200);
     };
+
+    useEffect(() => {
+        if (isOpen) {
+            // Dropdown Entrance
+            gsap.fromTo(dropdownRef.current,
+                { opacity: 0, y: 10, scale: 0.98, display: 'block' },
+                { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power4.out" }
+            );
+
+            // Staggered Items Entrance
+            const subItems = dropdownRef.current.querySelectorAll('.stagger-item');
+            if (subItems.length > 0) {
+                gsap.fromTo(subItems,
+                    { opacity: 0, y: 5 },
+                    { opacity: 1, y: 0, duration: 0.4, stagger: 0.04, ease: "power2.out", delay: 0.1 }
+                );
+            }
+        } else {
+            // Dropdown Exit
+            gsap.to(dropdownRef.current, {
+                opacity: 0,
+                y: 8,
+                scale: 0.98,
+                duration: 0.3,
+                ease: "power2.in",
+                onComplete: () => {
+                    if (dropdownRef.current) dropdownRef.current.style.display = 'none';
+                }
+            });
+        }
+    }, [isOpen]);
 
     const hasChildren = item.children && item.children.length > 0;
     const isMega = item.type === 'mega';
@@ -40,41 +86,39 @@ const NavItem = ({ item }) => {
             <a
                 href={item.href}
                 className={`group flex items-center py-2 text-gray-800 dark:text-honey-50 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 ${isOpen ? 'text-gray-900 dark:text-white' : ''}`}
-                style={{ fontWeight: 700, letterSpacing: '0.2em' }}
+                style={{ fontWeight: 700, letterSpacing: '0.2em', position: 'relative' }}
             >
                 <span className="flex items-center relative">
                     <span>{item.label}</span>
-                    {/* Underline animation */}
-                    <span className={`absolute left-0 -bottom-1 h-[1.5px] bg-gray-400 transition-all duration-300 ease-out ${isOpen ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                    <span className={`absolute left-0 -bottom-1 h-[2px] bg-honey-600 transition-all duration-300 ease-out ${isOpen ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </span>
             </a>
 
             {/* Dropdown Logic */}
             {hasChildren && (
                 <div
-                    className={`absolute ${isMega ? '-left-10' : 'left-1/2 -translate-x-1/2'} top-[95%] pt-3 z-50 transition-all duration-200 ease-out origin-top-left ${isOpen
-                        ? 'opacity-100 scale-100 translate-y-0 visible'
-                        : 'opacity-0 scale-95 translate-y-2 invisible'
-                        }`}
+                    ref={dropdownRef}
+                    className={`absolute ${isMega ? '-left-20' : 'left-1/2 -translate-x-1/2'} top-[90%] pt-4 z-50 desktop-dropdown overflow-hidden`}
+                    style={{ display: 'none' }}
                 >
                     {isMega ? (
-                        <div
-                            className="shadow-xl rounded-sm flex min-w-[400px] bg-white/90 dark:bg-dark-surface/90 backdrop-blur-md border border-gray-100 dark:border-white/5"
-                        >
+                        <div className="flex min-w-[500px]">
                             {/* Left Column: Categories */}
-                            <div className="w-48 py-4 border-r border-gray-100/50 dark:border-white/10">
+                            <div className="w-52 py-4 border-r border-gray-100 dark:border-white/10">
                                 <ul>
                                     {item.children.map((child, idx) => (
-                                        <li key={idx}>
+                                        <li key={idx} className="stagger-item">
                                             <div
                                                 onMouseEnter={() => setActiveCategory(child.category)}
-                                                className={`flex items-center justify-between px-6 py-2.5 text-[13px] font-medium cursor-pointer transition-colors
-                                                    ${activeCategory === child.category ? 'text-amber-600 bg-amber-50/40 dark:bg-amber-500/10' : 'text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400'}
+                                                className={`flex items-center justify-between px-6 py-2.5 text-[12px] font-bold tracking-widest cursor-pointer transition-all duration-300 uppercase
+                                                    ${activeCategory === child.category
+                                                        ? 'text-honey-600 bg-honey-500/5 dark:bg-honey-500/10'
+                                                        : 'text-gray-400 hover:text-honey-600 hover:bg-honey-500/5'}
                                                 `}
                                             >
                                                 <span>{child.category}</span>
                                                 {activeCategory === child.category && (
-                                                    <ChevronDown size={14} className="-rotate-90" />
+                                                    <ChevronDown size={12} className="-rotate-90 text-honey-600" />
                                                 )}
                                             </div>
                                         </li>
@@ -83,13 +127,13 @@ const NavItem = ({ item }) => {
                             </div>
 
                             {/* Right Column: Sub-items */}
-                            <div className="w-56 py-6 px-6">
-                                <ul className="space-y-3">
+                            <div className="flex-1 py-8 px-8 min-w-[280px]">
+                                <ul className="grid grid-cols-1 gap-4">
                                     {activeSubItems.map((subItem, idx) => (
-                                        <li key={idx}>
+                                        <li key={idx} className="stagger-item">
                                             <a
                                                 href={subItem.href}
-                                                className="block text-[13px] text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+                                                className="mega-menu-link text-[14px] font-medium text-gray-600 dark:text-gray-300 hover:text-honey-600 block transition-all"
                                             >
                                                 {subItem.label}
                                             </a>
@@ -100,14 +144,12 @@ const NavItem = ({ item }) => {
                         </div>
                     ) : (
                         /* Standard Dropdown */
-                        <ul
-                            className="shadow-xl rounded-sm min-w-[200px] py-4 bg-white/90 dark:bg-dark-surface/90 backdrop-blur-md border border-gray-100 dark:border-white/5"
-                        >
+                        <ul className="min-w-[220px] py-4">
                             {item.children.map((child, idx) => (
-                                <li key={idx}>
+                                <li key={idx} className="stagger-item">
                                     <a
                                         href={child.href}
-                                        className="block px-8 py-2.5 text-[13px] text-gray-700 dark:text-gray-300 font-normal hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50/30 dark:hover:bg-amber-500/10 transition-colors duration-150"
+                                        className="block px-8 py-3 text-[13px] font-medium text-gray-600 dark:text-gray-300 hover:text-honey-600 hover:bg-honey-500/5 transition-all duration-200"
                                     >
                                         {child.label}
                                     </a>
@@ -122,12 +164,37 @@ const NavItem = ({ item }) => {
 };
 
 const MobileDrawer = ({ isOpen, items, onClose }) => {
+    const drawerRef = useRef(null);
+    const overlayRef = useRef(null);
+    const contentRef = useRef(null);
+    const itemsRef = useRef([]);
+
     // Prevent scrolling when menu is open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
+
+            // GSAP Entrance
+            const tl = gsap.timeline();
+            tl.to(drawerRef.current, { visibility: 'visible', duration: 0 });
+            tl.to(overlayRef.current, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0);
+            tl.to(contentRef.current, { x: 0, duration: 0.6, ease: "expo.out" }, 0);
+            tl.fromTo(itemsRef.current,
+                { x: -20, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "power3.out" },
+                "-=0.3"
+            );
         } else {
             document.body.style.overflow = '';
+
+            // GSAP Exit
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    if (drawerRef.current) drawerRef.current.style.visibility = 'hidden';
+                }
+            });
+            tl.to(contentRef.current, { x: '-100%', duration: 0.4, ease: "power2.in" });
+            tl.to(overlayRef.current, { opacity: 0, duration: 0.3, ease: "power2.in" }, "-=0.2");
         }
         return () => {
             document.body.style.overflow = '';
@@ -135,25 +202,64 @@ const MobileDrawer = ({ isOpen, items, onClose }) => {
     }, [isOpen]);
 
     return createPortal(
-        <div className={`mobile-drawer ${isOpen ? 'is-open' : ''}`}>
-            <div className="mobile-drawer-overlay" onClick={onClose}></div>
-            <div className="mobile-drawer-content">
-                <div className="flex justify-between items-center mb-8">
-                    <span className="text-[12px] font-bold tracking-widest text-gray-400 dark:text-gray-500 uppercase">Menu</span>
-                    <button onClick={onClose} className="text-gray-500 dark:text-honey-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                        <X size={24} strokeWidth={1.5} />
+        <div ref={drawerRef} className={`mobile-drawer ${isOpen ? 'is-open' : ''}`} style={{ visibility: 'hidden' }}>
+            <div ref={overlayRef} className="mobile-drawer-overlay" onClick={onClose} style={{ opacity: 0 }}></div>
+            <div ref={contentRef} className="mobile-drawer-content" style={{ transform: 'translateX(-100%)' }}>
+                <div className="flex justify-between items-center mb-10">
+                    <span className="text-[11px] font-bold tracking-[0.25em] text-muted uppercase">Boutique Menu</span>
+                    <button
+                        onClick={onClose}
+                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                    >
+                        <X size={20} strokeWidth={1.5} className="text-muted" />
                     </button>
                 </div>
-                <nav className="flex-1 overflow-y-auto">
+
+                <nav className="flex-1 overflow-y-auto overflow-x-hidden">
                     <ul className="flex flex-col">
-                        {/* Removed duplicate "Home" link */}
-                        {items.map((item, idx) => (
-                            <li key={idx} className="mobile-nav-item">
-                                <a href={item.href} className="block">{item.label}</a>
-                            </li>
-                        ))}
+                        {items.map((item, idx) => {
+                            const isActive = window.location.pathname === item.href || (window.location.pathname === '/' && item.href === '/');
+                            return (
+                                <li
+                                    key={idx}
+                                    className={`mobile-nav-item ${isActive ? 'is-active' : ''}`}
+                                    ref={el => itemsRef.current[idx] = el}
+                                >
+                                    <a href={item.href}>
+                                        <span className={`mobile-nav-icon block ${isActive ? 'text-honey-600 opacity-100' : 'text-honey-600'}`}>
+                                            {getIcon(item.label)}
+                                        </span>
+                                        <span className={isActive ? 'font-bold' : ''}>{item.label}</span>
+                                    </a>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </nav>
+
+                {/* Mobile Drawer Footer: Settings */}
+                <div className="mobile-drawer-footer">
+                    <div className="mb-8">
+                        <div className="flex items-center gap-2 mb-4">
+                            <Globe size={14} className="text-honey-600" />
+                            <span className="text-[10px] font-bold tracking-[0.15em] text-muted uppercase">Currency</span>
+                        </div>
+                        <div className="pl-6">
+                            <CurrencySelector />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className="flex items-center gap-2 mb-4">
+                            <Moon size={14} className="text-honey-600" />
+                            <span className="text-[10px] font-bold tracking-[0.15em] text-muted uppercase">Appearance</span>
+                        </div>
+                        <div className="flex items-center justify-between pl-6 pr-2">
+                            <span className="text-[14px] font-medium font-serif italic text-muted">Dark Mode</span>
+                            <DarkModeToggle />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>,
         document.body

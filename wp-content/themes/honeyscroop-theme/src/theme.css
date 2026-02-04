@@ -874,12 +874,53 @@ html.dark .icon-btn:hover {
     bottom: 0;
     width: 80%;
     max-width: 320px;
-    background-color: var(--color-white);
+    background-color: var(--bg-surface);
+    color: var(--text-main);
     transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     padding: var(--spacing-xl) var(--spacing-lg);
     display: flex;
     flex-direction: column;
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.1);
+}
+
+html.dark .mobile-drawer-content {
+    background-color: rgba(20, 20, 15, 0.99);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: var(--text-main);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Desktop Dropdowns Refined */
+.desktop-dropdown {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    transform-origin: top;
+}
+
+html.dark .desktop-dropdown {
+    background-color: rgba(20, 20, 15, 0.99);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.mega-menu-cat-item {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mega-menu-link {
+    position: relative;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+.mega-menu-link:hover {
+    color: var(--color-honey-600);
+    transform: translateX(4px);
 }
 
 .mobile-drawer.is-open .mobile-drawer-content {
@@ -887,15 +928,68 @@ html.dark .icon-btn:hover {
 }
 
 .mobile-nav-item {
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: var(--spacing-md) 0;
-    border-bottom: 1px solid var(--color-gray-100);
-    color: var(--color-gray-900);
+    padding: 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.mobile-nav-item:last-child {
     border-bottom: none;
 }
+
+.mobile-nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    color: var(--text-main);
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-item a:hover {
+    color: var(--color-honey-600);
+    padding-left: 0.5rem;
+}
+
+.mobile-nav-icon {
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-nav-item a:hover .mobile-nav-icon {
+    opacity: 1;
+    color: var(--color-honey-600);
+}
+
+.mobile-nav-item.is-active a {
+    color: var(--color-honey-600);
+}
+
+.mobile-nav-item.is-active .mobile-nav-icon {
+    opacity: 1;
+    color: var(--color-honey-600);
+}
+
+.mobile-nav-item.is-active a::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 4px;
+    height: 20px;
+    background-color: var(--color-honey-600);
+    border-radius: 2px;
+}
+
+.mobile-drawer-footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
 
 /* =========================================
    Our Story - Scrapbook Theme
