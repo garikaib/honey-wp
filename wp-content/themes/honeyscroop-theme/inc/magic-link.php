@@ -176,7 +176,6 @@ function honeyscroop_add_magic_link_form() {
 					type="email" 
 					id="magic-link-email" 
 					placeholder="john@example.com"
-					required
 					style="box-sizing: border-box;"
 				>
 			</div>
